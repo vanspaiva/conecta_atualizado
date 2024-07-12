@@ -1,0 +1,5 @@
+- bugConecta0001
+Criação da pasta git e nova interface para planejamento
+
+- bugConecta0002
+Criação da pasta git e nova interface para planejamento pois a ultima tentativa foi perdida

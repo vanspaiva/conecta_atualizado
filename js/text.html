@@ -1,0 +1,451 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+</script>
+
+<body class="px-4 py-2">
+    <form action="">
+        <div class="form-group">
+            <label class="form-label fw-bold">Região</label>
+            <div class="d-block">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="smartmoldZigoma" value="zigoma">
+                    <label class="form-check-label" for="smartmoldZigoma">Zigoma</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="smartmoldParanasal" value="paranasal">
+                    <label class="form-check-label" for="smartmoldParanasal">Paranasal</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="smartmoldMento" value="mento">
+                    <label class="form-check-label" for="smartmoldMento">Mento</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="smartmoldAngulo" value="angulo">
+                    <label class="form-check-label" for="smartmoldAngulo">Ângulo de Mandíbula</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="smartmoldPremaxila" value="premaxila">
+                    <label class="form-check-label" for="smartmoldPremaxila">Pré-Maxila</label>
+                </div>
+            </div>
+        </div>
+
+        <hr style="border: 1px #ee7624 solid;">
+
+        <div id="zigomaField" class="d-none">
+            <!-- ZIGOMA -->
+            <div class="d-flex">
+                <div class="form-group flex-fill px-3">
+                    <label class="form-label" for="ladoZigoma">Lado Zigoma</label>
+                    <select id="ladoZigoma" class="form-select" aria-label="Default select">
+                        <option selected>Selecione</option>
+                        <option value="Direito">Direito</option>
+                        <option value="Esquerdo">Esquerdo</option>
+                        <option value="Bilateral">Bilateral</option>
+                    </select>
+                </div>
+
+                <div class="form-group flex-fill px-3">
+                    <label class="form-label" for="materialZigoma">Material Zigoma</label>
+                    <select id="materialZigoma" class="form-select" aria-label="Default select">
+                        <option>Selecione</option>
+                        <option value="PMMA" selected>PMMA</option>
+                    </select>
+                </div>
+
+                <div class="flex-fill px-3 ">
+                    <div class="d-flex justify-content-center align-items-center p-3"
+                        style="background-color: #544b59; width: max-content; height: fit-content; border-radius: 10px;">
+                        <img src="https://s3-ap-northeast-1.amazonaws.com/g0v-hackmd-images/uploads/upload_460149bcfe2e675de04dde10b05a620c.png"
+                            alt="Ícone Zigoma">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row p-3">
+                <input class="form-control" type="text" id="idZigoma" />
+            </div>
+
+            <hr style="border: 1px #ee7624 solid;">
+        </div>
+
+        <div id="paranasalField" class="d-none">
+            <!-- PARANASAL -->
+            <div class="d-flex">
+                <div class="form-group flex-fill px-3">
+                    <label class="form-label" for="ladoParanasal">Lado Paranasal</label>
+                    <select id="ladoParanasal" class="form-select" aria-label="Default select">
+                        <option selected>Selecione</option>
+                        <option value="Bilateral">Bilateral</option>
+                    </select>
+                </div>
+
+                <div class="form-group flex-fill px-3">
+                    <label class="form-label" for="materialParanasal">Material Paranasal</label>
+                    <select id="materialParanasal" class="form-select" aria-label="Default select">
+                        <option>Selecione</option>
+                        <option value="PMMA" selected>PMMA</option>
+                    </select>
+                </div>
+
+                <div class="flex-fill px-3">
+                    <div class="d-flex justify-content-center align-items-center p-3"
+                        style="background-color: #544b59; width: max-content; height: fit-content; border-radius: 10px;">
+                        <img src="https://s3-ap-northeast-1.amazonaws.com/g0v-hackmd-images/uploads/upload_94c5d59d80ddd25b2edba6ae438d6b7f.png"
+                            alt="Ícone Paranasal">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row p-3">
+                <input class="form-control" type="text" id="idParanasal" />
+            </div>
+
+            <hr style="border: 1px #ee7624 solid;">
+        </div>
+
+        <div id="mentoField" class="d-none">
+            <!-- MENTO -->
+            <div class="d-flex">
+                <div class="form-group flex-fill px-3">
+                    <label class="form-label" for="tipoMento">Tipo Mento</label>
+                    <select id="tipoMento" class="form-select" aria-label="Default select">
+                        <option selected>Selecione</option>
+                        <option value="PecaUnica">Peça Única</option>
+                        <option value="Bipartido">Bipartido</option>
+                    </select>
+                </div>
+
+                <div class="form-group flex-fill px-3">
+                    <label class="form-label" for="materialMento">Material Mento</label>
+                    <select id="materialMento" class="form-select" aria-label="Default select">
+                        <option>Selecione</option>
+                        <option value="PMMA" selected>PMMA</option>
+                    </select>
+                </div>
+
+                <div class="flex-fill px-3">
+                    <div class="d-flex justify-content-center align-items-center p-3"
+                        style="background-color: #544b59; width: max-content; height: fit-content; border-radius: 10px;">
+                        <img src="https://s3-ap-northeast-1.amazonaws.com/g0v-hackmd-images/uploads/upload_3aa4ade6cea3ff4488c84d93c275853f.png"
+                            alt="Ícone Mento">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row p-3">
+                <input class="form-control" type="text" id="idMento" />
+            </div>
+
+            <hr style="border: 1px #ee7624 solid;">
+        </div>
+
+        <div id="anguloField" class="d-none">
+            <!-- ÂNGULO DE MANDÍBULA -->
+            <div class="d-flex">
+                <div class="form-group flex-fill px-3">
+                    <label class="form-label" for="ladoAngulo">Lado Âng de Mand</label>
+                    <select id="ladoAngulo" class="form-select" aria-label="Default select">
+                        <option selected>Selecione</option>
+                        <option value="Direito">Direito</option>
+                        <option value="Esquerdo">Esquerdo</option>
+                        <option value="Bilateral">Bilateral</option>
+                    </select>
+                </div>
+
+                <div class="form-group flex-fill px-3">
+                    <label class="form-label" for="materialAngulo">Material Âng de Mand</label>
+                    <select id="materialAngulo" class="form-select" aria-label="Default select">
+                        <option>Selecione</option>
+                        <option value="PMMA" selected>PMMA</option>
+                    </select>
+                </div>
+
+                <div class="form-group flex-fill px-3">
+                    <label class="form-label" for="tipoAngulo">Tipo Âng de Mand</label>
+                    <select id="tipoAngulo" class="form-select" aria-label="Default select">
+                        <option selected>Selecione</option>
+                        <option value="PecaUnica">Peça Única</option>
+                        <option value="Bipartido">Bipartido</option>
+                    </select>
+                </div>
+
+                <div class="flex-fill px-3">
+                    <div class="d-flex justify-content-center align-items-center p-3"
+                        style="background-color: #544b59; width: max-content; height: fit-content; border-radius: 10px;">
+                        <img src="https://s3-ap-northeast-1.amazonaws.com/g0v-hackmd-images/uploads/upload_9c6d80d649884ec86c85d86e1d0a7150.png"
+                            alt="Ícone Ângulo de Mandíbula">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row p-3">
+                <input class="form-control" type="text" id="idAngulo" />
+            </div>
+
+            <hr style="border: 1px #ee7624 solid;">
+        </div>
+
+        <div id="premaxilaField" class="d-none">
+            <!-- PRÉ-MAXILA -->
+            <div class="d-flex">
+
+                <div class="form-group flex-fill px-3">
+                    <label class="form-label" for="materialPremaxila">Material Pré-Maxila</label>
+                    <select id="materialPremaxila" class="form-select" aria-label="Default select">
+                        <option selected>Selecione</option>
+                        <option value="PMMA">PMMA</option>
+                    </select>
+                </div>
+
+                <div class="flex-fill px-3">
+                    <div class="d-flex justify-content-center align-items-center p-3"
+                        style="background-color: #544b59; width: max-content; height: fit-content; border-radius: 10px;">
+                        <img src="https://s3-ap-northeast-1.amazonaws.com/g0v-hackmd-images/uploads/upload_d30ff153768504ac64bd47eff467f56c.png"
+                            alt="Ícone Pré-Maxila">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row p-3">
+                <input class="form-control" type="text" id="idPremaxila" />
+            </div>
+
+            <hr style="border: 1px #ee7624 solid;">
+        </div>
+
+    </form>
+
+    <script>
+
+
+        $('#smartmoldZigoma').click(function () {
+            let actionZigoma;
+            if ($('#smartmoldZigoma').is(":checked") == true) {
+                actionZigoma = 'show';
+                // console.log("zigoma!");
+            } else {
+                actionZigoma = 'hide';
+                // console.log("limpar zigoma!");
+            }
+
+            doZigoma(actionZigoma);
+        });
+
+        $('#smartmoldParanasal').click(function () {
+            let actionParanasal;
+            if ($('#smartmoldParanasal').is(":checked") == true) {
+                actionParanasal = 'show';
+                // console.log("paranasal!");
+            } else {
+                actionParanasal = 'hide';
+                // console.log("limpar paranasal!");
+            }
+
+            doParanasal(actionParanasal);
+        });
+
+        $('#smartmoldMento').click(function () {
+            let actionMento;
+            if ($('#smartmoldMento').is(":checked") == true) {
+                actionMento = 'show';
+                // console.log("mento!");
+            } else {
+                actionMento = 'hide';
+                // console.log("limpar mento!");
+            }
+
+            doMento(actionMento);
+        });
+
+        $('#smartmoldAngulo').click(function () {
+            let actionAngulo;
+            if ($('#smartmoldAngulo').is(":checked") == true) {
+                actionAngulo = 'show';
+                // console.log("ângulo de mandíbula!");
+            } else {
+                actionAngulo = 'hide';
+                // console.log("limpar ângulo de mandíbula!");
+            }
+
+            doAngulo(actionAngulo);
+        });
+
+        $('#smartmoldPremaxila').click(function () {
+            let actionPremaxila;
+            if ($('#smartmoldPremaxila').is(":checked") == true) {
+                actionPremaxila = 'show';
+                // console.log("pré-maxila!");
+            } else {
+                actionPremaxila = 'hide';
+                // console.log("limpar pré-maxila!");
+            }
+
+            doAPremaxila(actionPremaxila);
+        });
+
+
+        function doZigoma(actionZigoma) {
+            var elemento = document.getElementById('zigomaField');
+            if (actionZigoma == 'show') {
+                elemento.classList.remove("d-none");
+            } else {
+                elemento.classList.add("d-none");
+            }
+        }
+
+        function doParanasal(actionParanasal) {
+            var elemento = document.getElementById('paranasalField');
+            if (actionParanasal == 'show') {
+                elemento.classList.remove("d-none");
+            } else {
+                elemento.classList.add("d-none");
+            }
+        }
+
+        function doMento(actionMento) {
+            var elemento = document.getElementById('mentoField');
+            if (actionMento == 'show') {
+                elemento.classList.remove("d-none");
+            } else {
+                elemento.classList.add("d-none");
+            }
+        }
+
+        function doAngulo(actionAngulo) {
+            var elemento = document.getElementById('anguloField');
+            if (actionAngulo == 'show') {
+                elemento.classList.remove("d-none");
+            } else {
+                elemento.classList.add("d-none");
+            }
+        }
+
+        function doAPremaxila(actionPremaxila) {
+            var elemento = document.getElementById('premaxilaField');
+            if (actionPremaxila == 'show') {
+                elemento.classList.remove("d-none");
+            } else {
+                elemento.classList.add("d-none");
+            }
+        }
+
+
+        //ZIGOMA ID
+        $('#ladoZigoma').on('change', function () {
+            let escolha = $(this).find(":selected").val();
+
+            let zigomaId = document.getElementById("idZigoma");
+            switch (escolha) {
+                case 'Direito':
+                    zigomaId.value = "E200.013-1 D";
+                    break;
+                case 'Esquerdo':
+                    zigomaId.value = "E200.013-1 E";
+                    break;
+                case 'Bilateral':
+                    zigomaId.value = "E200.011-F";
+                    break;
+                default:
+                    zigomaId.value = "";
+            }
+        });
+
+        //PARANASAL ID
+        $('#ladoParanasal').on('change', function () {
+            let escolha = $(this).find(":selected").val();
+
+            let paranasalId = document.getElementById("idParanasal");
+            switch (escolha) {
+                case 'Bilateral':
+                    paranasalId.value = "E200.011-G";
+                    break;
+                default:
+                    paranasalId.value = "";
+            }
+        });
+
+        //MENTO ID
+        $('#tipoMento').on('change', function () {
+            let escolha = $(this).find(":selected").val();
+
+            let mentoId = document.getElementById("idMento");
+            switch (escolha) {
+                case 'Bipartido':
+                    mentoId.value = "E200.011-I";
+                    break;
+                case 'PecaUnica':
+                    mentoId.value = "E200.011-H";
+                    break;
+                default:
+                    mentoId.value = "";
+            }
+        });
+
+        //ÂNGULO ID
+        $('#ladoAngulo').on('change', function () {
+            let escolha = $(this).find(":selected").val();
+
+            let anguloId = document.getElementById("idAngulo");
+            switch (escolha) {
+                case 'Direito':
+                    anguloId.value = "E200.011-KD";
+                    break;
+                case 'Esquerdo':
+                    anguloId.value = "E200.011-KE";
+                    break;
+                case 'Bilateral':
+                    anguloId.value = "E200.011-J";
+                    break;
+                default:
+                    anguloId.value = "";
+            }
+        });
+
+        //PRÉ-MAXILA ID
+        $('#materialPremaxila').on('change', function () {
+            let escolha = $(this).find(":selected").val();
+
+            let premaxilaId = document.getElementById("idPremaxila");
+            switch (escolha) {
+                case 'PMMA':
+                    premaxilaId.value = "E200.011-L";
+                    break;
+                default:
+                    premaxilaId.value = "";
+            }
+        });
+
+
+        //PARANASAL ID
+        function changeParanasal(op) {
+            let escolha = op.value;
+
+            let item;
+            switch (escolha) {
+                case 'Bilateral':
+                    itemId = listaProdutos.length + 1;
+
+                    item = {
+                        "id": idProp + '.' + itemId,
+                        "tipo": "CMF",
+                        "produto": "SMARTMOLD",
+                        "cdg": "E200.011-G"
+                    }
+                    break;
+
+                default:
+                    listaProdutos.shift();
+                    break;
+            }
+
+            listaProdutos.push(item);
+            console.log(listaProdutos);
+        }
+
+    </script>
+</body>
