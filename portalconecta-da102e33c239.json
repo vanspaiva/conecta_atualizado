@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "portalconecta",
+  "private_key_id": "da102e33c23919160a0bdef58731fe35d1252550",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCXJZWWgzH5NK0T\nznbjQfcPaMCLyDq1Tz75rUNQglOUDIIjJwfK8JHsIEmqFh0Hrv/FGocFHZa0bblC\npBrV253YNTtCe56VxPqYXuNmn3NXCtbtc/J/xYRoWUAiAr8+eDgpgLjP9nJh5zFw\nZAFDORWs8nnaQvokoPbW7h7sD19msVw13HQFEvHXggcRitEZcDrOEDj6yZ1tCL0q\nyo5WxRgLNknkWg4Kupp348Ak/GPfyH6mSOCIWZxoatobXTf/O7rNagbjhNvIuxS5\naXNT4RBakiZ0+jSLfuU8TQM6QwruLJxaoOmeK5TqFirStIN9EibE/kPcbgVoMBIa\nyS735gBFAgMBAAECggEACq55yVbBN9rcpmsvZLUbOCgPf3FpkLmmei+f87caH/rY\nUZKnDtT8gwLvIcmJSKs54RyUUSy7o0mjz41YZiesmoR8iSDCXtQ6X31JNc3r8UlP\nUh2hFB2J03QHP8AQ8uG9GlXB+dRxVfDoQgiXPEBzAzNpoB6enesQNrVCUy1s8Q1Y\n5r4iCV7FJQ6aJUviL/ByDJS4ULaUn3LrZcvjlnI0M6bHRgdcBewW9cKWnLo6F1Sk\nUJKdzB+VIMWMjouwP/osBAYyVb2hRqJLSI6c1lIaXufyV76pT3K3eMdI0o2Y7SLD\nGcCEtLoS2aj9ivJdqWXpIkqSTqxd0240vFsqVDzHqwKBgQDJi3nmd76moyMdlUsX\nX5rS/FaaUKo4NUDAPjpMOyHA1kVzpRgEl5fkxUw/O9s9PCATDgbWDQ1jhqIA200E\n5ydtTLzA3EVSvJiwhrFCdBSQGURr5+jkOCUmS0ct64esSXcD/FAGJjDjyWAfqzMf\nfPCNysWU1j3XdIT7EslpT330xwKBgQC//CkUnPRrtw0752xG55fGqtpR5KK1APma\nxhPCvSjDW5QCSIJKKN6CMNyhXdIz2LUuM5SuqKgLpgYhBJNDxw1r64JVbO0Q7FIK\nt+EnkHTv2iU6HLIvSyQUXgIf009r3llw3+YE7F7CuDKJStSSTiVhzZqtrx9gWFHl\njtEqiaP+kwKBgQDFE5G7ftP6dgNcZiPrUx09ummks8P++nO6iB7Rc/Dpc5yuHH2D\n4AgzN4n7OziChEyI1Wpx3Il/DKNVWxvQ84dmJWdc3wcahDh6RPsIFCIXVd3F9huR\nLiWFcI7FpE4idiPezdYibS3ZT4yi6vEulSlUPTc+9s+54sI2EITKaWSs+QKBgQCL\nVytByMElxNAYIFlYBRMFoE+gjH8DPFftW8JP3xbM45TDK3lU9eC5QVmAzSWZd7nY\ndJt/QO3mtnNQV4/C65/0KhSIh+xwEfVhzh/epVwaEYxfZyB0buca2ThVfPrx4Ymt\nAPRjsmL8lNApEWTDY3CCUcXoNWhidvfJ0yRA6XFbfQKBgHeRSVzvxh46W3gTdKdG\nYheeWv22jCYU6wxu8t7XbKLE4otDbuY+OdT9rWiWTWzs21DbEf56wQ4GWnLbINtX\n10jdRX88ZOwKoumQT5MlX1kAuDPR4WpjU5rKOh7gNeGapyCGJtVCAzxO2TSfSZdL\nyNdN1cgZWlZ0icwrDh0XreyM\n-----END PRIVATE KEY-----\n",
+  "client_email": "conecta@portalconecta.iam.gserviceaccount.com",
+  "client_id": "113590172920781323123",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/conecta%40portalconecta.iam.gserviceaccount.com"
+}

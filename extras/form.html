@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Jira Projeto</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</head>
+
+<body>
+    <script>
+        // Requires jQuery!
+        jQuery.ajax({
+            url: "https://cpmh.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-3o5b4z/b/5/b0105d975e9e59f24a3230a22972a71a/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs.js?locale=pt-BR&collectorId=3f57a9ff",
+            type: "get",
+            cache: true,
+            dataType: "script"
+        });
+    </script>
+</body>
+
+</html>

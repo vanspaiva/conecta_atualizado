@@ -1,0 +1,431 @@
+<?php
+session_start();
+if (isset($_SESSION["useruid"]) && (($_SESSION["userperm"] == 'Comercial')) || ($_SESSION["userperm"] == 'Adm Comercial') || ($_SESSION["userperm"] == 'Administrador') || ($_SESSION["userperm"] == 'Representante')) {
+    include("php/head_tables.php");
+?>
+    <style>
+        .bg-amarelo {
+            background-color: #FAF53D;
+        }
+
+        .bg-verde-claro {
+            background-color: #9FFFD2;
+        }
+
+        .bg-verde {
+            background-color: #34B526;
+        }
+
+        .bg-rosa {
+            background-color: #FAA4B5;
+        }
+
+        .bg-vermelho {
+            background-color: #FA242A;
+        }
+
+        .bg-vermelho-claro {
+            background-color: #FA6069;
+        }
+
+        .bg-roxo {
+            background-color: #C165FF;
+        }
+
+        .bg-azul {
+            background-color: #42A1DB;
+        }
+    </style>
+
+    <body class="bg-light-gray2">
+        <?php
+        include_once 'php/navbar-dash.php';
+        include_once 'php/lateral-nav.php';
+        ?>
+
+
+
+        <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
+        <div id="main" class="font-montserrat">
+            <div>
+                <?php
+                if (isset($_GET["error"])) {
+                    if ($_GET["error"] == "edit") {
+                        echo "<div class='my-2 pb-0 alert alert-success pt-3 text-center'><p>Proposta editada com sucesso!</p></div>";
+                    } else if ($_GET["error"] == "deleted") {
+                        echo "<div class='my-2 pb-0 alert alert-warning pt-3 text-center'><p>Proposta foi deletada!</p></div>";
+                    }
+                }
+                ?>
+            </div>
+            <div class="container-fluid">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-sm-10">
+                        <div class="row d-flex justify-content-around">
+                            <div class="col-sm d-flex justify-content-start">
+                                <h2 class="text-conecta" style="font-weight: 400;">Aceites de <span style="font-weight: 700;">Propostas</span></h2>
+                            </div>
+                            <div class="col-sm d-none d-sm-block">
+                                <div class="d-flex justify-content-end p-1">
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <hr style="border: 1px solid #ee7624">
+                        <br>
+                        <div class="card shadow">
+                            <div class="card-body">
+
+                                <!--Tabs for large devices-->
+                                <div class="d-flex justify-content-center">
+                                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                        <li class="nav-item px-3" role="presentation">
+                                            <a class="nav-link active text-tab" id="pills-analisar-tab" data-toggle="pill" href="#pills-analisar" role="tab" aria-controls="pills-analisar" aria-selected="true">Analisar</a>
+                                        </li>
+                                        <li class="nav-item px-3" role="presentation">
+                                            <a class="nav-link text-tab" id="pills-aprovadas-tab" data-toggle="pill" href="#pills-aprovadas" role="tab" aria-controls="pills-aprovadas" aria-selected="true">Aprovadas</a>
+                                        </li>
+                                        <li class="nav-item px-3" role="presentation">
+                                            <a class="nav-link text-tab" id="pills-reprovadas-tab" data-toggle="pill" href="#pills-reprovadas" role="tab" aria-controls="pills-reprovadas" aria-selected="false">Reprovadas</a>
+                                        </li>
+                                        <li class="nav-item px-3" role="presentation">
+                                            <a class="nav-link text-tab" id="pills-todas-tab" data-toggle="pill" href="#pills-todas" role="tab" aria-controls="pills-todas" aria-selected="false">Todas</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <!-- Tabs for smaller devices -->
+                                <div class="d-flex justify-content-center">
+                                    <ul class="nav nav-pills mb-3 " id="pills-tab-small" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <a class="nav-link d-flex justify-content-center active text-tab" id="pills-analisar-tab" data-toggle="pill" href="#pills-analisar" role="tab" aria-controls="pills-analisar" aria-selected="true"><i class="fas fa-clock fa-2x"></i></a>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <a class="nav-link d-flex justify-content-center text-tab" id="pills-aprovadas-tab" data-toggle="pill" href="#pills-aprovadas" role="tab" aria-controls="pills-aprovadas" aria-selected="true"><i class="fas fa-check-circle fa-2x"></i></a>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <a class="nav-link d-flex justify-content-center text-tab" id="pills-reprovadas-tab" data-toggle="pill" href="#pills-reprovadas" role="tab" aria-controls="pills-reprovadas" aria-selected="false"><i class="fas fa-times-circle fa-2x"></i></a>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <a class="nav-link d-flex justify-content-center text-tab" id="pills-todas-tab" data-toggle="pill" href="#pills-todas" role="tab" aria-controls="pills-todas" aria-selected="false"><i class="fas fa-file-alt fa-2x"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="tab-content" id="pills-tabContent">
+                                    <div class="tab-pane fade show active" id="pills-analisar" role="tabpanel" aria-labelledby="pills-analisar-tab">
+                                        <h4 class="text-black py-2"><b>Analisar</b></h4>
+                                        <div class="content-panel">
+                                            <table id="tableAnalisar" class="table table-striped table-advance table-hover">
+
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nº Prop</th>
+                                                        <th>Empresa</th>
+                                                        <th>UF</th>
+                                                        <th>Representante</th>
+                                                        <th>Data Aceite</th>
+                                                        <th>Status</th>
+                                                        <th>Forma Pgto</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    require_once 'includes/dbh.inc.php';
+                                                    $ret = mysqli_query($conn, "SELECT * FROM `aceiteproposta` LEFT JOIN `propostas` ON `propostas`.`propId` = `aceiteproposta`.`apropNumProp` WHERE apropStatus LIKE '%Em Análise%';");
+
+                                                    while ($row = mysqli_fetch_array($ret)) {
+                                                        $dataCompleta = $row['apropData'];
+                                                        $dataArray = explode(" ", $dataCompleta);
+                                                        $data = $dataArray[0];
+
+                                                        if ($row['apropStatus'] == "Aprovado") {
+                                                            $moodStatus = "bg-success";
+                                                            $colorText = "";
+                                                        } else {
+                                                            if ($row['apropStatus'] == "Reprovado") {
+                                                                $moodStatus = "bg-danger";
+                                                            } else {
+                                                                $moodStatus = "bg-secondary";
+                                                            }
+                                                        }
+
+                                                    ?>
+
+                                                        <tr>
+                                                            <td><?php echo $row['apropNumProp']; ?></td>
+                                                            <th><?php echo $row['propEmpresa']; ?></th>
+                                                            <th><?php echo $row['propUf']; ?></th>
+                                                            <th><?php echo $row['propRepresentante']; ?></th>
+                                                            <td><?php echo $data; ?></td>
+                                                            <td><span class="badge <?php echo $moodStatus; ?>" style="color:#fff;"><?php echo $row['apropStatus']; ?></span></td>
+                                                            <td><?php echo $row['apropFormaPgto']; ?></td>
+                                                        </tr>
+                                                    <?php
+                                                    } ?>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="tab-pane fade" id="pills-aprovadas" role="tabpanel" aria-labelledby="pills-aprovadas-tab">
+                                        <h4 class="text-black py-2"><b>Aprovadas</b></h4>
+                                        <div class="content-panel">
+                                            <table id="tableAprov" class="table table-striped table-advance table-hover">
+
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nº Prop</th>
+                                                        <th>Empresa</th>
+                                                        <th>UF</th>
+                                                        <th>Representante</th>
+                                                        <th>Data Aceite</th>
+                                                        <th>Status</th>
+                                                        <th>Forma Pgto</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    require_once 'includes/dbh.inc.php';
+                                                    $ret = mysqli_query($conn, "SELECT * FROM `aceiteproposta` LEFT JOIN `propostas` ON `propostas`.`propId` = `aceiteproposta`.`apropNumProp` WHERE apropStatus LIKE '%Aprovado%'");
+
+
+
+                                                    while ($row = mysqli_fetch_array($ret)) {
+                                                        $dataCompleta = $row['apropData'];
+                                                        $dataArray = explode(" ", $dataCompleta);
+                                                        $data = $dataArray[0];
+
+                                                        if ($row['apropStatus'] == "Aprovado") {
+                                                            $moodStatus = "bg-success";
+                                                            $colorText = "";
+                                                        } else {
+                                                            if ($row['apropStatus'] == "Reprovado") {
+                                                                $moodStatus = "bg-danger";
+                                                            } else {
+                                                                $moodStatus = "bg-secondary";
+                                                            }
+                                                        }
+
+                                                    ?>
+
+                                                        <tr>
+                                                            <td><?php echo $row['apropNumProp']; ?></td>
+                                                            <th><?php echo $row['propEmpresa']; ?></th>
+                                                            <th><?php echo $row['propUf']; ?></th>
+                                                            <th><?php echo $row['propRepresentante']; ?></th>
+                                                            <td><?php echo $data; ?></td>
+                                                            <td><span class="badge <?php echo $moodStatus; ?>" style="color:#fff;"><?php echo $row['apropStatus']; ?></span></td>
+                                                            <td><?php echo $row['apropFormaPgto']; ?></td>
+                                                        </tr>
+                                                    <?php
+                                                    } ?>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="pills-reprovadas" role="tabpanel" aria-labelledby="pills-reprovadas-tab">
+                                        <h4 class="text-black py-2"><b>Reprovadas</b></h4>
+                                        <div class="content-panel">
+                                            <table id="tableReprov" class="table table-striped table-advance table-hover">
+
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nº Prop</th>
+                                                        <th>Empresa</th>
+                                                        <th>UF</th>
+                                                        <th>Representante</th>
+                                                        <th>Data Aceite</th>
+                                                        <th>Status</th>
+                                                        <th>Forma Pgto</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    require_once 'includes/dbh.inc.php';
+                                                    $ret = mysqli_query($conn, "SELECT * FROM `aceiteproposta` LEFT JOIN `propostas` ON `propostas`.`propId` = `aceiteproposta`.`apropNumProp` WHERE apropStatus LIKE '%Reprovado%'");
+
+
+                                                    while ($row = mysqli_fetch_array($ret)) {
+                                                        $dataCompleta = $row['apropData'];
+                                                        $dataArray = explode(" ", $dataCompleta);
+                                                        $data = $dataArray[0];
+
+                                                        if ($row['apropStatus'] == "Aprovado") {
+                                                            $moodStatus = "bg-success";
+                                                            $colorText = "";
+                                                        } else {
+                                                            if ($row['apropStatus'] == "Reprovado") {
+                                                                $moodStatus = "bg-danger";
+                                                            } else {
+                                                                $moodStatus = "bg-secondary";
+                                                            }
+                                                        }
+
+                                                    ?>
+
+                                                        <tr>
+                                                            <td><?php echo $row['apropNumProp']; ?></td>
+                                                            <th><?php echo $row['propEmpresa']; ?></th>
+                                                            <th><?php echo $row['propUf']; ?></th>
+                                                            <th><?php echo $row['propRepresentante']; ?></th>
+                                                            <td><?php echo $data; ?></td>
+                                                            <td><span class="badge <?php echo $moodStatus; ?>" style="color:#fff;"><?php echo $row['apropStatus']; ?></span></td>
+                                                            <td><?php echo $row['apropFormaPgto']; ?></td>
+                                                        </tr>
+                                                    <?php
+                                                    } ?>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="pills-todas" role="tabpanel" aria-labelledby="pills-todas-tab">
+                                        <h4 class="text-black py-2"><b>Todos Aceites</b></h4>
+                                        <div class="content-panel">
+                                            <table id="tableTodos" class="table table-striped table-advance table-hover">
+
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nº Prop</th>
+                                                        <th>Empresa</th>
+                                                        <th>UF</th>
+                                                        <th>Representante</th>
+                                                        <th>Data Aceite</th>
+                                                        <th>Status</th>
+                                                        <th>Forma Pgto</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    require_once 'includes/dbh.inc.php';
+                                                    $ret = mysqli_query($conn, "SELECT * FROM `aceiteproposta` LEFT JOIN `propostas` ON `propostas`.`propId` = `aceiteproposta`.`apropNumProp`;");
+
+                                                    while ($row = mysqli_fetch_array($ret)) {
+                                                        $dataCompleta = $row['apropData'];
+                                                        $dataArray = explode(" ", $dataCompleta);
+                                                        $data = $dataArray[0];
+
+                                                        if ($row['apropStatus'] == "Aprovado") {
+                                                            $moodStatus = "bg-success";
+                                                            $colorText = "";
+                                                        } else {
+                                                            if ($row['apropStatus'] == "Reprovado") {
+                                                                $moodStatus = "bg-danger";
+                                                            } else {
+                                                                $moodStatus = "bg-secondary";
+                                                            }
+                                                        }
+
+                                                    ?>
+
+                                                        <tr>
+                                                            <td><?php echo $row['apropNumProp']; ?></td>
+                                                            <th><?php echo $row['propEmpresa']; ?></th>
+                                                            <th><?php echo $row['propUf']; ?></th>
+                                                            <th><?php echo $row['propRepresentante']; ?></th>
+                                                            <td><?php echo $data; ?></td>
+                                                            <td><span class="badge <?php echo $moodStatus; ?>" style="color:#fff;"><?php echo $row['apropStatus']; ?></span></td>
+                                                            <td><?php echo $row['apropFormaPgto']; ?></td>
+                                                        </tr>
+                                                    <?php
+                                                    } ?>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="card-body">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function() {
+                $('#table1').DataTable({
+                    "lengthMenu": [
+                        [20, 40, 80, -1],
+                        [20, 40, 80, "Todos"],
+                    ],
+                    "language": {
+                        "search": "Pesquisar:",
+                        "paginate": {
+                            "first": "Primeiro",
+                            "last": "Último",
+                            "next": "Próximo",
+                            "previous": "Anterior"
+                        },
+                        "info": "Mostrando desde _START_ até _END_ dos _TOTAL_ itens",
+                        "lengthMenu": "Mostrar _MENU_ itens",
+                        "zeroRecords": "Nenhuma proposta encontrada"
+                    },
+                    "order": [
+                        [0, "desc"]
+                    ]
+                });
+                $('#table2').DataTable({
+                    "lengthMenu": [
+                        [20, 40, 80, -1],
+                        [20, 40, 80, "Todos"],
+                    ],
+                    "language": {
+                        "search": "Pesquisar:",
+                        "paginate": {
+                            "first": "Primeiro",
+                            "last": "Último",
+                            "next": "Próximo",
+                            "previous": "Anterior"
+                        },
+                        "info": "Mostrando desde _START_ até _END_ dos _TOTAL_ itens",
+                        "lengthMenu": "Mostrar _MENU_ itens",
+                        "zeroRecords": "Nenhuma proposta encontrada"
+                    },
+                    "order": [
+                        [0, "desc"]
+                    ]
+                });
+                $('#table3').DataTable({
+                    "lengthMenu": [
+                        [20, 40, 80, -1],
+                        [20, 40, 80, "Todos"],
+                    ],
+                    "language": {
+                        "search": "Pesquisar:",
+                        "paginate": {
+                            "first": "Primeiro",
+                            "last": "Último",
+                            "next": "Próximo",
+                            "previous": "Anterior"
+                        },
+                        "info": "Mostrando desde _START_ até _END_ dos _TOTAL_ itens",
+                        "lengthMenu": "Mostrar _MENU_ itens",
+                        "zeroRecords": "Nenhuma proposta encontrada"
+                    },
+                    "order": [
+                        [0, "desc"]
+                    ]
+                });
+            });
+        </script>
+        <?php include_once 'php/footer_index.php' ?>
+
+    <?php
+
+} else {
+    header("location: index");
+    exit();
+}
+
+    ?>
