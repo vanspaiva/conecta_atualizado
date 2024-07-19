@@ -609,11 +609,13 @@ if (isset($_SESSION["useruid"]) && (($_SESSION["userperm"] == 'Administrador')) 
                                                                                 <td class="text-center"><span class="badge <?php echo $corFluxo; ?>"><?php echo $nomeFluxo; ?></span>
                                                                                 </td>
                                                                                 <td style="font-weight: bold; "><span style="font-size: 8px; color: silver;">
-                                                                                    <?php echo  "R$ " . $valorOriginal; ?></span> <br>
                                                                                     <?php
-                                                                                        if($qtdMultiplicador == 0){
-                                                                                            $qtdMultiplicador = 1;
-                                                                                        }
+                                                                                    if($qtdMultiplicador == 0){
+                                                                                        $qtdMultiplicador = 1;
+                                                                                    }
+                                                                                    echo  "R$ " . floatval($valorOriginal) * $qtdMultiplicador; ?></span> <br>
+                                                                                    <?php
+                                                                             
                                                                                         echo  " R$ " .  number_format(floatval($valorResultante) * $qtdMultiplicador, 2, ",", ".");
                                                                                     ?>
                                                                                  </td>

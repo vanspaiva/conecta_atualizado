@@ -8428,7 +8428,11 @@ function getCategoriaProduto($conn, $produto)
 {
     $searchProd = mysqli_query($conn, "SELECT * FROM produtos WHERE prodCodCallisto='" . $produto . "';");
     $data = mysqli_fetch_array($searchProd);
-    return $data["prodCategoria"];
+
+    if(isset($data["prodCategoria"])){
+        return $data["prodCategoria"];
+    }
+    
 }
 
 function getTipoProduto($conn, $produto)
