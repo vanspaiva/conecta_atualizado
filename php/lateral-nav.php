@@ -245,6 +245,7 @@
                 <a href='imagens-produtos'> <i class='far fa-image fa-1x'></i> Imagens dos Produtos</a>
                 <a href='relatorios'><i class='fas fa-chart-line fa-1x'></i> Relatórios</a>
                 <a href='convenios'><i class='fas fa-university fa-1x'></i> Convênios</a>
+                <a href='casos'><i class='bi bi-collection fa-1x'></i> Casos</a>
                 <!--<a href='bi'><i class="bi bi-file-bar-graph"></i> BI</a>-->
             </div>
         </details>

@@ -3,7 +3,7 @@ session_start();
 
 if (!empty($_GET)) {
 
-    if ((isset($_SESSION["useruid"]) && (($_SESSION["userperm"] == 'Planejador(a)')) || (($_SESSION["userperm"] == 'Planej. Ortognática')) || ($_SESSION["userperm"] == 'Administrador'))) {
+    if ((isset($_SESSION["useruid"]) && (($_SESSION["userperm"] == 'Planejador(a)')) || (($_SESSION["userperm"] == 'Planej. Ortognática')) || ($_SESSION["userperm"] == 'Administrador') || ($_SESSION["userperm"] == 'Comercial'))) {
 
         ob_start();
         include("php/head_prop.php");
