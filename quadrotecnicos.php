@@ -534,11 +534,12 @@ if (isset($_SESSION["useruid"]) && (($_SESSION["userperm"] == 'Administrador')) 
                                                                             // $valorResultante = valorResultante($limite, $valorLimiteHoras);
                                                                             // $valorOriginal = $qtdMultiplicador * valorOriginal($valorLimiteHoras);
                                                                             // $valorResultante = $qtdMultiplicador * valorResultante($limite, $valorLimiteHoras);
-                                                                            $valorOriginal = valorOriginal($valorLimiteHoras);
-                                                                            $valorResultante = valorResultante($limite, $valorLimiteHoras);
+                                                                            $valorOriginal = valorOriginal($tipoProduto);
+                                                                            $valorResultante = valorResultante($limite, $valorLimiteHoras,$tipoProduto);
                                                                             $valorTotal = $valorTotal + $valorResultante;
                                                                             $valorResultante = number_format($valorResultante, 2, ",", ".");
                                                                             $valorOriginal = number_format($valorOriginal, 2, ",", ".");
+
 
                                                                             if ($limite == '0') {
                                                                                 $cor2 = "text-secondary";
@@ -607,7 +608,17 @@ if (isset($_SESSION["useruid"]) && (($_SESSION["userperm"] == 'Administrador')) 
                                                                                 <!-- <td class="text-center"><b><?php echo $horaTotal; ?></b></td> -->
                                                                                 <td class="text-center"><span class="badge <?php echo $corFluxo; ?>"><?php echo $nomeFluxo; ?></span>
                                                                                 </td>
-                                                                                <td style="font-weight: bold; "><span style="font-size: 8px; color: silver;"><?php echo  "R$ " . $valorOriginal; ?></span> <br><?php echo  " R$ " . $valorResultante; ?></td>
+                                                                                <td style="font-weight: bold; "><span style="font-size: 8px; color: silver;">
+                                                                                    <?php
+                                                                                    if($qtdMultiplicador == 0){
+                                                                                        $qtdMultiplicador = 1;
+                                                                                    }
+                                                                                    echo  "R$ " . floatval($valorOriginal) * $qtdMultiplicador; ?></span> <br>
+                                                                                    <?php
+                                                                             
+                                                                                        echo  " R$ " .  number_format(floatval($valorResultante) * $qtdMultiplicador, 2, ",", ".");
+                                                                                    ?>
+                                                                                 </td>
                                                                                 <td>
                                                                                     <p style="line-height: 1.5rem;">
 
