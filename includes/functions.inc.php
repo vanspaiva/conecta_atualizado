@@ -8411,10 +8411,14 @@ function getMultiplicadorPedido($conn, $numPed)
     $produtos = $pedData["pedProduto"];
 
     $produtos = explode("/", $produtos);
+    
 
     $multiplicador = 0;
 
-
+    if(str_contains($pedData["pedProduto"], "PC-303-T3")){
+        $multiplicador++;
+    }
+    
 
     foreach ($produtos as $key => $produto) {
         $categoria = getCategoriaProduto($conn, $produto);

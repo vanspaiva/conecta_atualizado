@@ -494,9 +494,9 @@ if (isset($_SESSION["useruid"]) && (($_SESSION["userperm"] == 'Administrador')) 
                                                                             $tipoProduto = $rowFaq['pedTipoProduto'];
                                                                             $numPed = $rowFaq['pedNumPedido'];
                                                                             $qtdMultiplicador = getMultiplicadorPedido($conn, $numPed);
-                                                                     /*        if (strpos($tipoProduto, 'SMARTMOLD')!== false) {
+                                                                            if (strpos($tipoProduto, 'SMARTMOLD')!== false) {
                                                                                 $qtdMultiplicador = 1;
-                                                                            } */
+                                                                            }
                                                                             
                                                                             $dr = $rowFaq["pedNomeDr"];
                                                                             $dr = explode(" ", $dr);
