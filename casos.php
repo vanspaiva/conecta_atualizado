@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-if (isset($_SESSION["useruid"]) && (($_SESSION["userperm"] == 'Administrador')) || ($_SESSION["userperm"] == 'Qualidade') || ($_SESSION["userperm"] == 'Planejador(a)') || ($_SESSION["userperm"] == 'Comercial')) {
+if (isset($_SESSION["useruid"]) && (($_SESSION["userperm"] == 'Administrador')) || ($_SESSION["userperm"] == 'Qualidade') || ($_SESSION["userperm"] == 'Planejador(a)')) {
     include("php/head_index.php");
     require_once 'includes/dbh.inc.php';
     require_once 'includes/functions.inc.php';

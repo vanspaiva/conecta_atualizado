@@ -618,7 +618,8 @@ if (isset($_SESSION["useruid"]) && (($_SESSION["userperm"] == 'Administrador')) 
                                                                                 </td>
                                                                                 <td style="font-weight: bold; width: 90px;"><span style="font-size: 8px; color: silver;">
                                                                                     <?php
-                                                                                        if($tipoProduto == "ORTOGNÁTICA" || str_contains($tipoProduto, "SMARTMOLD")){
+                                                                                    
+                                                                                        if($tipoProduto == "ORTOGNÁTICA" || strpos($tipoProduto, "SMARTMOLD") !== false){
                                                                                             echo  " R$ " .  number_format(floatval($valorOriginal), 2, ",", ".");
                                                                                         }
                                                                                         else{
@@ -627,7 +628,7 @@ if (isset($_SESSION["useruid"]) && (($_SESSION["userperm"] == 'Administrador')) 
                                                                                      ?>
                                                                                     </span> <br>
                                                                                     <?php
-                                                                                        if($tipoProduto == "ORTOGNÁTICA" || str_contains($tipoProduto, "SMARTMOLD"))
+                                                                                        if($tipoProduto == "ORTOGNÁTICA" || strpos($tipoProduto, "SMARTMOLD") !== false)
                                                                                         {
                                                                                             $valorTotal = $valorTotal + floatval($valorResultante);
                                                                                             echo  " R$ " .  number_format(floatval($valorResultante), 2, ",", ".");

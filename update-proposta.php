@@ -176,10 +176,22 @@ if (!empty($_GET)) {
                                                                                     ?>
                                                                                 </select>
                                                                             </div>
+
                                                                             <div class="form-group col-md pedido" <?php if ($row['propPedido'] == null) echo 'hidden'; ?>>
                                                                                 <label class="form-label text-black" for="status" <?php if ($row['propPedido'] == null) echo 'style="color: red; "'; ?>>Nº Pedido</label>
                                                                                 <input type="text" class="form-control" id="pedido" name="pedido" value="<?php echo $row['propPedido']; ?>" <?php if ($row['propPedido'] != null) echo 'readonly'; ?>>
                                                                             </div>
+
+
+
+                                                                            <div class="form-group col-md" id="loteopInput" <?php if ($row['propPedido'] == null) echo 'hidden'; ?>>
+                                                                                <label class="form-label text-black" for="loteop" <?php if ($row['propPedido'] == null) echo 'style="color: red; "'; ?>>Lote (OP)</label>
+                                                                                <input type="tel" class="form-control" id="loteop" name="loteop" value="<?php //echo $loteop; ?>" <?php if ($row['propPedido'] != null) echo 'readonly'; ?>>
+                                                                            </div>
+
+
+
+
                                                                             <div class="form-group col-md drrespuid" <?php if ($row['propPedido'] == null) echo 'hidden'; ?>>
                                                                                 <label class="form-label text-black" for="status" <?php if ($row['propPedido'] == null) echo 'style="color: red; "'; ?>>Uid Dr(a)</label>
                                                                                 <select name="drrespuid" class="form-control" id="drrespuid" <?php if ($row['propPedido'] != null) echo 'readonly'; ?> required>
@@ -706,18 +718,22 @@ if (!empty($_GET)) {
                                                                                 window.location.assign(`update-proposta?id=${idProposta}`);
                                                                             }
 
-                                                                            function watchStatus(value) {
+                                                                            function watchStatus(value){
 
                                                                                 var status = value.value;
                                                                                 var pedidoInput = document.querySelector('.pedido');
                                                                                 var drInput = document.querySelector('.drrespuid');
+                                                                                var loteopInput = document.getElementById("loteopInput");
+
 
                                                                                 if (status == "PEDIDO") {
                                                                                     pedidoInput.hidden = false;
                                                                                     drInput.hidden = false;
+                                                                                    loteopInput.hidden = false;
                                                                                 } else {
                                                                                     pedidoInput.hidden = true;
                                                                                     drInput.hidden = true;
+                                                                                    loteopInput.hidden = true;
                                                                                 }
 
                                                                             }
@@ -816,6 +832,8 @@ if (!empty($_GET)) {
                                                                                 var nomeenvio = document.getElementById("formprop").elements.namedItem("nomeenvio").value;
                                                                                 var telenvio = document.getElementById("formprop").elements.namedItem("telenvio").value;
                                                                                 var drrespuid = document.getElementById("formprop").elements.namedItem("drrespuid").value;
+                                                                                var loteop = document.getElementById("formprop").elements.namedItem("loteop").value;
+
 
                                                                                 valorTotalItens = valorTotalItens.replace('.', '');
                                                                                 valorTotalItens = valorTotalItens.replace(',', '.');
@@ -879,10 +897,10 @@ if (!empty($_GET)) {
                                                                                         //textComercial: textComercial,
                                                                                         drrespuid: drrespuid,
                                                                                         nomeenvio: nomeenvio,
-                                                                                        telenvio: telenvio
+                                                                                        telenvio: telenvio,
+                                                                                        loteop: loteop
                                                                                     }
-                                                                                    // alert(dados);
-
+                                                                                    //alert(dados);
 
                                                                                     $.post('proc_update_prop.php', dados, function(retorna) {
                                                                                         console.log(retorna);
