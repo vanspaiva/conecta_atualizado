@@ -7906,19 +7906,22 @@ function verificarLimitesHoras($conn, $numpedido)
             $limiteHoras = 1 * 9;
             break;
         case strpos($tipoProduto, 'CUSTOMLIFE') !== false:
-            $limiteHoras = 1 * 9;
+            $limiteHoras = $qtdMultiplicador * 9;
             break;
         case strpos($tipoProduto, 'CRÂNIO EM PEEK') !== false:
-            $limiteHoras = 1 * 9;
+            $limiteHoras = $qtdMultiplicador * 9;
             break;
         case strpos($tipoProduto, 'CRÂNIO EM TITÂNIO') !== false:
-            $limiteHoras = 1 * 9;
+            $limiteHoras = $qtdMultiplicador * 9;
             break;
         case strpos($tipoProduto, 'MESH 4U') !== false:
-            $limiteHoras = 1 * 9;
+            $limiteHoras = $qtdMultiplicador * 9;
+            break;
+        case strpos($tipoProduto, 'ORTOGNÁTICA') !== false:
+            $limiteHoras = 1 * 18;
             break;
         default:
-            $limiteHoras = 1 * 18;
+            $limiteHoras = $qtdMultiplicador * 18;
             break;
     }
 
@@ -7955,7 +7958,7 @@ function verificarLimitesHoras($conn, $numpedido)
         $descricao = 'Crítico';
     }
 
-    // echo " | descricao: ";
+    // echo " | descricao:";
     // echo $descricao;
     // echo "<br>";
 
@@ -8408,10 +8411,14 @@ function getMultiplicadorPedido($conn, $numPed)
     $produtos = $pedData["pedProduto"];
 
     $produtos = explode("/", $produtos);
+    
 
     $multiplicador = 0;
 
-
+    if(str_contains($pedData["pedProduto"], "PC-303-T3")){
+        $multiplicador++;
+    }
+    
 
     foreach ($produtos as $key => $produto) {
         $categoria = getCategoriaProduto($conn, $produto);
