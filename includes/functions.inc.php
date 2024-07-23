@@ -7905,17 +7905,26 @@ function verificarLimitesHoras($conn, $numpedido)
             // case strpos($tipoProduto, 'RECONSTRUÇÃO') !== false:
             $limiteHoras = 1 * 9;
             break;
-        case 'CUSTOMLIFE':
-        case 'CRÂNIO EM PEEK':
-        case 'CRÂNIO EM TITÂNIO':
-        case 'MESH 4U':
-        // case strpos($tipoProduto, 'RECONSTRUÇÃO') !== false:
+        case strpos($tipoProduto, 'CUSTOMLIFE') !== false:
             $limiteHoras = $qtdMultiplicador * 9;
+            break;
+        case strpos($tipoProduto, 'CRÂNIO EM PEEK') !== false:
+            $limiteHoras = $qtdMultiplicador * 9;
+            break;
+        case strpos($tipoProduto, 'CRÂNIO EM TITÂNIO') !== false:
+            $limiteHoras = $qtdMultiplicador * 9;
+            break;
+        case strpos($tipoProduto, 'MESH 4U') !== false:
+            $limiteHoras = $qtdMultiplicador * 9;
+            break;
+        case strpos($tipoProduto, 'ORTOGNÁTICA') !== false:
+            $limiteHoras = 1 * 18;
             break;
         default:
             $limiteHoras = $qtdMultiplicador * 18;
             break;
     }
+
 
     // Converte o tempo planejado para horas
     // $tempoPlanejadoHoras = converterHoras(strtotime($tempoPlanejado) / 3600);
@@ -7949,7 +7958,7 @@ function verificarLimitesHoras($conn, $numpedido)
         $descricao = 'Crítico';
     }
 
-    // echo " | descricao: ";
+    // echo " | descricao:";
     // echo $descricao;
     // echo "<br>";
 
@@ -7972,11 +7981,16 @@ function valorLimiteHoras($conn, $numpedido)
             // case strpos($tipoProduto, 'RECONSTRUÇÃO') !== false:
             $limiteHoras = 1 * 9;
             break;
-        case 'CUSTOMLIFE':
-        case 'CRÂNIO EM PEEK':
-        case 'CRÂNIO EM TITÂNIO':
-        case 'MESH 4U':
-            // case strpos($tipoProduto, 'RECONSTRUÇÃO') !== false:
+        case strpos($tipoProduto, 'CUSTOMLIFE') !== false:
+            $limiteHoras = $qtdMultiplicador * 9;
+            break;
+        case strpos($tipoProduto, 'CRÂNIO EM PEEK') !== false:
+            $limiteHoras = $qtdMultiplicador * 9;
+            break;
+        case strpos($tipoProduto, 'CRÂNIO EM TITÂNIO') !== false:
+            $limiteHoras = $qtdMultiplicador * 9;
+            break;
+        case strpos($tipoProduto, 'MESH 4U') !== false:
             $limiteHoras = $qtdMultiplicador * 9;
             break;
         default:
@@ -7987,20 +8001,30 @@ function valorLimiteHoras($conn, $numpedido)
     return $limiteHoras;
 }
 
-function valorOriginal($limiteHoras)
-{
-    if ($limiteHoras == 9) {
+function valorOriginal($tipoProduto)
+{   
+
+    if($tipoProduto == 'SMARTMOLD'){
+
         return 150;
-    } else {
-        return 200;
+
     }
+    elseif($tipoProduto == 'ORTOGNÁTICA'){
+
+        return 200;
+
+    }
+    else{
+        return 150;
+    }
+    
 }
 
 
-function valorResultante($descricao, $limiteHoras)
+function valorResultante($descricao, $limiteHoras,$tipoProduto)
 {
 
-    $valorOriginal = valorOriginal($limiteHoras);
+    $valorOriginal = valorOriginal($tipoProduto);
 
     switch ($descricao) {
         case 'Muito Bom':
@@ -8032,15 +8056,22 @@ function limiteHorasPorProduto($conn, $numpedido)
     // $limiteHoras = ($tipoProduto == 'CUSTOMLIFE' || strpos($tipoProduto, 'SMARTMOLD') !== false || strpos($tipoProduto, 'RECONSTRUÇÃO') !== false || $tipoProduto == 'CRÂNIO EM PEEK' ||  $tipoProduto == 'CRÂNIO EM TITÂNIO' || $tipoProduto == 'MESH 4U') ? 9 : 18;
     switch ($tipoProduto) {
         case strpos($tipoProduto, 'SMARTMOLD') !== false:
-            // case strpos($tipoProduto, 'RECONSTRUÇÃO') !== false:
             $limiteHoras = 1 * 9;
             break;
-        case 'CUSTOMLIFE':
-        case 'CRÂNIO EM PEEK':
-        case 'CRÂNIO EM TITÂNIO':
-        case 'MESH 4U':
-            // case strpos($tipoProduto, 'RECONSTRUÇÃO') !== false:
+        case strpos($tipoProduto, 'CUSTOMLIFE') !== false:
             $limiteHoras = $qtdMultiplicador * 9;
+            break;
+        case strpos($tipoProduto, 'CRÂNIO EM PEEK') !== false:
+            $limiteHoras = $qtdMultiplicador * 9;
+            break;
+        case strpos($tipoProduto, 'CRÂNIO EM TITÂNIO') !== false:
+            $limiteHoras = $qtdMultiplicador * 9;
+            break;
+        case strpos($tipoProduto, 'MESH 4U') !== false:
+            $limiteHoras = $qtdMultiplicador * 9;
+            break;
+        case strpos($tipoProduto, 'ORTOGNATICA') !== false:
+            $limiteHoras = 18;
             break;
         default:
             $limiteHoras = $qtdMultiplicador * 18;
@@ -8380,10 +8411,14 @@ function getMultiplicadorPedido($conn, $numPed)
     $produtos = $pedData["pedProduto"];
 
     $produtos = explode("/", $produtos);
+    
 
     $multiplicador = 0;
 
-
+    if(str_contains($pedData["pedProduto"], "PC-303-T3")){
+        $multiplicador++;
+    }
+    
 
     foreach ($produtos as $key => $produto) {
         $categoria = getCategoriaProduto($conn, $produto);
@@ -8400,7 +8435,11 @@ function getCategoriaProduto($conn, $produto)
 {
     $searchProd = mysqli_query($conn, "SELECT * FROM produtos WHERE prodCodCallisto='" . $produto . "';");
     $data = mysqli_fetch_array($searchProd);
-    return $data["prodCategoria"];
+
+    if(isset($data["prodCategoria"])){
+        return $data["prodCategoria"];
+    }
+    
 }
 
 function getTipoProduto($conn, $produto)
@@ -8880,4 +8919,3 @@ function getRealIP()
     }
     return $userIP;
 }
-

@@ -530,15 +530,17 @@ if (isset($_SESSION["useruid"]) && (($_SESSION["userperm"] == 'Administrador')) 
                                                                             $horaTotal = converterHoras(limiteHorasPorProduto($conn, $numPed));
 
                                                                             $valorLimiteHoras = limiteHorasPorProduto($conn, $numPed);
+                                                        
                                                                             // $valorOriginal = valorOriginal($valorLimiteHoras);
                                                                             // $valorResultante = valorResultante($limite, $valorLimiteHoras);
                                                                             // $valorOriginal = $qtdMultiplicador * valorOriginal($valorLimiteHoras);
                                                                             // $valorResultante = $qtdMultiplicador * valorResultante($limite, $valorLimiteHoras);
-                                                                            $valorOriginal = valorOriginal($valorLimiteHoras);
-                                                                            $valorResultante = valorResultante($limite, $valorLimiteHoras);
-                                                                            $valorTotal = $valorTotal + $valorResultante;
+                                                                            $valorOriginal = valorOriginal($tipoProduto);
+                                                                            $valorResultante = valorResultante($limite, $valorLimiteHoras,$tipoProduto);
+                                                                            //$valorTotal = $valorTotal + $valorResultante;
                                                                             $valorResultante = number_format($valorResultante, 2, ",", ".");
                                                                             $valorOriginal = number_format($valorOriginal, 2, ",", ".");
+
 
                                                                             if ($limite == '0') {
                                                                                 $cor2 = "text-secondary";
@@ -599,15 +601,43 @@ if (isset($_SESSION["useruid"]) && (($_SESSION["userperm"] == 'Administrador')) 
                                                                                 </td>
                                                                                 <td style="font-size: 10px; "><?php echo $numPed; ?></td>
                                                                                 <td style="font-size: 10px; "><?php echo $dr; ?></td>
+                                                                                
                                                                                 <td style="font-size: 8px; "><?php echo $tipoProduto . " (" . $qtdMultiplicador . ") "; ?></td>
                                                                                 <td style="font-size: 8px; "><?php echo $datainicio; ?></td>
+                                                                                
                                                                                 <td style="font-size: 8px; "><?php echo $dataFinal; ?></td>
+
                                                                                 <td style="font-size: 10px; " class="text-center "><b><?php echo $diasGastos; ?></b></td>
+
+
                                                                                 <td style="font-size: 10px; " class="text-center <?php echo $cor2; ?>"><b><?php echo $diasGastosPlanejando; ?></b></td>
+
+
                                                                                 <!-- <td class="text-center"><b><?php echo $horaTotal; ?></b></td> -->
                                                                                 <td class="text-center"><span class="badge <?php echo $corFluxo; ?>"><?php echo $nomeFluxo; ?></span>
                                                                                 </td>
-                                                                                <td style="font-weight: bold; "><span style="font-size: 8px; color: silver;"><?php echo  "R$ " . $valorOriginal; ?></span> <br><?php echo  " R$ " . $valorResultante; ?></td>
+                                                                                <td style="font-weight: bold; width: 90px;"><span style="font-size: 8px; color: silver;">
+                                                                                    <?php
+                                                                                        if($tipoProduto == "ORTOGNÁTICA" || str_contains($tipoProduto, "SMARTMOLD")){
+                                                                                            echo  " R$ " .  number_format(floatval($valorOriginal), 2, ",", ".");
+                                                                                        }
+                                                                                        else{
+                                                                                            echo  " R$ " .  number_format(floatval($valorOriginal) * $qtdMultiplicador, 2, ",", ".");
+                                                                                        }
+                                                                                     ?>
+                                                                                    </span> <br>
+                                                                                    <?php
+                                                                                        if($tipoProduto == "ORTOGNÁTICA" || str_contains($tipoProduto, "SMARTMOLD"))
+                                                                                        {
+                                                                                            $valorTotal = $valorTotal + floatval($valorResultante);
+                                                                                            echo  " R$ " .  number_format(floatval($valorResultante), 2, ",", ".");
+                                                                                        }
+                                                                                        else{
+                                                                                            $valorTotal = $valorTotal + floatval($valorResultante) * $qtdMultiplicador;
+                                                                                            echo  " R$ " .  number_format(floatval($valorResultante) * $qtdMultiplicador, 2, ",", ".");
+                                                                                        }
+                                                                                    ?>
+                                                                                 </td>
                                                                                 <td>
                                                                                     <p style="line-height: 1.5rem;">
 
