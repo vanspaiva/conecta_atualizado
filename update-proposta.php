@@ -832,6 +832,8 @@ if (!empty($_GET)) {
                                                                                 var nomeenvio = document.getElementById("formprop").elements.namedItem("nomeenvio").value;
                                                                                 var telenvio = document.getElementById("formprop").elements.namedItem("telenvio").value;
                                                                                 var drrespuid = document.getElementById("formprop").elements.namedItem("drrespuid").value;
+                                                                                var loteop = document.getElementById("formprop").elements.namedItem("loteop").value;
+
 
                                                                                 valorTotalItens = valorTotalItens.replace('.', '');
                                                                                 valorTotalItens = valorTotalItens.replace(',', '.');
@@ -895,10 +897,10 @@ if (!empty($_GET)) {
                                                                                         //textComercial: textComercial,
                                                                                         drrespuid: drrespuid,
                                                                                         nomeenvio: nomeenvio,
-                                                                                        telenvio: telenvio
+                                                                                        telenvio: telenvio,
+                                                                                        loteop: loteop
                                                                                     }
-                                                                                    // alert(dados);
-
+                                                                                    //alert(dados);
 
                                                                                     $.post('proc_update_prop.php', dados, function(retorna) {
                                                                                         console.log(retorna);
