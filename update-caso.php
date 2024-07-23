@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!empty($_GET) && isset($_SESSION["useruid"]) && (($_SESSION["userperm"] == 'Administrador') || ($_SESSION["userperm"] == 'Planejador(a)') || ($_SESSION["userperm"] == 'Planej. Ortognática' ) || ($_SESSION["userperm"] == 'Comercial') )) {
+if (!empty($_GET) && isset($_SESSION["useruid"]) && (($_SESSION["userperm"] == 'Administrador') || ($_SESSION["userperm"] == 'Planejador(a)') || ($_SESSION["userperm"] == 'Planej. Ortognática'))) {
     include("php/head_index.php");
     require_once 'includes/dbh.inc.php';
     require_once 'includes/functions.inc.php';

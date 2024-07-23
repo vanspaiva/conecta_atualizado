@@ -5,8 +5,8 @@ require_once 'includes/functions.inc.php';
 session_start();
 
 // print_r($_SESSION);
-// print_r($_POST);
-// exit();
+//print_r($_POST);
+//exit();
 
 $id = addslashes(trim($_POST['id']));
 $empresa = addslashes(formatarNome(trim($_POST['empresa'])));
@@ -40,6 +40,7 @@ $nomeenvio = addslashes(trim($_POST["nomeenvio"]));
 $telenvio = addslashes(trim($_POST["telenvio"]));
 //$textComercial = addslashes(trim($_POST["textComercial"]));
 $drrespuid = addslashes(trim($_POST["drrespuid"]));
+$loteop = addslashes(trim($_POST["loteop"]));
 
 
 date_default_timezone_set('UTC');
@@ -85,7 +86,8 @@ $data = array(
     'nomeenvio' => $nomeenvio,
     'telenvio' => $telenvio,
     // 'textComercial' => $textComercial,
-    'drrespuid' => $drrespuid
+    'drrespuid' => $drrespuid,
+    'loteop' => $loteop
 );
 
 
@@ -326,7 +328,7 @@ function criarPedido($conn, $data)
     $pedTecnico = '0 Padrão';
 
     //Criar BD Pedido
-    $sql = "INSERT INTO pedido (pedNumPedido, pedPropRef, pedUserCriador, pedRep, pedNomeDr, pedNomePac, pedCrmDr, pedProduto, pedTipoProduto, pedStatus, pedAbaAgenda, pedAbaVisualizacao, pedAbaAceite, pedAbaRelatorio, pedAbaDocumentos, pedAndamento, pedCpfCnpj, pedPosicaoFluxo, pedTecnico) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    $sql = "INSERT INTO pedido (pedNumPedido, pedPropRef, pedUserCriador, pedRep, pedNomeDr, pedNomePac, pedCrmDr, pedProduto, pedTipoProduto, pedStatus, pedAbaAgenda, pedAbaVisualizacao, pedAbaAceite, pedAbaRelatorio, pedAbaDocumentos, pedAndamento, pedCpfCnpj, pedPosicaoFluxo, pedTecnico, loteop) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     $stmt = mysqli_stmt_init($conn);
 
     if (!mysqli_stmt_prepare($stmt, $sql)) {
@@ -334,10 +336,18 @@ function criarPedido($conn, $data)
         exit();
     }
 
-    mysqli_stmt_bind_param($stmt, "sssssssssssssssssss", $data['pedido'], $data['id'], $data['drrespuid'], $data['representante'], $data['nomedr'], $data['nomepac'], $data['crm'], $data['listaItens'], $data['tipoProd'], $statusPedInicial, $valueAbasFechado, $valueAbasFechado, $valueAbasFechado, $valueAbasFechado, $valueAbasFechado, $pedAndamento, $data['cnpj'], $pedPosicaoFluxoInicial, $pedTecnico);
+    mysqli_stmt_bind_param($stmt, "ssssssssssssssssssss", $data['pedido'], $data['id'], $data['drrespuid'], $data['representante'], $data['nomedr'], $data['nomepac'], $data['crm'], $data['listaItens'], $data['tipoProd'], $statusPedInicial, $valueAbasFechado, $valueAbasFechado, $valueAbasFechado, $valueAbasFechado, $valueAbasFechado, $pedAndamento, $data['cnpj'], $pedPosicaoFluxoInicial, $pedTecnico, $data['loteop']);
     mysqli_stmt_execute($stmt);
+    if (mysqli_stmt_execute($stmt)) {
+        echo "Comando SQL executado com sucesso.";
+    } else {
+        echo "Erro ao executar comando SQL: " . mysqli_stmt_error($stmt);
+    }
+
     print_r($stmt);
     mysqli_stmt_close($stmt);
+
+
 
     //Módulo II
     criarAgendarModuloII($conn, $data);
