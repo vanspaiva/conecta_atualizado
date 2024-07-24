@@ -1,4 +1,10 @@
 <?php
+
+/* echo "<pre>";
+print_r($_POST);
+echo "</pre>";
+exit(); */
+
 if (isset($_POST["update"])) {
 
     $statustc = addslashes($_POST['statustc']);
@@ -52,10 +58,55 @@ if (isset($_POST["update"])) {
         $imagemCheck = null;
     }
 
+
     require_once 'dbh.inc.php';
     require_once 'functions.inc.php';
 
-    // uploadArquivoRefTC($conn, $tnameA, $pnameA, $tnameB, $pnameB, $id);
+    if($textReprov != null){
+
+        $nprop = addslashes($_POST["nprop2"]);
+        $user = addslashes($_POST["user2"]);
+        addComentProp($conn, $textReprov, $nprop, $user);
+
+
+      /*   function getUserName($conn,$user){
+            $searchUserName = mysqli_query($conn, "SELECT * FROM `users` WHERE usersUid = $user;");
+            while ($row = mysqli_fetch_array($searchUserName)) {
+                $user = $row['usersUid'];
+            }
+        
+            return $user;
+        }
+
+        $userName = getUserName($conn,$user);
+
+
+        $url = 'https://webhooks.integrately.com/a/webhooks/2588bdf5b0b44c1e8a144366f688d28d';
+
+        $data = array(
+            'Num Projeto' => $nprop,
+            'Usuário' => $userName,
+            'comentário' => $textReprov
+        );
+    
+        // use key 'http' even if you send the request to https://...
+        $options = array(
+            'http' => array(
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => http_build_query($data)
+            )
+        );
+
+        $context  = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        if ($result === FALSE) { 
+            
+        } */
+    
+    }
+
+    //uploadArquivoRefTC($conn, $tnameA, $pnameA, $tnameB, $pnameB, $id);
 
     editPropPlan($conn, $id, $statustc, $textReprov, $projetista, $filename1, $cdnurl1, $filename2, $cdnurl2, $arquivos);
 } else {

@@ -5682,6 +5682,7 @@ function addComentProp($conn, $coment, $nprop, $user)
 
     //Link live API
     $url = 'https://webhooks.integrately.com/a/webhooks/984d4fb974b5417bbb85fdd0cebd9903?';
+    
 
     $data = array(
         'NumProposta' => $nprop,
@@ -6146,15 +6147,15 @@ function deleteListaAlunos($conn)
 }
 
 
-function hashItem($id)
-{
-    // cryptographic key of a binary string 16 bytes long (because AES-128 has a key size of 16 bytes)
-    $encryption_key = '58adf8c78efef9570c447295008e2e6e'; // example
-    $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
-    $idhashed = openssl_encrypt($id, 'aes-256-cbc', $encryption_key, OPENSSL_RAW_DATA, $iv);
-    $idhashed = $idhashed . ':' . base64_encode($iv);
-    return urlencode($idhashed);
-}
+    function hashItem($id)
+    {
+        // cryptographic key of a binary string 16 bytes long (because AES-128 has a key size of 16 bytes)
+        $encryption_key = '58adf8c78efef9570c447295008e2e6e'; // example
+        $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+        $idhashed = openssl_encrypt($id, 'aes-256-cbc', $encryption_key, OPENSSL_RAW_DATA, $iv);
+        $idhashed = $idhashed . ':' . base64_encode($iv);
+        return urlencode($idhashed);
+    }
 
 function deshashItem($hash)
 {
