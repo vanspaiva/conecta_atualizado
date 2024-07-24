@@ -68,6 +68,42 @@ if (isset($_POST["update"])) {
         $user = addslashes($_POST["user2"]);
         addComentProp($conn, $textReprov, $nprop, $user);
 
+
+      /*   function getUserName($conn,$user){
+            $searchUserName = mysqli_query($conn, "SELECT * FROM `users` WHERE usersUid = $user;");
+            while ($row = mysqli_fetch_array($searchUserName)) {
+                $user = $row['usersUid'];
+            }
+        
+            return $user;
+        }
+
+        $userName = getUserName($conn,$user);
+
+
+        $url = 'https://webhooks.integrately.com/a/webhooks/2588bdf5b0b44c1e8a144366f688d28d';
+
+        $data = array(
+            'Num Projeto' => $nprop,
+            'Usuário' => $userName,
+            'comentário' => $textReprov
+        );
+    
+        // use key 'http' even if you send the request to https://...
+        $options = array(
+            'http' => array(
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => http_build_query($data)
+            )
+        );
+
+        $context  = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        if ($result === FALSE) { 
+            
+        } */
+    
     }
 
     //uploadArquivoRefTC($conn, $tnameA, $pnameA, $tnameB, $pnameB, $id);
