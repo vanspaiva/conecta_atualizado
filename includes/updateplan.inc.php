@@ -1,4 +1,10 @@
 <?php
+
+/* echo "<pre>";
+print_r($_POST);
+echo "</pre>";
+exit(); */
+
 if (isset($_POST["update"])) {
 
     $statustc = addslashes($_POST['statustc']);
@@ -52,10 +58,19 @@ if (isset($_POST["update"])) {
         $imagemCheck = null;
     }
 
+
     require_once 'dbh.inc.php';
     require_once 'functions.inc.php';
 
-    // uploadArquivoRefTC($conn, $tnameA, $pnameA, $tnameB, $pnameB, $id);
+    if($textReprov != null){
+
+        $nprop = addslashes($_POST["nprop2"]);
+        $user = addslashes($_POST["user2"]);
+        addComentProp($conn, $textReprov, $nprop, $user);
+
+    }
+
+    //uploadArquivoRefTC($conn, $tnameA, $pnameA, $tnameB, $pnameB, $id);
 
     editPropPlan($conn, $id, $statustc, $textReprov, $projetista, $filename1, $cdnurl1, $filename2, $cdnurl2, $arquivos);
 } else {
