@@ -597,14 +597,6 @@ if (!empty($_GET)) {
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-row">
-                                                                                <!-- ====================================================================================AQUI SAMUEL -->
-
-
-
-
-
-
-
                                                                                 <div class="container" hidden>
                                                                                     <div class="row">
                                                                                         <div class="col">
@@ -621,15 +613,6 @@ if (!empty($_GET)) {
                                                                                     <label class="form-label text-black" for="textReprov">Comentário</label>
                                                                                     <textarea class="form-control" name="textReprov" id="textReprov" cols="30" rows="3"><?php echo $txtReprov; ?></textarea>
                                                                                 </div>
-
-
-
-
-
-
-
-
-
                                                                             </div>
                                                                             <div class="form-row selectArquivos" hidden>
                                                                                 <label class="form-label text-black">Selecione os arquivos faltantes</label>
