@@ -597,6 +597,18 @@ if (!empty($_GET)) {
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-row">
+                                                                                <div class="container" hidden>
+                                                                                    <div class="row">
+                                                                                        <div class="col">
+                                                                                            <label for="nprop">Nº Pedido</label>
+                                                                                            <input type="text" class="form-control" name="nprop2" id="nprop2" value="<?php echo $idProjeto; ?>" readonly>
+                                                                                        </div>
+                                                                                        <div class="col">
+                                                                                            <label for="user">Usuário</label>
+                                                                                            <input type="text" class="form-control" name="user2" id="user2" value="<?php echo $_SESSION['useruid']; ?>" readonly>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
                                                                                 <div class="form-group col-md coment" hidden>
                                                                                     <label class="form-label text-black" for="textReprov">Comentário</label>
                                                                                     <textarea class="form-control" name="textReprov" id="textReprov" cols="30" rows="3"><?php echo $txtReprov; ?></textarea>
