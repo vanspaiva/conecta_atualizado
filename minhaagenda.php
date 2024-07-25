@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION["useruid"]) && (($_SESSION["userperm"] == 'Administrador') || ($_SESSION["userperm"] == 'Planejador(a)'))) {
+if (isset($_SESSION["useruid"]) && (($_SESSION["userperm"] == 'Administrador') || ($_SESSION["userperm"] == 'Planejador(a)') || $_SESSION["useruid"] == "lenicomercial" || $_SESSION["useruid"] == "lenirodrigues" || $_SESSION["useruid"] == "thaissa" || $_SESSION["useruid"] == "samuel900" )) {
     include("php/head_index.php");
     require_once 'dashboard/counterHelpers/counterTecnicos.php';
 ?>
