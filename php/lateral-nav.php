@@ -360,7 +360,7 @@
     ?>
 
     <?php
-    if (isset($_SESSION["useruid"]) && ($_SESSION["userperm"] == 'Planejador(a)')) {
+    if (isset($_SESSION["useruid"]) && ($_SESSION["userperm"] == 'Planejador(a)') || $_SESSION["useruid"] == "lenicomercial" || $_SESSION["useruid"] == "lenirodrigues" || $_SESSION["useruid"] == "thaissa" || $_SESSION["useruid"] == "samuel900") {
     ?>
         <a href='suporteconecta'> <i class='fas fa-question-circle fa-1x'></i> Suporte Conecta</a>
         <a href='forumsuporte'> <i class='fas fa-hashtag fa-1x'></i> Fórum</a>

@@ -7,7 +7,7 @@ if (!empty($_GET) && isset($_SESSION["useruid"])) {
     require_once 'includes/functions.inc.php';
 
     $idProjeto = deshashItemNatural(addslashes($_GET['id']));
-    if (($_SESSION["userperm"] == 'Administrador') || ($_SESSION["userperm"] == 'Planejador(a)') || ($_SESSION["userperm"] == 'Planej. Ortognática')) {
+    if (($_SESSION["userperm"] == 'Administrador') || ($_SESSION["userperm"] == 'Planejador(a)') || ($_SESSION["userperm"] == 'Planej. Ortognática') || $_SESSION["useruid"] == "lenicomercial" || $_SESSION["useruid"] == "lenirodrigues" || $_SESSION["useruid"] == "thaissa" || $_SESSION["useruid"] == "samuel900" ) {
         $permission = true;
     } else {
         $permission = false;
