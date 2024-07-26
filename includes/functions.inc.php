@@ -889,17 +889,17 @@ function createProposta($conn, $idprop, $nomecriador, $emailcriacao, $dtcriacao,
         exit();
     }
 
-    mysqli_stmt_bind_param($stmt, "sssssssssssssssssssssssssssssss", $nomecriador, $emailcriacao, $dtcriacao, $statuscaso, $propStatusTC, $empresa, $nomedr, $crm, $emaildr, $teldr, $nomepaciente, $convenio, $emailEnvio, $tipoGeral, $itensJson, $listaItens, $espessurasmartmold, $ufUser, $repUid, $validade, $valorTotal, $desconto, $valorDesconto, $valorPosDesconto, $listaItensBD, $radioTaxa, $planovenda, $userdr, $cnpjcpf, $nomeenvio, $telenvio);
+    mysqli_stmt_bind_param($stmt, "sssssssssssssssssssssssssssssss", $nomecriador, $emailcriacao, $dtcriacao, $statuscaso, $propStatusTC, $empresa, $nomedr, $crm, $emaildr, $teldr, $nomepaciente, $convenio, $emailEnvio, $tipoGeral, $itensJson, $listaItens, $espessurasmartmold, $ufUser, $repUid, $validade, $valorTotal, $desconto, $valorDesconto, $valorPosDesconto, $listaItensBD, $radioTaxa, $planovenda, $userdr, $cnpjcpf, $nomeenvio, $telenvio);    
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 
     //Armazenar arquivo
     // createFileUpload($conn, $idprop, $pname, $tname);
 
-    // saveFileUpload($conn, $idprop, $fileuuid1, $filename1, $isstored1, $filesize1, $cdnurl1);
-    // saveFileUpload($conn, $idprop, $fileuuid2, $filename2, $isstored2, $filesize2, $cdnurl2);
-    // saveFileUpload($conn, $idprop, $fileuuid3, $filename3, $isstored3, $filesize3, $cdnurl3);
-    // saveFileUpload($conn, $idprop, $fileuuid4, $filename4, $isstored4, $filesize4, $cdnurl4);
+    saveFileUpload($conn, $idprop, $fileuuid1, $filename1, $isstored1, $filesize1, $cdnurl1);
+    saveFileUpload($conn, $idprop, $fileuuid2, $filename2, $isstored2, $filesize2, $cdnurl2);
+    saveFileUpload($conn, $idprop, $fileuuid3, $filename3, $isstored3, $filesize3, $cdnurl3);
+    saveFileUpload($conn, $idprop, $fileuuid4, $filename4, $isstored4, $filesize4, $cdnurl4);
     saveFileId($conn, $idprop);
     saveFileIdLaudo($conn, $idprop);
     // saveFileUploadLaudo($conn, $idprop, $fileuuid2, $filename2, $isstored2, $filesize2, $cdnurl2);
