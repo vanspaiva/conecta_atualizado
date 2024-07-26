@@ -337,7 +337,6 @@ function criarPedido($conn, $data)
     }
 
     mysqli_stmt_bind_param($stmt, "ssssssssssssssssssss", $data['pedido'], $data['id'], $data['drrespuid'], $data['representante'], $data['nomedr'], $data['nomepac'], $data['crm'], $data['listaItens'], $data['tipoProd'], $statusPedInicial, $valueAbasFechado, $valueAbasFechado, $valueAbasFechado, $valueAbasFechado, $valueAbasFechado, $pedAndamento, $data['cnpj'], $pedPosicaoFluxoInicial, $pedTecnico, $data['loteop']);
-    mysqli_stmt_execute($stmt);
     if (mysqli_stmt_execute($stmt)) {
         echo "Comando SQL executado com sucesso.";
     } else {
