@@ -5681,7 +5681,8 @@ function addComentProp($conn, $coment, $nprop, $user)
     $nomeRep = getNomeRep($conn, $propData['propRepresentante']);
 
     //Link live API
-    $url = 'https://webhooks.integrately.com/a/webhooks/984d4fb974b5417bbb85fdd0cebd9903?';
+    //$url = 'https://webhooks.integrately.com/a/webhooks/984d4fb974b5417bbb85fdd0cebd9903?';
+    $url = '';
     
 
     $data = array(
@@ -5703,6 +5704,7 @@ function addComentProp($conn, $coment, $nprop, $user)
             'content' => http_build_query($data)
         )
     );
+    
     $context  = stream_context_create($options);
     $result = file_get_contents($url, false, $context);
     if ($result === FALSE) { /* Handle error */
@@ -8920,3 +8922,64 @@ function getRealIP()
     }
     return $userIP;
 }
+
+
+
+
+function enviarArquivo($conn, $idProduto, $error, $name, $tmo_name,$user, $size = 0, $idComentario = null){
+
+    require_once 'dbh.inc.php';
+
+    if($error)
+      die("Falha ao enviar aquivo");
+
+    $pasta = "arquivos/";
+    $nomeArquivo = $name;
+    $novoNomeArquivo = uniqid();
+    $extensão = strtolower(pathinfo($nomeArquivo,PATHINFO_EXTENSION));
+
+
+    date_default_timezone_set('America/Sao_Paulo');
+    $dataAtual = (new DateTime())->format('d/m/Y H:i:s');
+    echo $dataAtual;
+   
+
+    if($extensão != "jpg" && $extensão != "png" && $extensão != "pdf"){
+
+        die("Tipo de arquivo não aceito");
+
+    }
+
+    $path = $pasta . $novoNomeArquivo . "." . $extensão;
+
+    $deu_certo = move_uploaded_file($tmo_name, $path);
+
+    if($deu_certo){
+
+        $sql = "INSERT INTO midias_comentarios_plan (idProduto, path, nome, idComentario,data_upload, mediaUser) VALUES ('$idProduto', '$path', '$nomeArquivo','$idComentario', '$dataAtual','$user')";
+
+        try {
+            if (mysqli_query($conn, $sql)) {
+                echo "<p>Arquivo enviado com sucesso! Para acessá-lo <a target=\"_blank\" href='arquivos/$novoNomeArquivo.$extensão'>Clique aqui</a></p>";
+                return true;
+            } else {
+                // Caso a consulta falhe, você pode lançar uma exceção
+                throw new Exception("Erro ao executar a consulta: " . mysqli_error($conn));
+            }
+        } catch (Exception $e) {
+            // Trate a exceção aqui
+            echo "<p>Ocorreu um erro ao enviar o arquivo: " . $e->getMessage() . "</p>";
+            // Opcional: você pode logar o erro em um arquivo ou sistema de logging
+            error_log($e->getMessage());
+            return false;
+        }
+    
+    }
+    
+    else
+        return false;
+    
+}
+
+
+

@@ -1348,3 +1348,15 @@ CREATE TABLE IF NOT EXISTS `visualizador` (
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+CREATE TABLE IF NOT EXISTS `midias_comentarios_plan` (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    idProduto INT,
+    idComentario INT,
+    nome VARCHAR(255),
+    tipo VARCHAR(50),
+    dados LONGBLOB,
+    FOREIGN KEY (idProduto) REFERENCES comentariosproposta(comentVisNumProp),
+    FOREIGN KEY (idComentario) REFERENCES comentariosproposta(comentVisId)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

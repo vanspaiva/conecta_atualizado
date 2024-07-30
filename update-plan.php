@@ -252,18 +252,70 @@ if (!empty($_GET)) {
                                                                     <div class="rounded">
 
                                                                         <?php
+
                                                                         $idProjeto = $_GET['id'];
-                                                                        $retMsg = mysqli_query($conn, "SELECT * FROM comentariosproposta WHERE comentVisNumProp='$idProjeto' ORDER BY comentVisId ASC");
+
+                                                                        $sql = "SELECT 
+                                                                                c.comentVisUser, 
+                                                                                c.comentVisText, 
+                                                                                c.comentVisHorario, 
+                                                                                c.comentVisTipoUser,
+                                                                                m.nome, 
+                                                                                m.path,
+                                                                                COALESCE(c.comentVisHorario, m.data_upload) AS data
+                                                                            FROM 
+                                                                                comentariosproposta AS c
+                                                                            LEFT JOIN 
+                                                                                midias_comentarios_plan AS m ON c.comentVisId = m.idComentario
+                                                                            WHERE 
+                                                                                c.comentVisNumProp = \"$idProjeto\"
+
+                                                                            UNION
+
+                                                                            SELECT 
+                                                                                c.comentVisUser, 
+                                                                                c.comentVisText, 
+                                                                                c.comentVisHorario, 
+                                                                                c.comentVisTipoUser,
+                                                                                m.nome, 
+                                                                                m.path,
+                                                                                m.data_upload AS data
+                                                                            FROM 
+                                                                                midias_comentarios_plan AS m
+                                                                            LEFT JOIN 
+                                                                                comentariosproposta AS c ON c.comentVisId = m.idComentario
+                                                                            WHERE 
+                                                                                c.comentVisId IS NULL  -- Garantir que estamos pegando registros de midias sem correspondência
+                                                                            ORDER BY 
+                                                                                data ASC;"; 
+
+                                                                        $retMsg = mysqli_query($conn, $sql);
 
 
                                                                         while ($rowMsg = mysqli_fetch_array($retMsg)) {
                                                                             $msg = $rowMsg['comentVisText'];
-                                                                            $owner = $rowMsg['comentVisUser'];
-                                                                            $timer = $rowMsg['comentVisHorario'];
+                                                                            if($rowMsg['comentVisUser'] == null)
+                                                                                $owner = $rowMsg['mediaUser'];
+                                                                            else
+                                                                                $owner = $rowMsg['comentVisUser'];
+
+                                                                            if($rowMsg['comentVisHorario'] == null){
+
+                                                                                $timer = $rowMsg['data'];
+                                                                            }
+                                                                            else
+                                                                                $timer = $rowMsg['comentVisHorario'];
+
+
                                                                             $tipoUsuario = $rowMsg['comentVisTipoUser'];
 
+                                                                            $nomeArq = $rowMsg['nome'];
+                                                                            $arqPath = "includes/" . $rowMsg['path'];
+                                                                            
                                                                             $timer = explode(" ", $timer);
+
                                                                             $data = $timer[0];
+
                                                                             // $dataAmericana = explode("-", $date);
                                                                             // $ano = str_split($dataAmericana[0]);
                                                                             // $ano = $ano[0] . $ano[1];
@@ -322,7 +374,20 @@ if (!empty($_GET)) {
                                                                                     <div class="col d-flex justify-content-end w-50">
                                                                                         <div class="bg-secondary bg-gradient text-white rounded rounded-3 px-2 py-1">
                                                                                             <h6><b><?php echo $owner; ?>:</b></h6>
-                                                                                            <p class="text-white text-wrap" style="font-size: 0.8rem; max-width: 200px;"><?php echo $msg; ?></p>
+                                                                                            <p class="text-white text-wrap" style="font-size: 0.8rem; max-width: 200px;">
+                                                                                                <?php
+                                                                                                    echo $msg . "<br>"; 
+                                                                                                ?>
+                                                                                                <a href="http://localhost:8092/projetos/conecta_atualizado/<?=$arqPath?>">
+                                                                                                    <img style="margin: 5px;" height="50px" width="50px" src="<?=$arqPath?>" alt="imagem"
+                                                                                                    <?php
+                                                                                                        if($arqPath == "includes/") 
+                                                                                                        echo "hidden"; 
+                                                                                                    ?>
+                                                                                                >
+                                                                                                </a>
+                                                                                            </p>
+
                                                                                             <small style="color: #323236;"><?php echo $horario; ?></small>
                                                                                         </div>
                                                                                     </div>
@@ -339,6 +404,7 @@ if (!empty($_GET)) {
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
+                                                                                
                                                                         <?php
                                                                             }
                                                                         }
@@ -346,7 +412,7 @@ if (!empty($_GET)) {
                                                                     </div>
                                                                     <div class="row d-flex justify-content-center">
                                                                         <div class="col-sm px-2 py-3">
-                                                                            <form action="includes/comentpropostaPlan.inc.php" method="post">
+                                                                            <form action="includes/comentpropostaPlan.inc.php" method="post" enctype="multipart/form-data">
                                                                                 <div class="container" hidden>
                                                                                     <div class="row">
                                                                                         <div class="col">
@@ -366,6 +432,11 @@ if (!empty($_GET)) {
                                                                                                 <textarea class="form-control color-bg-dark color-txt-wh" style="font-size: 0.8rem;" name="coment" id="coment" rows="1" onkeyup="limite_textarea(this.value)" maxlength="300"></textarea><br><br>
                                                                                                 <div class="row d-flex justify-content-start p-0 m-0">
                                                                                                     <small class="pl-2 text-muted" style="margin-top: -30px !important;"><small class="text-muted" id="cont">300</small> Caracteres restantes</small>
+                                                                                                </div>
+
+                                                                                                <div>
+                                                                                                    <input type="hidden" name="MAX_FILE_SIZE" value="4194304" />
+                                                                                                        <input type="file" name="file"/> 
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div class="p-1">
