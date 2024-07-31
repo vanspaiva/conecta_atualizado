@@ -889,17 +889,17 @@ function createProposta($conn, $idprop, $nomecriador, $emailcriacao, $dtcriacao,
         exit();
     }
 
-    mysqli_stmt_bind_param($stmt, "sssssssssssssssssssssssssssssss", $nomecriador, $emailcriacao, $dtcriacao, $statuscaso, $propStatusTC, $empresa, $nomedr, $crm, $emaildr, $teldr, $nomepaciente, $convenio, $emailEnvio, $tipoGeral, $itensJson, $listaItens, $espessurasmartmold, $ufUser, $repUid, $validade, $valorTotal, $desconto, $valorDesconto, $valorPosDesconto, $listaItensBD, $radioTaxa, $planovenda, $userdr, $cnpjcpf, $nomeenvio, $telenvio);
+    mysqli_stmt_bind_param($stmt, "sssssssssssssssssssssssssssssss", $nomecriador, $emailcriacao, $dtcriacao, $statuscaso, $propStatusTC, $empresa, $nomedr, $crm, $emaildr, $teldr, $nomepaciente, $convenio, $emailEnvio, $tipoGeral, $itensJson, $listaItens, $espessurasmartmold, $ufUser, $repUid, $validade, $valorTotal, $desconto, $valorDesconto, $valorPosDesconto, $listaItensBD, $radioTaxa, $planovenda, $userdr, $cnpjcpf, $nomeenvio, $telenvio);    
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 
     //Armazenar arquivo
     // createFileUpload($conn, $idprop, $pname, $tname);
 
-    // saveFileUpload($conn, $idprop, $fileuuid1, $filename1, $isstored1, $filesize1, $cdnurl1);
-    // saveFileUpload($conn, $idprop, $fileuuid2, $filename2, $isstored2, $filesize2, $cdnurl2);
-    // saveFileUpload($conn, $idprop, $fileuuid3, $filename3, $isstored3, $filesize3, $cdnurl3);
-    // saveFileUpload($conn, $idprop, $fileuuid4, $filename4, $isstored4, $filesize4, $cdnurl4);
+    saveFileUpload($conn, $idprop, $fileuuid1, $filename1, $isstored1, $filesize1, $cdnurl1);
+    saveFileUpload($conn, $idprop, $fileuuid2, $filename2, $isstored2, $filesize2, $cdnurl2);
+    saveFileUpload($conn, $idprop, $fileuuid3, $filename3, $isstored3, $filesize3, $cdnurl3);
+    saveFileUpload($conn, $idprop, $fileuuid4, $filename4, $isstored4, $filesize4, $cdnurl4);
     saveFileId($conn, $idprop);
     saveFileIdLaudo($conn, $idprop);
     // saveFileUploadLaudo($conn, $idprop, $fileuuid2, $filename2, $isstored2, $filesize2, $cdnurl2);
@@ -5681,7 +5681,8 @@ function addComentProp($conn, $coment, $nprop, $user)
     $nomeRep = getNomeRep($conn, $propData['propRepresentante']);
 
     //Link live API
-    $url = 'https://webhooks.integrately.com/a/webhooks/984d4fb974b5417bbb85fdd0cebd9903?';
+    //$url = 'https://webhooks.integrately.com/a/webhooks/984d4fb974b5417bbb85fdd0cebd9903?';
+    $url = '';
     
 
     $data = array(
@@ -5703,6 +5704,7 @@ function addComentProp($conn, $coment, $nprop, $user)
             'content' => http_build_query($data)
         )
     );
+    
     $context  = stream_context_create($options);
     $result = file_get_contents($url, false, $context);
     if ($result === FALSE) { /* Handle error */
@@ -8920,3 +8922,94 @@ function getRealIP()
     }
     return $userIP;
 }
+
+
+
+function enviarArquivo($conn, $idProduto, $error, $name, $tmp_name, $user, $size = 0, $idComentario = null) {
+    if ($error) {
+        die("Falha ao enviar arquivo");
+    }
+
+    $pasta = "arquivos/";
+    $nomeArquivo = $name;
+    $novoNomeArquivo = uniqid();
+    $extensao = strtolower(pathinfo($nomeArquivo, PATHINFO_EXTENSION));
+
+    date_default_timezone_set('America/Sao_Paulo');
+    $dataAtual = (new DateTime())->format('d/m/Y H:i:s');
+
+    // Verifica se o tipo de arquivo é aceito
+    $tiposPermitidos = ["jpg", "png", "pdf"];
+    if (!in_array($extensao, $tiposPermitidos)) {
+        die("Tipo de arquivo não aceito");
+    }
+
+    // Verifica o tamanho do arquivo (opcional, pode remover se não necessário)
+    $tamanhoMaximo = 1024 * 1024 * 5; // 5MB
+    if ($size > $tamanhoMaximo) {
+        die("O arquivo é muito grande");
+    }
+
+    $path = $pasta . $novoNomeArquivo . "." . $extensao;
+
+    // Mover o arquivo para o diretório local
+    if (!move_uploaded_file($tmp_name, $path)) {
+        die("Falha ao mover o arquivo");
+    }
+
+    // URL do Webhook fornecido pelo Integrately
+    //$webhookUrl = "https://webhooks.integrately.com/a/webhooks/f2a24ec71e9d451bb83a9b56e2ec9509";
+    
+    $webhookUrl = "https://hooks.zapier.com/hooks/catch/8414821/2uaplm3/";
+
+    // Use cURL para enviar o arquivo para o webhook
+    $curl = curl_init();
+
+    $postData = [
+        'file' => new CURLFile(realpath($path)),  // Anexar o arquivo
+        'fileName' => $nomeArquivo,
+        'idProduto' => $idProduto,
+        'dataUpload' => $dataAtual,
+        'mediaUser' => $user,
+        'idComentario' => $idComentario
+    ];
+
+    curl_setopt_array($curl, [
+        CURLOPT_URL => $webhookUrl,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => $postData,
+        CURLOPT_SSL_VERIFYHOST => false,  // Desabilita a verificação do host SSL
+        CURLOPT_SSL_VERIFYPEER => false   // Desabilita a verificação do certificado SSL
+    ]);
+
+    $response = curl_exec($curl);
+    $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    $curlError = curl_error($curl);
+
+    curl_close($curl);
+
+    // Remover o arquivo local após o envio
+    unlink($path);
+
+    if ($httpCode == 200) {
+        // Supondo que a resposta seja um JSON que contém a URL do arquivo
+        $responseArray = json_decode($response, true);  // Decodifica a resposta JSON
+        if (isset($responseArray['fileUrl'])) {  // Verifica se o campo fileUrl existe
+            $fileUrl = $responseArray['fileUrl'];  // Atribui a URL à variável
+            echo "<p>Arquivo enviado com sucesso! Acesse o arquivo aqui: <a href=\"$fileUrl\">$fileUrl</a></p>";
+            return $fileUrl;
+        } else {
+            echo "<p>Resposta do webhook não contém a URL do arquivo.</p>";
+            return false;
+        }
+    } else {
+        echo "<p>Erro ao enviar arquivo para o Google Drive: $response</p>";
+        echo "<p>HTTP Code: $httpCode</p>";
+        echo "<p>cURL Error: $curlError</p>";
+        return false;
+    }
+}
+
+
+
