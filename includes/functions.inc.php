@@ -8926,7 +8926,7 @@ function getRealIP()
 
 
 
-function enviarArquivo($conn, $idProduto, $error, $name, $tmo_name,$user, $size = 0, $idComentario = null){
+function enviarArquivo($conn, $idProduto, $error, $name, $tmo_name, $user, $size = 0, $idComentario = null){
 
     require_once 'dbh.inc.php';
 

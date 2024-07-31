@@ -256,48 +256,44 @@ if (!empty($_GET)) {
                                                                         $idProjeto = $_GET['id'];
 
                                                                         $sql = "SELECT 
-                                                                                c.comentVisUser, 
-                                                                                c.comentVisText, 
-                                                                                c.comentVisHorario, 
-                                                                                c.comentVisTipoUser,
-                                                                                m.nome, 
-                                                                                m.path,
-                                                                                COALESCE(c.comentVisHorario, m.data_upload) AS data
-                                                                            FROM 
-                                                                                comentariosproposta AS c
-                                                                            LEFT JOIN 
-                                                                                midias_comentarios_plan AS m ON c.comentVisId = m.idComentario
-                                                                            WHERE 
-                                                                                c.comentVisNumProp = \"$idProjeto\"
+                                                                                    c.comentVisText, 
+                                                                                    c.comentVisHorario, 
+                                                                                    c.comentVisTipoUser,
+                                                                                    m.nome, 
+                                                                                    m.path,
+                                                                                    COALESCE(c.comentVisHorario, m.data_upload) AS data,
+                                                                                    COALESCE(c.comentVisUser, m.mediaUser) AS usuario
+                                                                                FROM 
+                                                                                    comentariosproposta AS c
+                                                                                LEFT JOIN 
+                                                                                    midias_comentarios_plan AS m ON c.comentVisId = m.idComentario
+                                                                                WHERE 
+                                                                                    c.comentVisNumProp = 142
 
-                                                                            UNION
+                                                                                UNION
 
-                                                                            SELECT 
-                                                                                c.comentVisUser, 
-                                                                                c.comentVisText, 
-                                                                                c.comentVisHorario, 
-                                                                                c.comentVisTipoUser,
-                                                                                m.nome, 
-                                                                                m.path,
-                                                                                m.data_upload AS data
-                                                                            FROM 
-                                                                                midias_comentarios_plan AS m
-                                                                            LEFT JOIN 
-                                                                                comentariosproposta AS c ON c.comentVisId = m.idComentario
-                                                                            WHERE 
-                                                                                c.comentVisId IS NULL  -- Garantir que estamos pegando registros de midias sem correspondência
-                                                                            ORDER BY 
-                                                                                data ASC;"; 
+                                                                                SELECT 
+                                                                                    c.comentVisText, 
+                                                                                    c.comentVisHorario, 
+                                                                                    c.comentVisTipoUser,
+                                                                                    m.nome, 
+                                                                                    m.path,
+                                                                                    m.data_upload AS data,
+                                                                                    m.mediaUser as usuario
+                                                                                FROM 
+                                                                                    midias_comentarios_plan AS m
+                                                                                LEFT JOIN 
+                                                                                    comentariosproposta AS c ON c.comentVisId = m.idComentario
+                                                                                WHERE 
+                                                                                    c.comentVisId IS NULL  
+                                                                                ORDER BY 
+                                                                                    data ASC;"; 
 
                                                                         $retMsg = mysqli_query($conn, $sql);
-
-
                                                                         while ($rowMsg = mysqli_fetch_array($retMsg)) {
                                                                             $msg = $rowMsg['comentVisText'];
-                                                                            if($rowMsg['comentVisUser'] == null)
-                                                                                $owner = $rowMsg['mediaUser'];
-                                                                            else
-                                                                                $owner = $rowMsg['comentVisUser'];
+
+                                                                            $owner = $rowMsg['usuario'];
 
                                                                             if($rowMsg['comentVisHorario'] == null){
 
@@ -378,7 +374,7 @@ if (!empty($_GET)) {
                                                                                                 <?php
                                                                                                     echo $msg . "<br>"; 
                                                                                                 ?>
-                                                                                                <a href="http://localhost:8092/projetos/conecta_atualizado/<?=$arqPath?>">
+                                                                                                <a href="http://localhost:8092/projetos/conecta_atualizado/<?=$arqPath?>" target="_blank">
                                                                                                     <img style="margin: 5px;" height="50px" width="50px" src="<?=$arqPath?>" alt="imagem"
                                                                                                     <?php
                                                                                                         if($arqPath == "includes/") 

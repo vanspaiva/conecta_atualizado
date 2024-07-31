@@ -6,12 +6,12 @@ require_once 'functions.inc.php';
 /* $arquivo = $_FILES['file'];
 echo '<pre>';
 print_r($arquivo);
+echo '</pre>';
+
+echo '<pre>';
+print_r($_POST);
 echo '</pre>'; */
 
-/* echo '<pre>';
-print_r($_POST);
-echo '</pre>';
- */
 
 if ($_POST['coment'] != "") {
 
@@ -46,8 +46,8 @@ if ($_POST['coment'] != "") {
             }
     
         }
-    
-        enviarArquivo($conn, $numeroProp, $arquivo['error'], $arquivo['name'], $arquivo['tmp_name'], 0 , $numeroComentario);
+        
+        enviarArquivo($conn, $numeroProp, $arquivo['error'], $arquivo['name'], $arquivo['tmp_name'], $user, 0 , $numeroComentario);
     }
     
     header("location: ../update-plan?id=" . $nprop . "&error=sent");
