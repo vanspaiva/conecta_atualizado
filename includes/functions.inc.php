@@ -8925,60 +8925,90 @@ function getRealIP()
 
 
 
-
-function enviarArquivo($conn, $idProduto, $error, $name, $tmo_name, $user, $size = 0, $idComentario = null){
-
-    require_once 'dbh.inc.php';
-
-    if($error)
-      die("Falha ao enviar aquivo");
+function enviarArquivo($conn, $idProduto, $error, $name, $tmp_name, $user, $size = 0, $idComentario = null) {
+    if ($error) {
+        die("Falha ao enviar arquivo");
+    }
 
     $pasta = "arquivos/";
     $nomeArquivo = $name;
     $novoNomeArquivo = uniqid();
-    $extensão = strtolower(pathinfo($nomeArquivo,PATHINFO_EXTENSION));
-
+    $extensao = strtolower(pathinfo($nomeArquivo, PATHINFO_EXTENSION));
 
     date_default_timezone_set('America/Sao_Paulo');
     $dataAtual = (new DateTime())->format('d/m/Y H:i:s');
-    echo $dataAtual;
-   
 
-    if($extensão != "jpg" && $extensão != "png" && $extensão != "pdf"){
-
+    // Verifica se o tipo de arquivo é aceito
+    $tiposPermitidos = ["jpg", "png", "pdf"];
+    if (!in_array($extensao, $tiposPermitidos)) {
         die("Tipo de arquivo não aceito");
-
     }
 
-    $path = $pasta . $novoNomeArquivo . "." . $extensão;
+    // Verifica o tamanho do arquivo (opcional, pode remover se não necessário)
+    $tamanhoMaximo = 1024 * 1024 * 5; // 5MB
+    if ($size > $tamanhoMaximo) {
+        die("O arquivo é muito grande");
+    }
 
-    $deu_certo = move_uploaded_file($tmo_name, $path);
+    $path = $pasta . $novoNomeArquivo . "." . $extensao;
 
-    if($deu_certo){
+    // Mover o arquivo para o diretório local
+    if (!move_uploaded_file($tmp_name, $path)) {
+        die("Falha ao mover o arquivo");
+    }
 
-        $sql = "INSERT INTO midias_comentarios_plan (idProduto, path, nome, idComentario,data_upload, mediaUser) VALUES ('$idProduto', '$path', '$nomeArquivo','$idComentario', '$dataAtual','$user')";
+    // URL do Webhook fornecido pelo Integrately
+    //$webhookUrl = "https://webhooks.integrately.com/a/webhooks/f2a24ec71e9d451bb83a9b56e2ec9509";
+    
+    $webhookUrl = "https://hooks.zapier.com/hooks/catch/8414821/2uaplm3/";
 
-        try {
-            if (mysqli_query($conn, $sql)) {
-                echo "<p>Arquivo enviado com sucesso! Para acessá-lo <a target=\"_blank\" href='arquivos/$novoNomeArquivo.$extensão'>Clique aqui</a></p>";
-                return true;
-            } else {
-                // Caso a consulta falhe, você pode lançar uma exceção
-                throw new Exception("Erro ao executar a consulta: " . mysqli_error($conn));
-            }
-        } catch (Exception $e) {
-            // Trate a exceção aqui
-            echo "<p>Ocorreu um erro ao enviar o arquivo: " . $e->getMessage() . "</p>";
-            // Opcional: você pode logar o erro em um arquivo ou sistema de logging
-            error_log($e->getMessage());
+    // Use cURL para enviar o arquivo para o webhook
+    $curl = curl_init();
+
+    $postData = [
+        'file' => new CURLFile(realpath($path)),  // Anexar o arquivo
+        'fileName' => $nomeArquivo,
+        'idProduto' => $idProduto,
+        'dataUpload' => $dataAtual,
+        'mediaUser' => $user,
+        'idComentario' => $idComentario
+    ];
+
+    curl_setopt_array($curl, [
+        CURLOPT_URL => $webhookUrl,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => $postData,
+        CURLOPT_SSL_VERIFYHOST => false,  // Desabilita a verificação do host SSL
+        CURLOPT_SSL_VERIFYPEER => false   // Desabilita a verificação do certificado SSL
+    ]);
+
+    $response = curl_exec($curl);
+    $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    $curlError = curl_error($curl);
+
+    curl_close($curl);
+
+    // Remover o arquivo local após o envio
+    unlink($path);
+
+    if ($httpCode == 200) {
+        // Supondo que a resposta seja um JSON que contém a URL do arquivo
+        $responseArray = json_decode($response, true);  // Decodifica a resposta JSON
+        if (isset($responseArray['fileUrl'])) {  // Verifica se o campo fileUrl existe
+            $fileUrl = $responseArray['fileUrl'];  // Atribui a URL à variável
+            echo "<p>Arquivo enviado com sucesso! Acesse o arquivo aqui: <a href=\"$fileUrl\">$fileUrl</a></p>";
+            return $fileUrl;
+        } else {
+            echo "<p>Resposta do webhook não contém a URL do arquivo.</p>";
             return false;
         }
-    
-    }
-    
-    else
+    } else {
+        echo "<p>Erro ao enviar arquivo para o Google Drive: $response</p>";
+        echo "<p>HTTP Code: $httpCode</p>";
+        echo "<p>cURL Error: $curlError</p>";
         return false;
-    
+    }
 }
 
 

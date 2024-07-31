@@ -3,14 +3,14 @@
 require_once 'dbh.inc.php';
 require_once 'functions.inc.php';
 
-/* $arquivo = $_FILES['file'];
+$arquivo = $_FILES['file'];
 echo '<pre>';
 print_r($arquivo);
 echo '</pre>';
 
 echo '<pre>';
 print_r($_POST);
-echo '</pre>'; */
+echo '</pre>';
 
 
 if ($_POST['coment'] != "") {
@@ -79,6 +79,7 @@ if ($_POST['coment'] != "") {
         }
         else{
             enviarArquivo($conn, $numeroProp, $arquivo['error'], $arquivo['name'], $arquivo['tmp_name'],$user);
+            exit();
         }
     }
 
