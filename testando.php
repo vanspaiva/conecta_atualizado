@@ -27,7 +27,19 @@ curl_close($curl);
 $logMessage = "Response: $response\nHTTP Code: $httpCode\ncURL Error: $curlError\n";
 file_put_contents('webhook_log.txt', $logMessage, FILE_APPEND);
 
-echo "Response: $response\n";
-echo "HTTP Code: $httpCode\n";
-echo "cURL Error: $curlError\n";
-?>
+// Analisar e processar a resposta
+if ($httpCode == 200 && $response) {
+    $responseArray = json_decode($response, true);  // Decodifica a resposta JSON
+    
+    if (isset($responseArray['fileUrl'])) {  // Verifica se o campo fileUrl existe
+        $fileUrl = $responseArray['fileUrl'];  // Atribui a URL à variável
+        echo "<p>Arquivo enviado com sucesso! Acesse o arquivo aqui: <a href=\"$fileUrl\">$fileUrl</a></p>";
+    } else {
+        echo "<p>Resposta do webhook não contém a URL do arquivo.</p>";
+    }
+} else {
+    echo "<p>Erro ao enviar arquivo para o webhook: $response</p>";
+    echo "<p>HTTP Code: $httpCode</p>";
+    echo "<p>cURL Error: $curlError</p>";
+}
+
