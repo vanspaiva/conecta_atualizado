@@ -14,8 +14,8 @@ $dbName = "u777557116_bdcpmhconecta";
 /* $serverName = "localhost:3307";
 $dbUsername = "root";
 $dbPassword = "";
-$dbName = "conecta";
- */
+$dbName = "conecta_atualizado"; */
+
 $conn = mysqli_connect($serverName, $dbUsername, $dbPassword, $dbName);
 
 if(mysqli_connect_errno())
