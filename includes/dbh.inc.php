@@ -6,16 +6,16 @@
 // $dbPassword = "YDT8HJPHc!";
 // $dbName = "bdcpmhconecta";
 
-$serverName = "localhost";
+/* $serverName = "localhost";
 $dbUsername = "u777557116_adminconecta";
 $dbPassword = "YDT8HJPHc!";
-$dbName = "u777557116_bdcpmhconecta";
+$dbName = "u777557116_bdcpmhconecta"; */
 
-/* $serverName = "localhost:3307";
+$serverName = "localhost:3307";
 $dbUsername = "root";
 $dbPassword = "";
-$dbName = "conecta";
- */
+$dbName = "conecta_atualizado";
+
 $conn = mysqli_connect($serverName, $dbUsername, $dbPassword, $dbName);
 
 if(mysqli_connect_errno())
