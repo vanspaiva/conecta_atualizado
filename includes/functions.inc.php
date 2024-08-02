@@ -7937,6 +7937,7 @@ function verificarLimitesHoras($conn, $numpedido)
 
 
     $part1 = explode(":", $tempoPlanejado);
+    $minutos = $part1[1];
     $part1 = $part1[0];
     $part1 = intval($part1);
 
@@ -7951,15 +7952,22 @@ function verificarLimitesHoras($conn, $numpedido)
     
     // exit();
     // Verifica o status com base na diferença
-    if (($part1 == 0) || ($part1 == null)){
+    if (($part1 == 0) || ($part1 == null)) {
         $descricao = '0';
-    } elseif ($part1 > 0 && $part1 <= $limiteHoras) {
+    } 
+    elseif ($part1 > 0 && $part1 <= $limiteHoras) {
         $descricao = 'Muito Bom';
-    } elseif ($part1 > $limiteHoras && $part1 <= $meta2) {
+    }
+    if($part1 == $limiteHoras && $minutos > 0){
         $descricao = 'Bom';
-    } elseif ($part1 > $meta2) {
+    }
+    elseif ($part1 > $limiteHoras && $part1 <= $meta2) {
+        $descricao = 'Bom';
+    } 
+    elseif ($part1 > $meta2) {
         $descricao = 'Crítico';
     }
+    
 
     // echo " | descricao:";
     // echo $descricao;
@@ -7982,7 +7990,7 @@ function valorLimiteHoras($conn, $numpedido)
     switch ($tipoProduto) {
         case strpos($tipoProduto, 'SMARTMOLD') !== false:
             // case strpos($tipoProduto, 'RECONSTRUÇÃO') !== false:
-            $limiteHoras = 1 * 9;
+            $limiteHoras = 9;
             break;
         case strpos($tipoProduto, 'CUSTOMLIFE') !== false:
             $limiteHoras = $qtdMultiplicador * 9;
@@ -8010,22 +8018,18 @@ function valorOriginal($tipoProduto)
     if($tipoProduto == 'SMARTMOLD'){
 
         return 150;
-
     }
     elseif($tipoProduto == 'ORTOGNÁTICA'){
 
         return 200;
-
     }
     elseif($tipoProduto == 'ATM'){
 
         return 200;
     }
-
     elseif($tipoProduto == 'RECONSTRUÇÃO ÓSSEA'){
 
         return 200;
-        
     }
     else{
         return 150;
@@ -8084,7 +8088,7 @@ function limiteHorasPorProduto($conn, $numpedido)
             $limiteHoras = $qtdMultiplicador * 9;
             break;
         case strpos($tipoProduto, 'ORTOGNATICA') !== false:
-            $limiteHoras = 18;
+            $limiteHoras = 1 * 18;
             break;
         default:
             $limiteHoras = $qtdMultiplicador * 18;
