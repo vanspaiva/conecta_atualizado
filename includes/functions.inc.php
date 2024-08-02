@@ -896,10 +896,10 @@ function createProposta($conn, $idprop, $nomecriador, $emailcriacao, $dtcriacao,
     //Armazenar arquivo
     //createFileUpload($conn, $idprop, $pname, $tname);
 
-    saveFileUpload($conn, $idprop, $fileuuid1, $filename1, $isstored1, $filesize1, $cdnurl1);
-    saveFileUpload($conn, $idprop, $fileuuid2, $filename2, $isstored2, $filesize2, $cdnurl2);
-    saveFileUpload($conn, $idprop, $fileuuid3, $filename3, $isstored3, $filesize3, $cdnurl3);
-    saveFileUpload($conn, $idprop, $fileuuid4, $filename4, $isstored4, $filesize4, $cdnurl4);
+    //saveFileUpload($conn, $idprop, $fileuuid1, $filename1, $isstored1, $filesize1, $cdnurl1);
+    //saveFileUpload($conn, $idprop, $fileuuid2, $filename2, $isstored2, $filesize2, $cdnurl2);
+    //saveFileUpload($conn, $idprop, $fileuuid3, $filename3, $isstored3, $filesize3, $cdnurl3);
+    //saveFileUpload($conn, $idprop, $fileuuid4, $filename4, $isstored4, $filesize4, $cdnurl4);
 
 
     saveFileId($conn, $idprop);
@@ -5469,7 +5469,7 @@ function editLinkAdmQualidade($conn, $id, $link)
 function editLinkPlan($conn, $id, $link)
 {
     $sql = "UPDATE filedownload SET fileCdnUrl='$link' WHERE fileNumPropRef='$id'";
-    // mysqli_query($conn, $sql);
+    // mysqli_query($conn, $sql);   
     if (mysqli_query($conn, $sql)) {
 
         return true;
