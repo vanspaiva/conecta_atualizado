@@ -8957,9 +8957,7 @@ function enviarArquivo($conn, $idProduto, $error, $name, $tmp_name, $user, $size
         die("Falha ao mover o arquivo");
     }
 
-    // URL do Webhook fornecido pelo Integrately
-    //$webhookUrl = "https://webhooks.integrately.com/a/webhooks/f2a24ec71e9d451bb83a9b56e2ec9509";
-    
+    // URL do Webhook fornecido pelo Zapier
     $webhookUrl = "https://hooks.zapier.com/hooks/catch/8414821/2uaplm3/";
 
     // Use cURL para enviar o arquivo para o webhook
@@ -9012,7 +9010,7 @@ function enviarArquivo($conn, $idProduto, $error, $name, $tmp_name, $user, $size
 }
 
 
-function salvarArquivo($conn, $link) {
+function salvarArquivo($conn, $link , $idComentario) {
     // Valores padrão para os outros parâmetros
     $idProduto = 9999;
     $nome = 'samuelTestando';
@@ -9025,14 +9023,14 @@ function salvarArquivo($conn, $link) {
     }
 
     // Prepara a declaração SQL com placeholders
-    $stmt = $conn->prepare("INSERT INTO midias_comentarios_plan (idProduto, path, nome, data_upload, mediaUser) VALUES (?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO midias_comentarios_plan (idComentario, idProduto, path, nome, data_upload, mediaUser) VALUES (?, ?, ?, ?, ?)");
     
     if ($stmt === false) {
         die("Erro na preparação da declaração SQL: " . $conn->error);
     }
 
     // Liga os parâmetros à declaração SQL
-    $stmt->bind_param("issss", $idProduto, $link, $nome, $dataUpload, $mediaUser);
+    $stmt->bind_param("iissss", $idComentario, $idProduto, $link, $nome, $dataUpload, $mediaUser);
 
     // Executa a declaração SQL
     $result = $stmt->execute();
