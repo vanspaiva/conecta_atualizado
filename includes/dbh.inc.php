@@ -8,7 +8,7 @@
 
 $serverName = "localhost";
 $dbUsername = "u777557116_dev_conecta";
-$dbPassword = "Samu86375297";
+$dbPassword = "/ICs@W*+cYa6";
 $dbName = "u777557116_dev_conecta";
 
 /* $serverName = "localhost:3307";
