@@ -9012,4 +9012,41 @@ function enviarArquivo($conn, $idProduto, $error, $name, $tmp_name, $user, $size
 }
 
 
+function salvarArquivo($conn, $link) {
+    // Valores padrão para os outros parâmetros
+    $idProduto = 9999;
+    $nome = 'samuelTestando';
+    $dataUpload = '00/00/0000 00:00:00';
+    $mediaUser = 'samuel900';
+
+    // Verifica se a conexão foi estabelecida
+    if ($conn->connect_error) {
+        die("Conexão falhou: " . $conn->connect_error);
+    }
+
+    // Prepara a declaração SQL com placeholders
+    $stmt = $conn->prepare("INSERT INTO midias_comentarios_plan (idProduto, path, nome, data_upload, mediaUser) VALUES (?, ?, ?, ?, ?)");
+    
+    if ($stmt === false) {
+        die("Erro na preparação da declaração SQL: " . $conn->error);
+    }
+
+    // Liga os parâmetros à declaração SQL
+    $stmt->bind_param("issss", $idProduto, $link, $nome, $dataUpload, $mediaUser);
+
+    // Executa a declaração SQL
+    $result = $stmt->execute();
+
+    if ($result === false) {
+        // Erro na execução da declaração SQL
+        $stmt->close();
+        $conn->close();
+        return false;
+    } else {
+        // Sucesso na execução da declaração SQL
+        $stmt->close();
+        $conn->close();
+        return true;
+    }
+}
 
