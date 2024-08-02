@@ -8973,44 +8973,21 @@ function enviarArquivo($conn, $idProduto, $error, $name, $tmp_name, $user, $size
         'idComentario' => $idComentario
     ];
 
-    curl_setopt_array($curl, [
-        CURLOPT_URL => $webhookUrl,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_POST => true,
-        CURLOPT_POSTFIELDS => $postData,
-        CURLOPT_HTTPHEADER => [
-            "Content-Type: multipart/form-data"
-        ],
-        CURLOPT_SSL_VERIFYHOST => false,  // Desabilita a verificação do host SSL
-        CURLOPT_SSL_VERIFYPEER => false   // Desabilita a verificação do certificado SSL
-    ]);
-
-    $response = curl_exec($curl);
-    $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-    $curlError = curl_error($curl);
-
-    curl_close($curl);
-
-    // Remover o arquivo local após o envio
-    unlink($path);
-
-    if ($httpCode == 200) {
-        // Supondo que a resposta seja um JSON que contém a URL do arquivo
-        $responseArray = json_decode($response, true);  // Decodifica a resposta JSON
-        if (isset($responseArray['fileUrl'])) {  // Verifica se o campo fileUrl existe
-            $fileUrl = $responseArray['fileUrl'];  // Atribui a URL à variável
-            echo "<p>Arquivo enviado com sucesso! Acesse o arquivo aqui: <a href=\"$fileUrl\">$fileUrl</a></p>";
-            return $fileUrl;
-        } else {
-            echo "<p>Resposta do webhook não contém a URL do arquivo.</p>";
-            return false;
-        }
-    } else {
-        echo "<p>Erro ao enviar arquivo para o Google Drive: $response</p>";
-        echo "<p>HTTP Code: $httpCode</p>";
-        echo "<p>cURL Error: $curlError</p>";
-        return false;
+        // use key 'http' even if you send the request to https://...
+    $options = array(
+        'http' => array(
+            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+            'method'  => 'POST',
+            'content' => http_build_query($postData)
+        )
+    );
+    $context  = stream_context_create($options);
+    $result = file_get_contents($webhookUrl, false, $context);
+    if ($result === FALSE) { /* Handle error */
+        echo"nÃO FOI POSSIVEL";
     }
+        
+
 }
 
 
