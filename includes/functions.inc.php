@@ -8963,6 +8963,7 @@ function enviarArquivo($conn, $idProduto, $error, $name, $tmp_name, $user, $size
     // Use cURL para enviar o arquivo para o webhook
     $curl = curl_init();
 
+    // Formatação dos dados para envio como multipart/form-data
     $postData = [
         'file' => new CURLFile(realpath($path)),  // Anexar o arquivo
         'fileName' => $nomeArquivo,
@@ -8977,6 +8978,9 @@ function enviarArquivo($conn, $idProduto, $error, $name, $tmp_name, $user, $size
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_POST => true,
         CURLOPT_POSTFIELDS => $postData,
+        CURLOPT_HTTPHEADER => [
+            "Content-Type: multipart/form-data"
+        ],
         CURLOPT_SSL_VERIFYHOST => false,  // Desabilita a verificação do host SSL
         CURLOPT_SSL_VERIFYPEER => false   // Desabilita a verificação do certificado SSL
     ]);
@@ -9010,11 +9014,13 @@ function enviarArquivo($conn, $idProduto, $error, $name, $tmp_name, $user, $size
 }
 
 
+
 function salvarArquivo($conn, $link , $idComentario) {
     // Valores padrão para os outros parâmetros
     $idProduto = 9999;
     $nome = 'samuelTestando';
-    $dataUpload = '00/00/0000 00:00:00';
+    date_default_timezone_set('America/Sao_Paulo');
+    $dataAtual = (new DateTime())->format('d/m/Y H:i:s');
     $mediaUser = 'samuel900';
 
     // Verifica se a conexão foi estabelecida
@@ -9030,7 +9036,7 @@ function salvarArquivo($conn, $link , $idComentario) {
     }
 
     // Liga os parâmetros à declaração SQL
-    $stmt->bind_param("iissss", $idComentario, $idProduto, $link, $nome, $dataUpload, $mediaUser);
+    $stmt->bind_param("iissss", $idComentario, $idProduto, $link, $nome, $dataAtual, $mediaUser);
 
     // Executa a declaração SQL
     $result = $stmt->execute();
