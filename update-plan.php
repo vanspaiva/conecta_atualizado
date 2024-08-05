@@ -269,7 +269,6 @@ if (!empty($_GET)) {
                                                                                     midias_comentarios_plan AS m ON c.comentVisId = m.idComentario
                                                                                 WHERE 
                                                                                     c.comentVisNumProp = 142
-
                                                                                 UNION
 
                                                                                 SELECT 
@@ -364,7 +363,6 @@ if (!empty($_GET)) {
                                                                         ?>
                                                                             <?php
                                                                             if ($_SESSION['useruid'] == $owner) {
-
 
                                                                             ?>
                                                                                 <div class="row py-1">
