@@ -9025,7 +9025,7 @@ function salvarArquivo($conn, $link , $idComentario) {
     }
 
     // Prepara a declaração SQL com placeholders
-    $stmt = $conn->prepare("INSERT INTO midias_comentarios_plan (idComentario, idProduto, path, nome, data_upload, mediaUser) VALUES (?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO midias_comentarios_plan (idComentario, idProduto, path, nome, data_upload, mediaUser) VALUES (?, ?, ?, ?, ?, ?)");
     
     if ($stmt === false) {
         die("Erro na preparação da declaração SQL: " . $conn->error);
