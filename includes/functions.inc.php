@@ -8925,7 +8925,7 @@ function getRealIP()
 
 
 
-function enviarArquivo($conn, $idProduto, $error, $name, $tmp_name, $user, $size = 0, $idComentario = null) {
+function enviarArquivo($idProduto, $error, $name, $tmp_name, $user, $size = 0, $idComentario = null) {
     if ($error) {
         die("Falha ao enviar arquivo");
     }
@@ -9050,3 +9050,14 @@ function salvarArquivo($conn, $link , $idComentario) {
     }
 }
 
+function getGoogleDriveFileId($url) {
+    $pattern = '/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)\/view/';
+    
+    if (preg_match($pattern, $url, $matches)) {
+        // O ID do arquivo está no segundo elemento do array $matches
+        return $matches[1];
+    } else {
+        // Retorna false se a URL não corresponder ao padrão
+        return false;
+    }
+}

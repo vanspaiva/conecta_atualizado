@@ -47,7 +47,7 @@ if ($_POST['coment'] != "") {
     
         }
         
-        enviarArquivo($conn, $numeroProp, $arquivo['error'], $arquivo['name'], $arquivo['tmp_name'], $user, 0 , $numeroComentario);
+        enviarArquivo($numeroProp, $arquivo['error'], $arquivo['name'], $arquivo['tmp_name'], $user, 0 , $numeroComentario);
     }
     
     header("location: ../update-plan?id=" . $nprop . "&error=sent");
@@ -75,10 +75,10 @@ if ($_POST['coment'] != "") {
                 $numeroComentario = $row['comentVisId'];
 
             }
-            enviarArquivo($conn, $numeroProp, $arquivo['error'], $arquivo['name'], $arquivo['tmp_name'],$user, 0 , $numeroComentario);
+            enviarArquivo($numeroProp, $arquivo['error'], $arquivo['name'], $arquivo['tmp_name'],$user, 0 , $numeroComentario);
         }
         else{
-            enviarArquivo($conn, $numeroProp, $arquivo['error'], $arquivo['name'], $arquivo['tmp_name'],$user);
+            enviarArquivo($numeroProp, $arquivo['error'], $arquivo['name'], $arquivo['tmp_name'],$user);
             exit();
         }
     }

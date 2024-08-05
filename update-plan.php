@@ -306,7 +306,8 @@ if (!empty($_GET)) {
                                                                             $tipoUsuario = $rowMsg['comentVisTipoUser'];
 
                                                                             $nomeArq = $rowMsg['nome'];
-                                                                            $arqPath = "includes/" . $rowMsg['path'];
+                                                                            $arqPath = $rowMsg['path'];
+                                                                            $imageID = getGoogleDriveFileId($arqPath);
                                                                             
                                                                             $timer = explode(" ", $timer);
 
@@ -374,13 +375,10 @@ if (!empty($_GET)) {
                                                                                                 <?php
                                                                                                     echo $msg . "<br>"; 
                                                                                                 ?>
-                                                                                                <a href="http://localhost:8092/projetos/conecta_atualizado/<?=$arqPath?>" target="_blank">
-                                                                                                    <img style="margin: 5px;" height="50px" width="50px" src="<?=$arqPath?>" alt="imagem"
-                                                                                                    <?php
-                                                                                                        if($arqPath == "includes/") 
-                                                                                                        echo "hidden"; 
-                                                                                                    ?>
-                                                                                                >
+                                                                                                <a href="<?=$arqPath?>" target="_blank">
+                                                                                                <img style="margin: 5px;" height="50px" width="50px" src="https://drive.google.com/thumbnail?id=<?=$imageID?>&sz=w1000" alt="imagem">
+
+                                                                                                
                                                                                                 </a>
                                                                                             </p>
 
