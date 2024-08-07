@@ -75,7 +75,6 @@ if ($_POST['coment'] != "") {
         }
         else{
             enviarArquivo($numeroProp, $arquivo, $user);
-            exit();
         }
     }
 

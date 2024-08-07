@@ -373,9 +373,10 @@ if (!empty($_GET)) {
                                                                                                 <?php
                                                                                                     echo $msg . "<br>"; 
                                                                                                 ?>
-                                                                                                <a href="<?=$arqPath?>" target="_blank">
-                                                                                                <img style="margin: 5px;" height="50px" width="50px" src="https://drive.google.com/thumbnail?id=<?=$imageID?>&sz=w1000" alt="imagem">
-
+                                                                                                <?php if(isset($arqPath)){?>
+                                                                                                    <a href="<?=$arqPath?>" target="_blank">
+                                                                                                    <img style="margin: 5px;" height="50px" width="50px" src="https://drive.google.com/thumbnail?id=<?=$imageID?>&sz=w1000" alt="imagem">
+                                                                                                <?php } ?>
                                                                                                 
                                                                                                 </a>
                                                                                             </p>
