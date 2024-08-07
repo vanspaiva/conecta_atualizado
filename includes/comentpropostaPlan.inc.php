@@ -8,12 +8,12 @@ echo '<pre>';
 print_r($_POST);
 echo '</pre>';
 
-
 if ($_POST['coment'] != "") {
 
     $coment = addslashes($_POST["coment"]);
     $nprop = addslashes($_POST["nprop"]);
     $user = addslashes($_POST["user"]);
+    $permission = addslashes($_POST['permission']);
 
     require_once 'dbh.inc.php';
     require_once 'functions.inc.php';
@@ -24,6 +24,7 @@ if ($_POST['coment'] != "") {
 
         $arquivo = $_POST['fotofile'];
         $numeroProp = $_POST['nprop'];
+        $permission = addslashes($_POST['permission']);
         
         if ($_POST['coment'] != "") {
     
@@ -43,7 +44,7 @@ if ($_POST['coment'] != "") {
     
         }
         
-        enviarArquivo($numeroProp, $arquivo, $user, $numeroComentario);
+        enviarArquivo($numeroProp, $arquivo, $user, $permission, $numeroComentario);
     }
     
     header("location: ../update-plan?id=" . $nprop . "&error=sent");
@@ -52,6 +53,7 @@ if ($_POST['coment'] != "") {
 
     $nprop = addslashes($_POST["nprop"]);
     $user = addslashes($_POST["user"]);
+    $permission = addslashes($_POST['permission']);
 
     if($_POST['fotofile']){
 
@@ -71,10 +73,10 @@ if ($_POST['coment'] != "") {
                 $numeroComentario = $row['comentVisId'];
 
             }
-            enviarArquivo($numeroProp, $arquivo, $user, $numeroComentario);
+            enviarArquivo($numeroProp, $arquivo, $user, $permission,$numeroComentario);
         }
         else{
-            enviarArquivo($numeroProp, $arquivo, $user);
+            enviarArquivo($numeroProp, $arquivo, $user,$permission);
         }
     }
 

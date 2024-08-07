@@ -8925,57 +8925,27 @@ function getRealIP()
 
 
 
-function enviarArquivo($idProduto, $arquivo, $user, $idComentario = null) {
-  /*   if ($error) {
-        die("Falha ao enviar arquivo");
-    } */
-
-    //$pasta = "arquivos/";
-    //$nomeArquivo = $name;
-    //$novoNomeArquivo = uniqid();
-    //$extensao = strtolower(pathinfo($nomeArquivo, PATHINFO_EXTENSION));
+function enviarArquivo($idProduto, $arquivo, $user, $permission,$idComentario = null) {
 
     date_default_timezone_set('America/Sao_Paulo');
     $dataAtual = (new DateTime())->format('d/m/Y H:i:s');
 
-    // Verifica se o tipo de arquivo é aceito
-/*     $tiposPermitidos = ["jpg", "png", "pdf"];
-    if (!in_array($extensao, $tiposPermitidos)) {
-        die("Tipo de arquivo não aceito");
-    } */
-
-    // Verifica o tamanho do arquivo (opcional, pode remover se não necessário)
-/*     $tamanhoMaximo = 1024 * 1024 * 5; // 5MB
-    if ($size > $tamanhoMaximo) {
-        die("O arquivo é muito grande");
-    } */
-
-    //$path = $pasta . $novoNomeArquivo . "." . $extensao;
-
-    // Mover o arquivo para o diretório local
-  /*   if (!move_uploaded_file($tmp_name, $path)) {
-        die("Falha ao mover o arquivo");
-    }
- */
     // URL do Webhook fornecido pelo Zapier
     $url = "https://hooks.zapier.com/hooks/catch/8414821/2uaplm3/";
 
     if(!isset($idComentario)){
         $idComentario = 9999;
     }
-    // Formatação dos dados para envio como multipart/form-data
     $data = [
-        'file' => $arquivo,  // Anexar o arquivo
-        //'fileName' => $nomeArquivo,
+        'file' => $arquivo, 
         'idProduto' => $idProduto,
         'dataUpload' => $dataAtual,
         'mediaUser' => $user,
-        'idComentario' => $idComentario
+        'idComentario' => $idComentario,
+        'tipoUser' => $permission
     ];
 
-    // Use cURL para enviar o arquivo para o webhook
 
-        // use key 'http' even if you send the request to https://...
        // use key 'http' even if you send the request to https://...
         $options = array(
             'http' => array(
@@ -8988,38 +8958,29 @@ function enviarArquivo($idProduto, $arquivo, $user, $idComentario = null) {
         $result = file_get_contents($url, false, $context);
         if ($result === FALSE) { /* Handle error */
         }
-    
-        
 }
 
-function salvarArquivo($conn, $link , $idProduto, $dataUpload , $mediaUser , $nomeArquivo, $idComentario = null) {
-    // Valores padrão para os outros parâmetros
+function salvarArquivo($conn, $link , $idProduto, $dataUpload , $mediaUser , $nomeArquivo, $tipoUser, $idComentario = null) {
    
-    // Verifica se a conexão foi estabelecida
     if ($conn->connect_error) {
         die("Conexão falhou: " . $conn->connect_error);
     }
 
-    // Prepara a declaração SQL com placeholders
-    $stmt = $conn->prepare("INSERT INTO midias_comentarios_plan (idComentario, idProduto, path, nome, data_upload, mediaUser) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO midias_comentarios_plan (idComentario, idProduto, path, nome, data_upload, mediaUser, tipoUser) VALUES (?, ?, ?, ?, ?, ?,?)");
     
     if ($stmt === false) {  
         die("Erro na preparação da declaração SQL: " . $conn->error);
     }
 
-    // Liga os parâmetros à declaração SQL
-    $stmt->bind_param("iissss", $idComentario, $idProduto, $link, $nomeArquivo, $dataUpload, $mediaUser);
+    $stmt->bind_param("iisssss", $idComentario, $idProduto, $link, $nomeArquivo, $dataUpload, $mediaUser, $tipoUser);
 
-    // Executa a declaração SQL
     $result = $stmt->execute();
 
     if ($result === false) {
-        // Erro na execução da declaração SQL
         $stmt->close();
         $conn->close();
         return false;
     } else {
-        // Sucesso na execução da declaração SQL
         $stmt->close();
         $conn->close();
         return true;
@@ -9030,10 +8991,8 @@ function getGoogleDriveFileId($url) {
     $pattern = '/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)\/view/';
     
     if (preg_match($pattern, $url, $matches)) {
-        // O ID do arquivo está no segundo elemento do array $matches
         return $matches[1];
     } else {
-        // Retorna false se a URL não corresponder ao padrão
         return false;
     }
 }

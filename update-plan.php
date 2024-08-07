@@ -255,40 +255,40 @@ if (!empty($_GET)) {
 
                                                                         $idProjeto = $_GET['id'];
 
-$sql = "SELECT 
-            c.comentVisText, 
-            c.comentVisHorario, 
-            c.comentVisTipoUser,
-            m.nome, 
-            m.path,
-            COALESCE(c.comentVisHorario, m.data_upload) AS data,
-            COALESCE(c.comentVisUser, m.mediaUser) AS usuario,
-            COALESCE(c.comentVisTipoUser, m.tipoUser) AS tipoUsuario
-            
-        FROM 
-            comentariosproposta AS c
-        LEFT JOIN 
-            midias_comentarios_plan AS m ON c.comentVisId = m.idComentario
-        WHERE 
-            c.comentVisNumProp = 142
-        UNION
+                                                                        $sql = "SELECT 
+                                                                                    c.comentVisText, 
+                                                                                    c.comentVisHorario, 
+                                                                                    c.comentVisTipoUser,
+                                                                                    m.nome, 
+                                                                                    m.path,
+                                                                                    COALESCE(c.comentVisHorario, m.data_upload) AS data,
+                                                                                    COALESCE(c.comentVisUser, m.mediaUser) AS usuario,
+                                                                                    COALESCE(c.comentVisTipoUser, m.tipoUser) AS tipoUsuario
+                                                                                    
+                                                                                FROM 
+                                                                                    comentariosproposta AS c
+                                                                                LEFT JOIN 
+                                                                                    midias_comentarios_plan AS m ON c.comentVisId = m.idComentario
+                                                                                WHERE 
+                                                                                    c.comentVisNumProp = 142
+                                                                                UNION
 
-        SELECT 
-            c.comentVisText, 
-            c.comentVisHorario, 
-            c.comentVisTipoUser,
-            m.nome, 
-            m.path,
-            m.data_upload AS data,
-            m.mediaUser as usuario,
-            m.tipoUser as tipoUser
-        FROM 
-            midias_comentarios_plan AS m
-        LEFT JOIN 
-            comentariosproposta AS c ON c.comentVisId = m.idComentario
-        
-        ORDER BY 
-            data ASC;"; 
+                                                                                SELECT 
+                                                                                    c.comentVisText, 
+                                                                                    c.comentVisHorario, 
+                                                                                    c.comentVisTipoUser,
+                                                                                    m.nome, 
+                                                                                    m.path,
+                                                                                    m.data_upload AS data,
+                                                                                    m.mediaUser as usuario,
+                                                                                    m.tipoUser as tipoUser
+                                                                                FROM 
+                                                                                    midias_comentarios_plan AS m
+                                                                                LEFT JOIN 
+                                                                                    comentariosproposta AS c ON c.comentVisId = m.idComentario
+                                                                                
+                                                                                ORDER BY 
+                                                                                    data ASC;"; 
 
                                                                         $retMsg = mysqli_query($conn, $sql);
                                                                         while ($rowMsg = mysqli_fetch_array($retMsg)) {
@@ -405,7 +405,7 @@ $sql = "SELECT
                                                                                                     <img style="margin: 5px;" height="50px" width="50px" src="https://drive.google.com/thumbnail?id=<?=$imageID?>&sz=w1000" alt="imagem">
                                                                                                     </a>
                                                                                                 <?php } ?>
-                                                                                                
+
                                                                                             </p>
                                                                                             
                                                                                             <small style="color: <?php echo $hourColor; ?>;"><?php echo $horario; ?></small>
@@ -444,6 +444,7 @@ $sql = "SELECT
 
                                                                                                 <div>
                                                                                                     <p class="uploader-conecta-button">
+                                                                                                        <input type="text" name="permission" value="<?= $_SESSION['userperm']?>" hidden>
                                                                                                         <input id="fotofile" name="fotofile" type="hidden" role="uploadcare-uploader" data-public-key="fe82618d53dc578231ce" data-tabs="file gdrive dropbox" data-multiple="false"
                                                                                                         data-input-accept-types="image/png, image/jpeg, application/pdf" />
                                                                                                     </p>

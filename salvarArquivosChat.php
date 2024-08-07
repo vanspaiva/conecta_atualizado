@@ -11,14 +11,14 @@ if (isset($_GET['link'])) {
     }
     else
     $idComentario = null;
-
     $idProduto = $_GET['idProduto'];
     $mediaUser = $_GET['mediaUser'];
     $dataUpload = $_GET['dataUpload'];
     $nomearquivo = $_GET['nomeArquivo'];
+    $tipoUser = $_GET['tipoUser'];
 
     // Certifique-se de que a função salvarArquivo esteja definida corretamente em includes/functions.inc.php
-    $save = salvarArquivo($conn, $link, $idProduto, $dataUpload, $mediaUser, $nomearquivo,$idComentario);
+    $save = salvarArquivo($conn, $link, $idProduto, $dataUpload, $mediaUser, $nomearquivo, $tipoUser, $idComentario);
     
     if ($save) {
         // Retorna um código de status HTTP 200 para indicar sucesso
