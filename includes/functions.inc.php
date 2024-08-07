@@ -8992,14 +8992,9 @@ function enviarArquivo($idProduto, $arquivo, $user, $idComentario = null) {
         
 }
 
-function salvarArquivo($conn, $link , $idComentario) {
+function salvarArquivo($conn, $link , $idProduto, $dataUpload , $mediaUser , $nomeArquivo, $idComentario = null) {
     // Valores padrão para os outros parâmetros
-    $idProduto = 9999;
-    $nome = 'samuelTestando';
-    date_default_timezone_set('America/Sao_Paulo');
-    $dataAtual = (new DateTime())->format('d/m/Y H:i:s');
-    $mediaUser = 'samuel900';
-
+   
     // Verifica se a conexão foi estabelecida
     if ($conn->connect_error) {
         die("Conexão falhou: " . $conn->connect_error);
@@ -9008,12 +9003,12 @@ function salvarArquivo($conn, $link , $idComentario) {
     // Prepara a declaração SQL com placeholders
     $stmt = $conn->prepare("INSERT INTO midias_comentarios_plan (idComentario, idProduto, path, nome, data_upload, mediaUser) VALUES (?, ?, ?, ?, ?, ?)");
     
-    if ($stmt === false) {
+    if ($stmt === false) {  
         die("Erro na preparação da declaração SQL: " . $conn->error);
     }
 
     // Liga os parâmetros à declaração SQL
-    $stmt->bind_param("iissss", $idComentario, $idProduto, $link, $nome, $dataAtual, $mediaUser);
+    $stmt->bind_param("iissss", $idComentario, $idProduto, $link, $nomeArquivo, $dataUpload, $mediaUser);
 
     // Executa a declaração SQL
     $result = $stmt->execute();

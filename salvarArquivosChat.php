@@ -6,8 +6,19 @@ require_once 'includes/functions.inc.php';
 
 if (isset($_GET['link'])) {
     $link = $_GET['link'];
+    if(isset($_GET['idComentario'])){
+        $idComentario = $_GET['idComentario'];
+    }
+    else
+    $idComentario = null;
+
+    $idProduto = $_GET['idProduto'];
+    $mediaUser = $_GET['mediaUser'];
+    $dataUpload = $_GET['dataUpload'];
+    $nomearquivo = $_GET['nomeArquivo'];
+
     // Certifique-se de que a função salvarArquivo esteja definida corretamente em includes/functions.inc.php
-    $save = salvarArquivo($conn, $link, 9999);
+    $save = salvarArquivo($conn, $link, $idProduto, $dataUpload, $mediaUser, $nomearquivo,$idComentario);
     
     if ($save) {
         // Retorna um código de status HTTP 200 para indicar sucesso
