@@ -255,38 +255,40 @@ if (!empty($_GET)) {
 
                                                                         $idProjeto = $_GET['id'];
 
-                                                                        $sql = "SELECT 
-                                                                                    c.comentVisText, 
-                                                                                    c.comentVisHorario, 
-                                                                                    c.comentVisTipoUser,
-                                                                                    m.nome, 
-                                                                                    m.path,
-                                                                                    COALESCE(c.comentVisHorario, m.data_upload) AS data,
-                                                                                    COALESCE(c.comentVisUser, m.mediaUser) AS usuario
-                                                                                FROM 
-                                                                                    comentariosproposta AS c
-                                                                                LEFT JOIN 
-                                                                                    midias_comentarios_plan AS m ON c.comentVisId = m.idComentario
-                                                                                WHERE 
-                                                                                    c.comentVisNumProp = 142
-                                                                                UNION
+$sql = "SELECT 
+            c.comentVisText, 
+            c.comentVisHorario, 
+            c.comentVisTipoUser,
+            m.nome, 
+            m.path,
+            COALESCE(c.comentVisHorario, m.data_upload) AS data,
+            COALESCE(c.comentVisUser, m.mediaUser) AS usuario,
+            COALESCE(c.comentVisTipoUser, m.tipoUser) AS tipoUsuario
+            
+        FROM 
+            comentariosproposta AS c
+        LEFT JOIN 
+            midias_comentarios_plan AS m ON c.comentVisId = m.idComentario
+        WHERE 
+            c.comentVisNumProp = 142
+        UNION
 
-                                                                                SELECT 
-                                                                                    c.comentVisText, 
-                                                                                    c.comentVisHorario, 
-                                                                                    c.comentVisTipoUser,
-                                                                                    m.nome, 
-                                                                                    m.path,
-                                                                                    m.data_upload AS data,
-                                                                                    m.mediaUser as usuario
-                                                                                FROM 
-                                                                                    midias_comentarios_plan AS m
-                                                                                LEFT JOIN 
-                                                                                    comentariosproposta AS c ON c.comentVisId = m.idComentario
-                                                                                WHERE 
-                                                                                    c.comentVisId IS NULL  
-                                                                                ORDER BY 
-                                                                                    data ASC;"; 
+        SELECT 
+            c.comentVisText, 
+            c.comentVisHorario, 
+            c.comentVisTipoUser,
+            m.nome, 
+            m.path,
+            m.data_upload AS data,
+            m.mediaUser as usuario,
+            m.tipoUser as tipoUser
+        FROM 
+            midias_comentarios_plan AS m
+        LEFT JOIN 
+            comentariosproposta AS c ON c.comentVisId = m.idComentario
+        
+        ORDER BY 
+            data ASC;"; 
 
                                                                         $retMsg = mysqli_query($conn, $sql);
                                                                         while ($rowMsg = mysqli_fetch_array($retMsg)) {
@@ -302,10 +304,14 @@ if (!empty($_GET)) {
                                                                                 $timer = $rowMsg['comentVisHorario'];
 
 
-                                                                            $tipoUsuario = $rowMsg['comentVisTipoUser'];
+                                                                            $tipoUsuario = $rowMsg['tipoUsuario'];
 
                                                                             $nomeArq = $rowMsg['nome'];
-                                                                            $arqPath = $rowMsg['path'];
+                                                                            
+                                                                            if($rowMsg['path'] != null){
+                                                                                $arqPath = $rowMsg['path'];
+                                                                            }
+                                                                            
                                                                             $imageID = getGoogleDriveFileId($arqPath);
                                                                             
                                                                             $timer = explode(" ", $timer);
@@ -392,7 +398,16 @@ if (!empty($_GET)) {
                                                                                     <div class="col d-flex justify-content-start w-50">
                                                                                         <div class="bg-<?php echo $ownerColor; ?>-conecta text-white rounded rounded-3 px-2 py-1">
                                                                                             <h6><b><?php echo $owner; ?>:</b></h6>
-                                                                                            <p class="text-white text-wrap" style="font-size: 0.8rem; max-width: 300px;"><?php echo $msg; ?></p>
+                                                                                            <p class="text-white text-wrap" style="font-size: 0.8rem; max-width: 300px;">
+                                                                                                <div><?php echo $msg; ?></div>
+
+
+                                                                                                <?php if(isset($arqPath)){?>
+                                                                                                    <a href="<?=$arqPath?>" target="_blank">
+                                                                                                    <img style="margin: 5px;" height="50px" width="50px" src="https://drive.google.com/thumbnail?id=<?=$imageID?>&sz=w1000" alt="imagem">
+                                                                                                <?php } ?>
+                                                                                            </p>
+                                                                                            
                                                                                             <small style="color: <?php echo $hourColor; ?>;"><?php echo $horario; ?></small>
                                                                                         </div>
                                                                                     </div>
