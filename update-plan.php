@@ -427,10 +427,47 @@ if (!empty($_GET)) {
                                                                                                 </div>
 
                                                                                                 <div>
-                                                                                                    <input type="hidden" name="MAX_FILE_SIZE" value="4194304" />
-                                                                                                        <input type="file" name="file"/> 
+                                                                                                    <p class="uploader-conecta-button">
+                                                                                                        <input id="fotofile" name="fotofile" type="hidden" role="uploadcare-uploader" data-public-key="fe82618d53dc578231ce" data-tabs="file gdrive dropbox" data-multiple="false"
+                                                                                                        data-input-accept-types="image/png, image/jpeg, application/pdf" />
+                                                                                                    </p>
                                                                                                 </div>
                                                                                             </div>
+                                                                                            <script>
+                                                                                                var NUMBER_STORED_FILES = 0;
+                                                                                                const widget4 = uploadcare.Widget("#fotofile", {
+                                                                                                publicKey: 'fe82618d53dc578231ce'
+                                                                                                });
+
+                                                                                                widget4.onUploadComplete(info => {
+                                                                                                var isstored = info.isStored;
+                                                                                                var filename = info.name;
+                                                                                                var filesize = info.size;
+                                                                                                var fileuuid = info.uuid;
+                                                                                                var cdnurl = info.cdnUrl;
+
+                                                                                                console.log('Upload Complete Info:', info);
+
+                                                                                                if (isstored) {
+                                                                                                    console.log('File stored successfully.');
+                                                                                                    console.log('File URL:', cdnurl);
+                                                                                                } else {
+                                                                                                    console.log('File not stored.');
+                                                                                                }
+
+                                                                                                // Assign values to hidden input fields
+                                                                                                document.getElementById("isstored4").value = isstored;
+                                                                                                document.getElementById("filename4").value = filename;
+                                                                                                document.getElementById("filesize4").value = filesize;
+                                                                                                document.getElementById("fileuuid4").value = fileuuid;
+                                                                                                document.getElementById("cdnurl4").value = cdnurl;
+
+                                                                                                NUMBER_STORED_FILES++;
+                                                                                                document.getElementById("qtdfiles").value = NUMBER_STORED_FILES;
+
+                                                                                                document.getElementById("checkfile4").hidden = false;
+                                                                                                });
+                                                                                            </script>
                                                                                             <div class="p-1">
                                                                                                 <button type="submit" name="submit" class="btn btn-primary" style="font-size: small;"> <i class="fa fa-paper-plane" aria-hidden="true"></i> </button>
                                                                                             </div>

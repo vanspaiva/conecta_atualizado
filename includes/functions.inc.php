@@ -8925,45 +8925,48 @@ function getRealIP()
 
 
 
-function enviarArquivo($idProduto, $error, $name, $tmp_name, $user, $size = 0, $idComentario = null) {
-    if ($error) {
+function enviarArquivo($idProduto, $arquivo, $user, $idComentario = null) {
+  /*   if ($error) {
         die("Falha ao enviar arquivo");
-    }
+    } */
 
-    $pasta = "arquivos/";
-    $nomeArquivo = $name;
-    $novoNomeArquivo = uniqid();
-    $extensao = strtolower(pathinfo($nomeArquivo, PATHINFO_EXTENSION));
+    //$pasta = "arquivos/";
+    //$nomeArquivo = $name;
+    //$novoNomeArquivo = uniqid();
+    //$extensao = strtolower(pathinfo($nomeArquivo, PATHINFO_EXTENSION));
 
     date_default_timezone_set('America/Sao_Paulo');
     $dataAtual = (new DateTime())->format('d/m/Y H:i:s');
 
     // Verifica se o tipo de arquivo é aceito
-    $tiposPermitidos = ["jpg", "png", "pdf"];
+/*     $tiposPermitidos = ["jpg", "png", "pdf"];
     if (!in_array($extensao, $tiposPermitidos)) {
         die("Tipo de arquivo não aceito");
-    }
+    } */
 
     // Verifica o tamanho do arquivo (opcional, pode remover se não necessário)
-    $tamanhoMaximo = 1024 * 1024 * 5; // 5MB
+/*     $tamanhoMaximo = 1024 * 1024 * 5; // 5MB
     if ($size > $tamanhoMaximo) {
         die("O arquivo é muito grande");
-    }
+    } */
 
-    $path = $pasta . $novoNomeArquivo . "." . $extensao;
+    //$path = $pasta . $novoNomeArquivo . "." . $extensao;
 
     // Mover o arquivo para o diretório local
-    if (!move_uploaded_file($tmp_name, $path)) {
+  /*   if (!move_uploaded_file($tmp_name, $path)) {
         die("Falha ao mover o arquivo");
     }
-
+ */
     // URL do Webhook fornecido pelo Zapier
     $url = "https://hooks.zapier.com/hooks/catch/8414821/2uaplm3/";
 
+    if(!isset($idComentario)){
+        $idComentario = 9999;
+    }
     // Formatação dos dados para envio como multipart/form-data
     $data = [
-        'file' => new CURLFile(realpath($path)),  // Anexar o arquivo
-        'fileName' => $nomeArquivo,
+        'file' => $arquivo,  // Anexar o arquivo
+        //'fileName' => $nomeArquivo,
         'idProduto' => $idProduto,
         'dataUpload' => $dataAtual,
         'mediaUser' => $user,
@@ -8988,8 +8991,6 @@ function enviarArquivo($idProduto, $error, $name, $tmp_name, $user, $size = 0, $
     
         
 }
-
-
 
 function salvarArquivo($conn, $link , $idComentario) {
     // Valores padrão para os outros parâmetros

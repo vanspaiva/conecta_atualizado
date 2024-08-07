@@ -3,10 +3,6 @@
 require_once 'dbh.inc.php';
 require_once 'functions.inc.php';
 
-$arquivo = $_FILES['file'];
-echo '<pre>';
-print_r($arquivo);
-echo '</pre>';
 
 echo '<pre>';
 print_r($_POST);
@@ -24,9 +20,9 @@ if ($_POST['coment'] != "") {
 
     addComentProp($conn, $coment, $nprop, $user);
 
-    if($_FILES['file']['size'] > 0){
+    if(isset($_POST['fotofile'])){
 
-        $arquivo = $_FILES['file'];
+        $arquivo = $_POST['fotofile'];
         $numeroProp = $_POST['nprop'];
         
         if ($_POST['coment'] != "") {
@@ -47,7 +43,7 @@ if ($_POST['coment'] != "") {
     
         }
         
-        enviarArquivo($numeroProp, $arquivo['error'], $arquivo['name'], $arquivo['tmp_name'], $user, 0 , $numeroComentario);
+        enviarArquivo($numeroProp, $arquivo, $user, $numeroComentario);
     }
     
     header("location: ../update-plan?id=" . $nprop . "&error=sent");
@@ -57,9 +53,9 @@ if ($_POST['coment'] != "") {
     $nprop = addslashes($_POST["nprop"]);
     $user = addslashes($_POST["user"]);
 
-    if($_FILES['file']['size'] > 0){
+    if($_POST['fotofile']){
 
-        $arquivo = $_FILES['file'];
+        $arquivo = $_POST['fotofile'];
         $numeroProp = $_POST['nprop'];
         
         if ($_POST['coment'] != "") {
@@ -75,10 +71,10 @@ if ($_POST['coment'] != "") {
                 $numeroComentario = $row['comentVisId'];
 
             }
-            enviarArquivo($numeroProp, $arquivo['error'], $arquivo['name'], $arquivo['tmp_name'],$user, 0 , $numeroComentario);
+            enviarArquivo($numeroProp, $arquivo, $user, $numeroComentario);
         }
         else{
-            enviarArquivo($numeroProp, $arquivo['error'], $arquivo['name'], $arquivo['tmp_name'],$user);
+            enviarArquivo($numeroProp, $arquivo, $user);
             exit();
         }
     }
