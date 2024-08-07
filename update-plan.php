@@ -382,9 +382,8 @@ $sql = "SELECT
                                                                                                 <?php if(isset($arqPath)){?>
                                                                                                     <a href="<?=$arqPath?>" target="_blank">
                                                                                                     <img style="margin: 5px;" height="50px" width="50px" src="https://drive.google.com/thumbnail?id=<?=$imageID?>&sz=w1000" alt="imagem">
+                                                                                                    </a>
                                                                                                 <?php } ?>
-                                                                                                
-                                                                                                </a>
                                                                                             </p>
 
                                                                                             <small style="color: #323236;"><?php echo $horario; ?></small>
@@ -401,11 +400,12 @@ $sql = "SELECT
                                                                                             <p class="text-white text-wrap" style="font-size: 0.8rem; max-width: 300px;">
                                                                                                 <div><?php echo $msg; ?></div>
 
-
                                                                                                 <?php if(isset($arqPath)){?>
                                                                                                     <a href="<?=$arqPath?>" target="_blank">
                                                                                                     <img style="margin: 5px;" height="50px" width="50px" src="https://drive.google.com/thumbnail?id=<?=$imageID?>&sz=w1000" alt="imagem">
+                                                                                                    </a>
                                                                                                 <?php } ?>
+                                                                                                
                                                                                             </p>
                                                                                             
                                                                                             <small style="color: <?php echo $hourColor; ?>;"><?php echo $horario; ?></small>
