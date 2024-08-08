@@ -312,15 +312,55 @@ if (!empty($_GET) && isset($_SESSION["useruid"])) {
                                                                 <?php
                                                                 // $idProjeto = $_GET['id'];
                                                                 // echo $idProjeto;
+                                                                $sql = "SELECT 
+                                                                    c.comentVisText, 
+                                                                    c.comentVisHorario, 
+                                                                    c.comentVisTipoUser,
+                                                                    m.nome, 
+                                                                    m.path,
+                                                                    COALESCE(c.comentVisHorario, m.data_upload) AS data,
+                                                                    COALESCE(c.comentVisUser, m.mediaUser) AS usuario,
+                                                                    COALESCE(c.comentVisTipoUser, m.tipoUser) AS tipoUsuario
+                                                                    
+                                                                FROM 
+                                                                    comentariosvisualizador AS c
+                                                                LEFT JOIN 
+                                                                    midias_comentarios_visualizador AS m ON c.comentVisId = m.idComentario
+                                                                WHERE 
+                                                                    c.comentVisNumPed = 7690
+                                                                UNION
 
-                                                                $retMsg = mysqli_query($conn, "SELECT * FROM comentariosvisualizador WHERE comentVisNumPed='$idProjeto' ORDER BY comentVisId ASC");
+                                                                SELECT 
+                                                                    c.comentVisText, 
+                                                                    c.comentVisHorario, 
+                                                                    c.comentVisTipoUser,
+                                                                    m.nome, 
+                                                                    m.path,
+                                                                    m.data_upload AS data,
+                                                                    m.mediaUser as usuario,
+                                                                    m.tipoUser as tipoUser
+                                                                FROM 
+                                                                    midias_comentarios_plan AS m
+                                                                LEFT JOIN 
+                                                                    comentariosproposta AS c ON c.comentVisId = m.idComentario
+
+                                                                ORDER BY 
+                                                                    data ASC;";
 
 
+                                                                $retMsg = mysqli_query($conn, $sql);
                                                                 while ($rowMsg = mysqli_fetch_array($retMsg)) {
+
                                                                     $msg = $rowMsg['comentVisText'];
-                                                                    $owner = $rowMsg['comentVisUser'];
+                                                                    $owner = $rowMsg['usuario'];
                                                                     $timer = $rowMsg['comentVisHorario'];
-                                                                    $tipoUsuario = $rowMsg['comentVisTipoUser'];
+                                                                    $tipoUsuario = $rowMsg['tipoUsuario'];
+
+                                                                    if($rowMsg['path'] != null){
+                                                                        $arqPath = $rowMsg['path'];
+                                                                        $imageID = getGoogleDriveFileId($arqPath);
+                                                                    }   
+
 
                                                                     $timer = explode(" ", $timer);
                                                                     $data = dateFormat3($timer[0]);
@@ -391,7 +431,16 @@ if (!empty($_GET) && isset($_SESSION["useruid"])) {
                                                                             <div class="col d-flex justify-content-end w-50">
                                                                                 <div class="bg-secondary bg-gradient text-white rounded rounded-3 px-2 py-1">
                                                                                     <h6><b><?php echo $owner; ?>:</b></h6>
-                                                                                    <p class="text-white text-wrap" style="font-size: 0.8rem; max-width: 200px;"><?php echo $msg; ?></p>
+                                                                                    <p class="text-white text-wrap" style="font-size: 0.8rem; max-width: 200px;">
+                                                                                        <?php echo $msg . "<br>"; ?>
+
+                                                                                        <?php if(isset($arqPath)){?>    
+                                                                                            <a href="<?=$arqPath?>" target="_blank">
+                                                                                            <img style="margin: 5px;" height="50px" width="50px" src="https://drive.google.com/thumbnail?id=<?=$imageID?>&sz=w1000" alt="imagem">
+                                                                                            </a>
+                                                                                        <?php } ?>
+                                                                                    </p>
+                                                      
                                                                                     <small style="color: #323236;"><?php echo $horario; ?></small>
                                                                                 </div>
                                                                             </div>
@@ -404,7 +453,16 @@ if (!empty($_GET) && isset($_SESSION["useruid"])) {
                                                                             <div class="col d-flex justify-content-start w-50">
                                                                                 <div class="bg-<?php echo $ownerColor; ?> text-white rounded rounded-3 px-2 py-1">
                                                                                     <h6><b><?php echo $owner; ?>:</b></h6>
-                                                                                    <p class="text-white text-wrap" style="font-size: 0.8rem; max-width: 200px;"><?php echo $msg; ?></p>
+                                                                                    <p class="text-white text-wrap" style="font-size: 0.8rem; max-width: 200px;">
+                                                                                        <?php echo $msg; ?>
+
+                                                                                        <?php if(isset($arqPath)){?>    
+                                                                                            <a href="<?=$arqPath?>" target="_blank">
+                                                                                            <img style="margin: 5px;" height="50px" width="50px" src="https://drive.google.com/thumbnail?id=<?=$imageID?>&sz=w1000" alt="imagem">
+                                                                                            </a>
+                                                                                        <?php } ?>
+
+                                                                                    </p>
                                                                                     <small style="color: <?php echo $hourColor; ?>;"><?php echo $horario; ?></small>
                                                                                 </div>
                                                                             </div>

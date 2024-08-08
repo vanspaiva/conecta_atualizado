@@ -10,6 +10,9 @@ exit(); */
 
 if (isset($_POST["submit"])) {
 
+    require_once 'dbh.inc.php';
+    require_once 'functions.inc.php';
+
 
     if($_POST['fotofile'] != "" && $_POST["coment"] != ""){
 
@@ -18,9 +21,6 @@ if (isset($_POST["submit"])) {
         $user = addslashes($_POST["user"]);
         $arquivo = addslashes($_POST['fotofile']);
         $permission = addslashes($_POST['permission']);
-    
-        require_once 'dbh.inc.php';
-        require_once 'functions.inc.php';
     
         addComentCaso($conn, $coment, $nped, $user);
     
@@ -40,9 +40,6 @@ if (isset($_POST["submit"])) {
     }
     elseif($_POST['fotofile'] != "" && $_POST["coment"] == ""){
 
-        require_once 'dbh.inc.php';
-        require_once 'functions.inc.php';
-
         $nped = addslashes($_POST["nped"]);
         $user = addslashes($_POST["user"]);
         $arquivo = addslashes($_POST['fotofile']);
@@ -56,8 +53,14 @@ if (isset($_POST["submit"])) {
         exit();
 
     }
-
+    else{
+        $coment = addslashes($_POST["coment"]);
+        $nped = addslashes($_POST["nped"]);
+        $user = addslashes($_POST["user"]);
     
+        addComentCaso($conn, $coment, $nped, $user);
+    }
+
 } else {
     header("location: ../unit?id=" . $hashedPED . "&error=errorcoment");
     exit();
