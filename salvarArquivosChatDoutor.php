@@ -16,12 +16,8 @@ if (isset($_GET['link'])) {
     
     $idPedido = $_GET['idPedido'];
     $mediaUser = $_GET['mediaUser'];
-    if(isset($_GET['dataUpload'])){
-        $dataUpload = $_GET['dataUpload'];
-    }
-    else{
-        $dataUpload = "NAO ESTOU RECEBENDO NADA";
-    }
+    $dataUpload = $_GET['dataUpload'];
+    $dataUpload = "NAO ESTOU RECEBENDO NADA";
     
     $nomearquivo = $_GET['nomeArquivo'];
     $tipoUser = $_GET['tipoUser'];
