@@ -40,6 +40,9 @@ if (isset($_POST["submit"])) {
     }
     elseif($_POST['fotofile'] != "" && $_POST["coment"] == ""){
 
+        require_once 'dbh.inc.php';
+        require_once 'functions.inc.php';
+
         $nped = addslashes($_POST["nped"]);
         $user = addslashes($_POST["user"]);
         $arquivo = addslashes($_POST['fotofile']);
