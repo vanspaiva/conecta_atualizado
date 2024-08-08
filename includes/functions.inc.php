@@ -9010,7 +9010,7 @@ function enviarArquivoChatDoutor($idPedido, $arquivo, $user, $permission,$idCome
     if(!isset($idComentario)){
         $idComentario = 9999;
     }
-    
+
     $data = [
         'file' => $arquivo, 
         'idPedido' => $idPedido,
@@ -9036,7 +9036,7 @@ function enviarArquivoChatDoutor($idPedido, $arquivo, $user, $permission,$idCome
 }
 
 
-function salvarArquivoChatDoutor($conn, $link , $idProduto, $dataUpload , $mediaUser , $nomeArquivo, $tipoUser, $idComentario = null) {
+function salvarArquivoChatDoutor($conn, $link , $idPedido, $dataUpload , $mediaUser , $nomeArquivo, $tipoUser, $idComentario = null) {
    
     if ($conn->connect_error) {
         die("Conexão falhou: " . $conn->connect_error);
@@ -9048,7 +9048,7 @@ function salvarArquivoChatDoutor($conn, $link , $idProduto, $dataUpload , $media
         die("Erro na preparação da declaração SQL: " . $conn->error);
     }
 
-    $stmt->bind_param("iisssss", $idComentario, $idProduto, $link, $nomeArquivo, $dataUpload, $mediaUser, $tipoUser);
+    $stmt->bind_param("iisssss", $idComentario, $idPedido, $link, $nomeArquivo, $dataUpload, $mediaUser, $tipoUser);
 
     $result = $stmt->execute();
 
