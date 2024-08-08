@@ -8962,12 +8962,16 @@ function enviarArquivo($idProduto, $arquivo, $user, $permission,$idComentario = 
 }
 
 function salvarArquivo($conn, $link , $idProduto, $dataUpload , $mediaUser , $nomeArquivo, $tipoUser, $idComentario = null) {
-   
     if ($conn->connect_error) {
         die("Conexão falhou: " . $conn->connect_error);
     }
 
-    $stmt = $conn->prepare("INSERT INTO midias_comentarios_plan (idComentario, idProduto, path, nome, data_upload, mediaUser, tipoUser) VALUES (?, ?, ?, ?, ?, ?,?)");
+    // Verifica se o valor de dataUpload não é nulo
+    if ($dataUpload === null || $dataUpload === "") {
+        die("O valor de dataUpload é NULL ou vazio.");
+    }
+
+    $stmt = $conn->prepare("INSERT INTO midias_comentarios_plan (idComentario, idProduto, path, nome, data_upload, mediaUser, tipoUser) VALUES (?, ?, ?, ?, ?, ?, ?)");
     
     if ($stmt === false) {  
         die("Erro na preparação da declaração SQL: " . $conn->error);
@@ -8987,6 +8991,7 @@ function salvarArquivo($conn, $link , $idProduto, $dataUpload , $mediaUser , $no
         return true;
     }
 }
+
 
 function getGoogleDriveFileId($url) {
     $pattern = '/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)\/view/';
