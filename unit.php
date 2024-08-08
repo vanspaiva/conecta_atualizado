@@ -318,6 +318,7 @@ if (!empty($_GET) && isset($_SESSION["useruid"])) {
                                                                     c.comentVisTipoUser,
                                                                     m.nome, 
                                                                     m.path,
+                                                                    m.idPedido,
                                                                     COALESCE(c.comentVisHorario, m.data_upload) AS data,
                                                                     COALESCE(c.comentVisUser, m.mediaUser) AS usuario,
                                                                     COALESCE(c.comentVisTipoUser, m.tipoUser) AS tipoUsuario
@@ -328,24 +329,27 @@ if (!empty($_GET) && isset($_SESSION["useruid"])) {
                                                                     midias_comentarios_visualizador AS m ON c.comentVisId = m.idComentario
                                                                 WHERE 
                                                                     c.comentVisNumPed = \"$idProjeto\"
-                                                                UNION
+
+                                                                UNION ALL
 
                                                                 SELECT 
-                                                                    c.comentVisText, 
+                                                                    c.comentVisText,
                                                                     c.comentVisHorario, 
                                                                     c.comentVisTipoUser,
                                                                     m.nome, 
                                                                     m.path,
+                                                                    m.idPedido,
                                                                     m.data_upload AS data,
-                                                                    m.mediaUser as usuario,
-                                                                    m.tipoUser as tipoUser
+                                                                    m.mediaUser AS usuario,
+                                                                    m.tipoUser AS tipoUsuario
                                                                 FROM 
-                                                                    midias_comentarios_plan AS m
+                                                                    midias_comentarios_visualizador AS m
                                                                 LEFT JOIN 
                                                                     comentariosproposta AS c ON c.comentVisId = m.idComentario
-
+                                                                WHERE 
+                                                                    m.idPedido = \"$idProjeto\"
                                                                 ORDER BY 
-                                                                    data ASC;";
+                                                                    `data` DESC;";
 
 
                                                                 $retMsg = mysqli_query($conn, $sql);
