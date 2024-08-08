@@ -9038,6 +9038,8 @@ function enviarArquivoChatDoutor($idPedido, $arquivo, $user, $permission, $dataU
 
 
 function salvarArquivoChatDoutor($conn, $link , $idPedido, $dataUpload , $mediaUser , $nomeArquivo, $tipoUser, $idComentario = null) {
+
+    $dataUpload = "1234";
    
     if ($conn->connect_error) {
         die("Conexão falhou: " . $conn->connect_error);
