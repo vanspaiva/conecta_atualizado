@@ -21,11 +21,12 @@ if (isset($_GET['link'])) {
     $mediaUser = $_GET['mediaUser'];
     $dataUpload = strval($_GET['dataUpload']);
     $dataUpload = strval("NAO ESTOU RECEBENDO NADA");
+    $data = $_GET['dataUpload'];
     
     $nomearquivo = $_GET['nomeArquivo'];
     $tipoUser = $_GET['tipoUser'];
 
-    $save = salvarArquivoChatDoutor($conn, $link, $idPedido, $dataUpload, $mediaUser, $nomearquivo, $tipoUser, $idComentario);
+    $save = salvarArquivoChatDoutor($conn, $link, $idPedido, $data, $mediaUser, $nomearquivo, $tipoUser, $idComentario);
     
     if ($save) {
         // Retorna um código de status HTTP 200 para indicar sucesso
