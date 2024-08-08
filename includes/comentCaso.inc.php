@@ -11,7 +11,6 @@ exit(); */
 if (isset($_POST["submit"])) {
 
 
-
     if($_POST['fotofile'] != "" && $_POST["coment"] != ""){
 
         $coment = addslashes($_POST["coment"]);
@@ -39,9 +38,22 @@ if (isset($_POST["submit"])) {
         exit();
 
     }
-    else{
-        
+    elseif($_POST['fotofile'] != "" && $_POST["coment"] == ""){
+
+        $nped = addslashes($_POST["nped"]);
+        $user = addslashes($_POST["user"]);
+        $arquivo = addslashes($_POST['fotofile']);
+        $permission = addslashes($_POST['permission']);
+
+        enviarArquivoChatDoutor($nped, $arquivo, $user, $permission);
+    
+        $hashedPED = hashItemNatural($nped);
+    
+        header("location: ../unit?id=" . $hashedPED . "&error=sentcoment");
+        exit();
+
     }
+
     
 } else {
     header("location: ../unit?id=" . $hashedPED . "&error=errorcoment");
