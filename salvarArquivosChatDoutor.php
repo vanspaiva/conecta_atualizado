@@ -7,12 +7,12 @@ require_once 'includes/functions.inc.php';
 if (isset($_GET['link'])) {
     $link = $_GET['link'];
 
-    if(isset($_GET['idComentario'])){
-        $idComentario = $_GET['idComentario'];
+    if(isset($_GET['id Comentario'])){
+        $idComentario = $_GET['id Comentario'];
     }
     
     $idComentario = null;
-    $idPedido = $_GET['idProduto'];
+    $idPedido = $_GET['idPedido'];
     $mediaUser = $_GET['mediaUser'];
     $dataUpload = $_GET['dataUpload'];
     $nomearquivo = $_GET['nomeArquivo'];
