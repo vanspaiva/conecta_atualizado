@@ -9004,7 +9004,7 @@ function getGoogleDriveFileId($url) {
 }
 
 
-function enviarArquivoChatDoutor($idPedido, $arquivo, $user, $permission, $data, $idComentario = null) {
+function enviarArquivoChatDoutor($idPedido, $arquivo, $user, $permission, $dataUpload, $idComentario = null) {
 
 
     // URL do Webhook fornecido pelo Zapier
@@ -9017,7 +9017,7 @@ function enviarArquivoChatDoutor($idPedido, $arquivo, $user, $permission, $data,
     $data = [
         'file' => $arquivo, 
         'idPedido' => $idPedido,
-        'dataUpload' => $data,
+        'dataUpload' => $dataUpload,
         'mediaUser' => $user,
         'idComentario' => $idComentario,
         'tipoUser' => $permission
