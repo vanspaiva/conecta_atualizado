@@ -57,6 +57,7 @@ if (isset($_POST["submit"])) {
         exit();
 
     }
+    
     else{
         $coment = addslashes($_POST["coment"]);
         $nped = addslashes($_POST["nped"]);
