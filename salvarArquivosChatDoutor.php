@@ -5,6 +5,7 @@ require_once 'includes/dbh.inc.php';
 require_once 'includes/functions.inc.php';
 
 print_r($_GET);
+exit();
 
 if (isset($_GET['link'])) {
     $link = $_GET['link'];
