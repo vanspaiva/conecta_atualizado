@@ -8961,54 +8961,34 @@ function enviarArquivo($idProduto, $arquivo, $user, $permission,$idComentario = 
         }
 }
 
-function salvarArquivo($conn, $link, $idProduto, $dataUpload, $mediaUser, $nomeArquivo, $tipoUser, $idComentario = null) {
-    // Verifica se a conexão com o banco de dados é válida
+function salvarArquivo($conn, $link , $idProduto, $dataUpload , $mediaUser , $nomeArquivo, $tipoUser, $idComentario = null) {
     if ($conn->connect_error) {
         die("Conexão falhou: " . $conn->connect_error);
     }
 
-    // Ativa o relatório de erros para o MySQLi
-    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-
-    // Verifica se o valor de dataUpload não é nulo ou vazio
-    if (empty($dataUpload)) {
+    // Verifica se o valor de dataUpload não é nulo
+    if ($dataUpload === null || $dataUpload === "") {
         die("O valor de dataUpload é NULL ou vazio.");
     }
 
-    try {
-        // Prepara a declaração SQL
-        $stmt = $conn->prepare("INSERT INTO midias_comentarios_plan (idComentario, idProduto, path, nome, data_upload, mediaUser, tipoUser) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO midias_comentarios_plan (idComentario, idPedido, path, nome, data_upload, mediaUser, tipoUser) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    
+    if ($stmt === false) {  
+        die("Erro na preparação da declaração SQL: " . $conn->error);
+    }
 
-        if ($stmt === false) {
-            throw new Exception("Erro na preparação da declaração SQL: " . $conn->error);
-        }
+    $stmt->bind_param("iisssss", $idComentario, $idProduto, $link, $nomeArquivo, $dataUpload, $mediaUser, $tipoUser);
 
-        // Verifica o tipo de idComentario para definir corretamente os parâmetros
-        if ($idComentario === null) {
-            // Se idComentario for null, usamos um tipo NULL BIND
-            $stmt->bind_param("iisssss", null, $idProduto, $link, $nomeArquivo, $dataUpload, $mediaUser, $tipoUser);
-        } else {
-            $stmt->bind_param("iisssss", $idComentario, $idProduto, $link, $nomeArquivo, $dataUpload, $mediaUser, $tipoUser);
-        }
+    $result = $stmt->execute();
 
-        // Executa a declaração
-        $stmt->execute();
-
-        // Fecha a declaração
+    if ($result === false) {
         $stmt->close();
-        // Fecha a conexão
-        $conn->close();
-
-        return true;
-
-    } catch (Exception $e) {
-        // Exibe o erro e garante que a conexão e o statement sejam fechados
-        error_log("Erro: " . $e->getMessage());
-        if (isset($stmt)) {
-            $stmt->close();
-        }
         $conn->close();
         return false;
+    } else {
+        $stmt->close();
+        $conn->close();
+        return true;
     }
 }
 
