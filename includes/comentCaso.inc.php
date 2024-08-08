@@ -49,7 +49,7 @@ if (isset($_POST["submit"])) {
         $arquivo = addslashes($_POST['fotofile']);
         $permission = addslashes($_POST['permission']);
 
-        enviarArquivoChatDoutor($nped, $arquivo, $user, $dataAtual, $permission);
+        enviarArquivoChatDoutor($nped, $arquivo, $user, $permission, $dataAtual);
     
         $hashedPED = hashItemNatural($nped);
     
