@@ -4,6 +4,8 @@ header("Content-Type:application/json");
 require_once 'includes/dbh.inc.php';
 require_once 'includes/functions.inc.php';
 
+print_r($_GET);
+
 if (isset($_GET['link'])) {
     $link = $_GET['link'];
 
