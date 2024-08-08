@@ -24,13 +24,14 @@ if (isset($_POST["submit"])) {
     
         addComentCaso($conn, $coment, $nped, $user);
     
-        $sql = "SELECT * FROM `comentariosvisualizador` WHERE comentVisNumPed = $nped ORDER BY comentVisId desc LIMIT 1;";
+        $sql = "SELECT comentVisId, comentVisHorario FROM `comentariosvisualizador` WHERE comentVisNumPed = $nped ORDER BY comentVisId DESC LIMIT 1;";
         if($result = mysqli_query($conn, $sql)){
             $row = mysqli_fetch_assoc($result);
             $numeroComentario = $row['comentVisId'];
+            $data = $row['comentVisHorario'];
         }
 
-        enviarArquivoChatDoutor($nped, $arquivo, $user, $permission, $numeroComentario);
+        enviarArquivoChatDoutor($nped, $arquivo, $user, $permission,$data, $numeroComentario);
     
         $hashedPED = hashItemNatural($nped);
     
@@ -45,7 +46,7 @@ if (isset($_POST["submit"])) {
         $arquivo = addslashes($_POST['fotofile']);
         $permission = addslashes($_POST['permission']);
 
-        enviarArquivoChatDoutor($nped, $arquivo, $user, $permission);
+        enviarArquivoChatDoutor($nped, $arquivo, $user, $data, $permission);
     
         $hashedPED = hashItemNatural($nped);
     
