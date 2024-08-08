@@ -26,7 +26,7 @@ if (isset($_GET['link'])) {
     $nomearquivo = $_GET['nomeArquivo'];
     $tipoUser = $_GET['tipoUser'];
 
-    $save = salvarArquivoChatDoutor($conn, $link, $idPedido, $data, $mediaUser, $nomearquivo, $tipoUser, $idComentario);
+    $save = salvarArquivoChatDoutor($conn, $link, $idPedido, "testandkfjfsoisdjsdjdsjdsjdsj", $mediaUser, $nomearquivo, $tipoUser, $idComentario);
     
     if ($save) {
         // Retorna um código de status HTTP 200 para indicar sucesso
