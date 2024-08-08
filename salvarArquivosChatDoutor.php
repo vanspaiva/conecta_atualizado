@@ -7,8 +7,8 @@ require_once 'includes/functions.inc.php';
 if (isset($_GET['link'])) {
     $link = $_GET['link'];
 
-    if(isset($_GET['id Comentario'])){
-        $idComentario = $_GET['id Comentario'];
+    if(isset($_GET['idComentario'])){
+        $idComentario = $_GET['idComentario'];
     }
     
     $idComentario = null;
