@@ -345,7 +345,7 @@ if (!empty($_GET) && isset($_SESSION["useruid"])) {
                                                                 FROM 
                                                                     midias_comentarios_visualizador AS m
                                                                 LEFT JOIN 
-                                                                    comentariosproposta AS c ON c.comentVisId = m.idComentario
+                                                                    comentariosvisualizador AS c ON c.comentVisId = m.idComentario
                                                                 WHERE 
                                                                     m.idPedido = \"$idProjeto\"
                                                                 ORDER BY 
