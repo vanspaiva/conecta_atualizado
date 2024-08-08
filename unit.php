@@ -327,7 +327,7 @@ if (!empty($_GET) && isset($_SESSION["useruid"])) {
                                                                 LEFT JOIN 
                                                                     midias_comentarios_visualizador AS m ON c.comentVisId = m.idComentario
                                                                 WHERE 
-                                                                    c.comentVisNumPed = 7690
+                                                                    c.comentVisNumPed = \"$idProjeto\"
                                                                 UNION
 
                                                                 SELECT 
