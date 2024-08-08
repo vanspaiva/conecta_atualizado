@@ -31,7 +31,7 @@ if (isset($_POST["submit"])) {
             $data = $row['comentVisHorario'];
         }
 
-        enviarArquivoChatDoutor($nped, $arquivo, $user, $permission,$data, $numeroComentario);
+        enviarArquivoChatDoutor($nped, $arquivo, $user, $permission, $data, $numeroComentario);
     
         $hashedPED = hashItemNatural($nped);
     
@@ -41,12 +41,15 @@ if (isset($_POST["submit"])) {
     }
     elseif($_POST['fotofile'] != "" && $_POST["coment"] == ""){
 
+        $data = new DateTime();
+        // Formata a data e hora no formato desejado
+        $dataAtual = $data->format('Y-m-d H:i:s');
         $nped = addslashes($_POST["nped"]);
         $user = addslashes($_POST["user"]);
         $arquivo = addslashes($_POST['fotofile']);
         $permission = addslashes($_POST['permission']);
 
-        enviarArquivoChatDoutor($nped, $arquivo, $user, $data, $permission);
+        enviarArquivoChatDoutor($nped, $arquivo, $user, $dataAtual, $permission);
     
         $hashedPED = hashItemNatural($nped);
     
