@@ -9022,8 +9022,6 @@ function enviarArquivoChatDoutor($idPedido, $arquivo, $user, $permission, $dataU
         'idComentario' => $idComentario,
         'tipoUser' => $permission
     ];
-
-
        // use key 'http' even if you send the request to https://...
         $options = array(
             'http' => array(
