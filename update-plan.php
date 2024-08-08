@@ -63,6 +63,7 @@ if (!empty($_GET)) {
             <?php
             include_once 'php/navbar-dash.php';
             include_once 'php/lateral-nav.php';
+  
 
             $ret = mysqli_query($conn, "SELECT * FROM propostas WHERE propId='" . $idGERAL . "';");
             while ($row = mysqli_fetch_array($ret)) {
@@ -215,7 +216,6 @@ if (!empty($_GET)) {
                         }
                         ?>
                     </div>
-
                     <div class="container-fluid">
                         <div class="row d-flex justify-content-center">
                             <div class="col-sm">
@@ -270,7 +270,7 @@ if (!empty($_GET)) {
                                                                                 LEFT JOIN 
                                                                                     midias_comentarios_plan AS m ON c.comentVisId = m.idComentario
                                                                                 WHERE 
-                                                                                    c.comentVisNumProp = 142
+                                                                                    c.comentVisNumProp = \"$idProjeto\"
                                                                                 UNION
 
                                                                                 SELECT 

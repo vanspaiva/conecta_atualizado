@@ -4,9 +4,9 @@ require_once 'dbh.inc.php';
 require_once 'functions.inc.php';
 
 
-echo '<pre>';
-print_r($_POST);
-echo '</pre>';
+//echo '<pre>';
+//print_r($_POST);
+//echo '</pre>';
 
 if ($_POST['coment'] != "") {
 

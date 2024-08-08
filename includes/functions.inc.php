@@ -5740,7 +5740,8 @@ function addComentCaso($conn, $coment, $nped, $user)
     $nomeRep = getNomeRep($conn, $pedData['pedRep']);
 
     //Link live API
-    $url = 'https://webhooks.integrately.com/a/webhooks/ca885d82fd54408abf93ab8fa1eb0f9c?';
+    //$url = 'https://webhooks.integrately.com/a/webhooks/ca885d82fd54408abf93ab8fa1eb0f9c?';
+    $url = '';
 
     $data = array(
         'NumPedido' => $nped,
@@ -8994,5 +8995,70 @@ function getGoogleDriveFileId($url) {
         return $matches[1];
     } else {
         return false;
+    }
+}
+
+
+function enviarArquivoChatDoutor($idPedido, $arquivo, $user, $permission,$idComentario = null) {
+
+    date_default_timezone_set('America/Sao_Paulo');
+    $dataAtual = (new DateTime())->format('d/m/Y H:i:s');
+
+    // URL do Webhook fornecido pelo Zapier
+    $url = "https://hooks.zapier.com/hooks/catch/8414821/241yfwx/";
+
+    if(!isset($idComentario)){
+        $idComentario = 9999;
+    }
+    
+    $data = [
+        'file' => $arquivo, 
+        'idPedido' => $idPedido,
+        'dataUpload' => $dataAtual,
+        'mediaUser' => $user,
+        'idComentario' => $idComentario,
+        'tipoUser' => $permission
+    ];
+
+
+       // use key 'http' even if you send the request to https://...
+        $options = array(
+            'http' => array(
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => http_build_query($data)
+            )
+        );
+        $context  = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        if ($result === FALSE) { /* Handle error */
+        }
+}
+
+
+function salvarArquivoChatDoutor($conn, $link , $idProduto, $dataUpload , $mediaUser , $nomeArquivo, $tipoUser, $idComentario = null) {
+   
+    if ($conn->connect_error) {
+        die("Conexão falhou: " . $conn->connect_error);
+    }
+
+    $stmt = $conn->prepare("INSERT INTO midias_comentarios_visualizador (idComentario, idPedido, path, nome, data_upload, mediaUser, tipoUser) VALUES (?, ?, ?, ?, ?, ?,?)");
+    
+    if ($stmt === false) {  
+        die("Erro na preparação da declaração SQL: " . $conn->error);
+    }
+
+    $stmt->bind_param("iisssss", $idComentario, $idProduto, $link, $nomeArquivo, $dataUpload, $mediaUser, $tipoUser);
+
+    $result = $stmt->execute();
+
+    if ($result === false) {
+        $stmt->close();
+        $conn->close();
+        return false;
+    } else {
+        $stmt->close();
+        $conn->close();
+        return true;
     }
 }
