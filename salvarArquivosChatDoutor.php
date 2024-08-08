@@ -10,8 +10,10 @@ if (isset($_GET['link'])) {
     if(isset($_GET['idComentario'])){
         $idComentario = $_GET['idComentario'];
     }
+    else{
+        $idComentario = null;
+    }
     
-    $idComentario = null;
     $idPedido = $_GET['idPedido'];
     $mediaUser = $_GET['mediaUser'];
     $dataUpload = $_GET['dataUpload'];
