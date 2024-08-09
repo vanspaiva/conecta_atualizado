@@ -311,6 +311,10 @@ if (!empty($_GET)) {
                                                                             if($rowMsg['path'] != null){
                                                                                 $arqPath = $rowMsg['path'];
                                                                             }
+                                                                            else{
+                                                                                $arqPath = null;
+                                                                            }
+                                                                            
                                                                             
                                                                             $imageID = getGoogleDriveFileId($arqPath);
                                                                             
