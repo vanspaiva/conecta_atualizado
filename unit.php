@@ -365,7 +365,10 @@ if (!empty($_GET) && isset($_SESSION["useruid"])) {
                                                                     if($rowMsg['path'] != null){
                                                                         $arqPath = $rowMsg['path'];
                                                                         $imageID = getGoogleDriveFileId($arqPath);
-                                                                    }   
+                                                                    } 
+                                                                    else{
+                                                                        $arqPath = null;
+                                                                    }
 
 
                                                                     $timer = explode(" ", $timer);
