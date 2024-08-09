@@ -5681,8 +5681,8 @@ function addComentProp($conn, $coment, $nprop, $user)
     $nomeRep = getNomeRep($conn, $propData['propRepresentante']);
 
     //Link live API
-    //$url = 'https://webhooks.integrately.com/a/webhooks/984d4fb974b5417bbb85fdd0cebd9903?';
-    $url = '';
+    $url = 'https://webhooks.integrately.com/a/webhooks/984d4fb974b5417bbb85fdd0cebd9903?';
+
     
 
     $data = array(
@@ -5740,8 +5740,7 @@ function addComentCaso($conn, $coment, $nped, $user)
     $nomeRep = getNomeRep($conn, $pedData['pedRep']);
 
     //Link live API
-    //$url = 'https://webhooks.integrately.com/a/webhooks/ca885d82fd54408abf93ab8fa1eb0f9c?';
-    $url = '';
+    $url = 'https://webhooks.integrately.com/a/webhooks/ca885d82fd54408abf93ab8fa1eb0f9c?';
 
     $data = array(
         'NumPedido' => $nped,
