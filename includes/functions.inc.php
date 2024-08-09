@@ -8961,7 +8961,7 @@ function enviarArquivo($idProduto, $arquivo, $user, $permission,$idComentario = 
         }
 }
 
-function salvarArquivo($conn, $link , $idPedido, $dataUpload , $mediaUser , $nomeArquivo, $tipoUser, $idComentario = null) {
+function salvarArquivo($conn, $link , $idProduto, $dataUpload , $mediaUser , $nomeArquivo, $tipoUser, $idComentario = null) {
     if ($conn->connect_error) {
         die("Conexão falhou: " . $conn->connect_error);
     }
@@ -8971,13 +8971,13 @@ function salvarArquivo($conn, $link , $idPedido, $dataUpload , $mediaUser , $nom
         die("O valor de dataUpload é NULL ou vazio.");
     }
 
-    $stmt = $conn->prepare("INSERT INTO midias_comentarios_plan (idComentario, idPedido, path, nome, data_upload, mediaUser, tipoUser) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO midias_comentarios_plan (idComentario, idProduto, path, nome, data_upload, mediaUser, tipoUser) VALUES (?, ?, ?, ?, ?, ?, ?)");
     
     if ($stmt === false) {  
         die("Erro na preparação da declaração SQL: " . $conn->error);
     }
 
-    $stmt->bind_param("iisssss", $idComentario, $idPedido, $link, $nomeArquivo, $dataUpload, $mediaUser, $tipoUser);
+    $stmt->bind_param("iisssss", $idComentario, $idProduto, $link, $nomeArquivo, $dataUpload, $mediaUser, $tipoUser);
 
     $result = $stmt->execute();
 
