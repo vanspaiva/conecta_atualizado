@@ -8926,10 +8926,10 @@ function getRealIP()
 
 
 
-function enviarArquivo($idProduto, $arquivo, $user, $permission,$idComentario = null) {
+function enviarArquivo($idProduto, $arquivo, $user, $permission, $dataUpload, $idComentario = null) {
 
-    date_default_timezone_set('America/Sao_Paulo');
-    $dataAtual = (new DateTime())->format('d/m/Y H:i:s');
+    //date_default_timezone_set('America/Sao_Paulo');
+    //$dataAtual = (new DateTime())->format('d/m/Y H:i:s');
 
     // URL do Webhook fornecido pelo Zapier
     $url = "https://hooks.zapier.com/hooks/catch/8414821/2uaplm3/";
@@ -8940,7 +8940,7 @@ function enviarArquivo($idProduto, $arquivo, $user, $permission,$idComentario = 
     $data = [
         'file' => $arquivo, 
         'idProduto' => $idProduto,
-        'dataUpload' => $dataAtual,
+        'dataUpload' => $dataUpload,
         'mediaUser' => $user,
         'idComentario' => $idComentario,
         'tipoUser' => $permission

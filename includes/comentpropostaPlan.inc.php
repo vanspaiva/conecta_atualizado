@@ -37,6 +37,8 @@ if ($_POST['coment'] != "") {
                 $row = mysqli_fetch_assoc($result);
     
                 $numeroComentario = $row['comentVisId'];
+                $dataComentario = $row['comentVisHorario'];
+
     
                 //echo "NUMERO DO COMENTARIO: $numeroComentario";
                 //exit();
@@ -44,7 +46,7 @@ if ($_POST['coment'] != "") {
     
         }
         
-        enviarArquivo($numeroProp, $arquivo, $user, $permission, $numeroComentario);
+        enviarArquivo($numeroProp, $arquivo, $user, $permission, $dataComentario, $numeroComentario);
     }
     
     header("location: ../update-plan?id=" . $nprop . "&error=sent");
@@ -71,12 +73,17 @@ if ($_POST['coment'] != "") {
                 $row = mysqli_fetch_assoc($result);
     
                 $numeroComentario = $row['comentVisId'];
+                $dataComentario = $row['comentVisHorario'];
+
 
             }
-            enviarArquivo($numeroProp, $arquivo, $user, $permission,$numeroComentario);
+            enviarArquivo($numeroProp, $arquivo, $user, $permission,$dataComentario, $numeroComentario);
         }
         else{
-            enviarArquivo($numeroProp, $arquivo, $user,$permission);
+
+            date_default_timezone_set('America/Sao_Paulo');
+            $dataAtual = (new DateTime())->format('d/m/Y H:i:s');
+            enviarArquivo($numeroProp, $arquivo, $user,$permission, $dataAtual);
         }
     }
 
