@@ -372,7 +372,7 @@ if (!empty($_GET) && isset($_SESSION["useruid"])) {
 
 
                                                                     $timer = explode(" ", $timer);
-                                                                    $data = $timer[0];
+                                                                    $data = dateFormat3($timer[0]);
                                                                     // $dataAmericana = explode("-", $date);
                                                                     // $ano = str_split($dataAmericana[0]);
                                                                     // $ano = $ano[0] . $ano[1];
