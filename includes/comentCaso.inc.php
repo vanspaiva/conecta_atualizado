@@ -1,17 +1,10 @@
 <?php
-
-/* echo "<pre>";
-print_r($_POST);
-echo "</pre>";
-
-
-exit(); */
-
+    require_once 'dbh.inc.php';
+    require_once 'functions.inc.php';
 
 if (isset($_POST["submit"])) {
 
-    require_once 'dbh.inc.php';
-    require_once 'functions.inc.php';
+
 
 
     if($_POST['fotofile'] != "" && $_POST["coment"] != ""){
@@ -40,9 +33,9 @@ if (isset($_POST["submit"])) {
 
     }
     elseif($_POST['fotofile'] != "" && $_POST["coment"] == ""){
-
+        
+        date_default_timezone_set('America/Sao_Paulo');
         $data = new DateTime();
-        // Formata a data e hora no formato desejado
         $dataAtual = $data->format('Y-m-d H:i:s');
         $nped = addslashes($_POST["nped"]);
         $user = addslashes($_POST["user"]);
@@ -59,11 +52,16 @@ if (isset($_POST["submit"])) {
     }
     
     else{
+        require_once 'dbh.inc.php';
+        require_once 'functions.inc.php';
+
         $coment = addslashes($_POST["coment"]);
         $nped = addslashes($_POST["nped"]);
         $user = addslashes($_POST["user"]);
     
         addComentCaso($conn, $coment, $nped, $user);
+        $hashedPED = hashItemNatural($nped);
+        header("location: ../unit?id=" . $hashedPED . "&error=sentcoment");
     }
 
 } else {
