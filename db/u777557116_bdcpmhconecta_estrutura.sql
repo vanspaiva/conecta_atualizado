@@ -1348,3 +1348,94 @@ CREATE TABLE IF NOT EXISTS `visualizador` (
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+CREATE TABLE IF NOT EXISTS `midias_comentarios_plan` (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    idProduto INT,
+    idComentario INT,
+    nome VARCHAR(255),
+    tipo VARCHAR(50),
+    dados LONGBLOB,
+    FOREIGN KEY (idProduto) REFERENCES comentariosproposta(comentVisNumProp),
+    FOREIGN KEY (idComentario) REFERENCES comentariosproposta(comentVisId)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+SELECT 
+    c.comentVisText, 
+    c.comentVisHorario, 
+    c.comentVisTipoUser,
+    m.nome, 
+    m.path,
+    m.idProduto,
+    COALESCE(c.comentVisHorario, m.data_upload) AS data,
+    COALESCE(c.comentVisUser, m.mediaUser) AS usuario,
+    COALESCE(c.comentVisTipoUser, m.tipoUser) AS tipoUsuario
+    
+FROM 
+    comentariosproposta AS c
+LEFT JOIN 
+    midias_comentarios_plan AS m ON c.comentVisId = m.idComentario
+WHERE 
+    c.comentVisNumProp = 142
+UNION
+
+SELECT 
+    c.comentVisText, 
+    c.comentVisHorario, 
+    c.comentVisTipoUser,
+    m.nome, 
+    m.path,
+	m.idProduto,
+    m.data_upload AS data,
+    m.mediaUser as usuario,
+    m.tipoUser as tipoUser
+FROM 
+    midias_comentarios_plan AS m
+LEFT JOIN 
+    comentariosproposta AS c ON c.comentVisId = m.idComentario
+WHERE 
+    m.idProduto = 142 
+ORDER BY 
+    data ASC;
+
+/* ===================================================================================== */
+
+SELECT 
+    c.comentVisText, 
+    c.comentVisHorario, 
+    c.comentVisTipoUser,
+    m.nome, 
+    m.path,
+    m.idProduto,
+    COALESCE(c.comentVisHorario, m.data_upload) AS data,
+    COALESCE(c.comentVisUser, m.mediaUser) AS usuario,
+    COALESCE(c.comentVisTipoUser, m.tipoUser) AS tipoUsuario
+    
+FROM 
+    comentariosproposta AS c
+LEFT JOIN 
+    midias_comentarios_plan AS m ON c.comentVisId = m.idComentario
+WHERE 
+    c.comentVisNumProp = 142
+UNION
+
+SELECT 
+    c.comentVisText, 
+    c.comentVisHorario, 
+    c.comentVisTipoUser,
+    m.nome, 
+    m.path,
+	  m.idProduto,
+    m.data_upload AS data,
+    m.mediaUser as usuario,
+    m.tipoUser as tipoUser
+FROM 
+    midias_comentarios_plan AS m
+LEFT JOIN 
+    comentariosproposta AS c ON c.comentVisId = m.idComentario
+WHERE 
+    m.idProduto = 142 
+ORDER BY 
+    data ASC;

@@ -896,12 +896,11 @@ function createProposta($conn, $idprop, $nomecriador, $emailcriacao, $dtcriacao,
     //Armazenar arquivo
     //createFileUpload($conn, $idprop, $pname, $tname);
 
-    saveFileUpload($conn, $idprop, $fileuuid1, $filename1, $isstored1, $filesize1, $cdnurl1);
-    saveFileUpload($conn, $idprop, $fileuuid2, $filename2, $isstored2, $filesize2, $cdnurl2);
-    saveFileUpload($conn, $idprop, $fileuuid3, $filename3, $isstored3, $filesize3, $cdnurl3);
-    saveFileUpload($conn, $idprop, $fileuuid4, $filename4, $isstored4, $filesize4, $cdnurl4);
-
-
+    //saveFileUpload($conn, $idprop, $fileuuid1, $filename1, $isstored1, $filesize1, $cdnurl1);
+    //saveFileUpload($conn, $idprop, $fileuuid2, $filename2, $isstored2, $filesize2, $cdnurl2);
+    //saveFileUpload($conn, $idprop, $fileuuid3, $filename3, $isstored3, $filesize3, $cdnurl3);
+    //saveFileUpload($conn, $idprop, $fileuuid4, $filename4, $isstored4, $filesize4, $cdnurl4);
+  
     saveFileId($conn, $idprop);
     saveFileIdLaudo($conn, $idprop);
     // saveFileUploadLaudo($conn, $idprop, $fileuuid2, $filename2, $isstored2, $filesize2, $cdnurl2);
@@ -5684,6 +5683,7 @@ function addComentProp($conn, $coment, $nprop, $user)
 
     //Link live API
     $url = 'https://webhooks.integrately.com/a/webhooks/984d4fb974b5417bbb85fdd0cebd9903?';
+
     
 
     $data = array(
@@ -5705,6 +5705,7 @@ function addComentProp($conn, $coment, $nprop, $user)
             'content' => http_build_query($data)
         )
     );
+    
     $context  = stream_context_create($options);
     $result = file_get_contents($url, false, $context);
     if ($result === FALSE) { /* Handle error */
@@ -8958,4 +8959,144 @@ function getRealIP()
         $userIP = $_SERVER['REMOTE_ADDR'];
     }
     return $userIP;
+}
+
+
+
+function enviarArquivo($idProduto, $arquivo, $user, $permission, $dataUpload, $idComentario = null) {
+
+    //date_default_timezone_set('America/Sao_Paulo');
+    //$dataAtual = (new DateTime())->format('d/m/Y H:i:s');
+
+    // URL do Webhook fornecido pelo Zapier
+    $url = "https://hooks.zapier.com/hooks/catch/8414821/2uaplm3/";
+
+    if(!isset($idComentario)){
+        $idComentario = 9999;
+    }
+    $data = [
+        'file' => $arquivo, 
+        'idProduto' => $idProduto,
+        'dataUpload' => $dataUpload,
+        'mediaUser' => $user,
+        'idComentario' => $idComentario,
+        'tipoUser' => $permission
+    ];
+
+
+       // use key 'http' even if you send the request to https://...
+        $options = array(
+            'http' => array(
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => http_build_query($data)
+            )
+        );
+        $context  = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        if ($result === FALSE) { /* Handle error */
+        }
+}
+
+function salvarArquivo($conn, $link , $idProduto, $dataUpload , $mediaUser , $nomeArquivo, $tipoUser, $idComentario = null) {
+    if ($conn->connect_error) {
+        die("Conexão falhou: " . $conn->connect_error);
+    }
+
+    // Verifica se o valor de dataUpload não é nulo
+    if ($dataUpload === null || $dataUpload === "") {
+        die("O valor de dataUpload é NULL ou vazio.");
+    }
+
+    $stmt = $conn->prepare("INSERT INTO midias_comentarios_plan (idComentario, idProduto, path, nome, data_upload, mediaUser, tipoUser) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    
+    if ($stmt === false) {  
+        die("Erro na preparação da declaração SQL: " . $conn->error);
+    }
+
+    $stmt->bind_param("iisssss", $idComentario, $idProduto, $link, $nomeArquivo, $dataUpload, $mediaUser, $tipoUser);
+
+    $result = $stmt->execute();
+
+    if ($result === false) {
+        $stmt->close();
+        $conn->close();
+        return false;
+    } else {
+        $stmt->close();
+        $conn->close();
+        return true;
+    }
+}
+
+
+function getGoogleDriveFileId($url) {
+    $pattern = '/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)\/view/';
+    
+    if (preg_match($pattern, $url, $matches)) {
+        return $matches[1];
+    } else {
+        return false;
+    }
+}
+
+
+function enviarArquivoChatDoutor($idPedido, $arquivo, $user, $permission, $dataUpload, $idComentario = null) {
+
+    // URL do Webhook fornecido pelo Zapier
+    $url = "https://hooks.zapier.com/hooks/catch/8414821/241yfwx/";
+
+    if(!isset($idComentario)){
+        $idComentario = 9999;
+    }
+
+    $data = [
+        'file' => $arquivo, 
+        'idPedido' => $idPedido,
+        'dataUpload' => $dataUpload,
+        'mediaUser' => $user,
+        'idComentario' => $idComentario,
+        'tipoUser' => $permission
+    ];
+       // use key 'http' even if you send the request to https://...
+        $options = array(
+            'http' => array(
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => http_build_query($data)
+            )
+        );
+        $context  = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        if ($result === FALSE) { /* Handle error */
+        }
+}
+
+
+function salvarArquivoChatDoutor($conn, $link , $idPedido, $dataUpload , $mediaUser , $nomeArquivo, $tipoUser, $idComentario = null) {
+
+   
+    if ($conn->connect_error) {
+        die("Conexão falhou: " . $conn->connect_error);
+    }
+
+    $stmt = $conn->prepare("INSERT INTO midias_comentarios_visualizador (idComentario, idPedido, path, nome, data_upload, mediaUser, tipoUser) VALUES (?, ?, ?, ?, ?, ?,?)");
+    
+    if ($stmt === false) {  
+        die("Erro na preparação da declaração SQL: " . $conn->error);
+    }
+
+    $stmt->bind_param("iisssss", $idComentario, $idPedido, $link, $nomeArquivo, $dataUpload, $mediaUser, $tipoUser);
+
+    $result = $stmt->execute();
+
+    if ($result === false) {
+        $stmt->close();
+        $conn->close();
+        return false;
+    } else {
+        $stmt->close();
+        $conn->close();
+        return true;
+    }
 }

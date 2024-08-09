@@ -63,6 +63,7 @@ if (!empty($_GET)) {
             <?php
             include_once 'php/navbar-dash.php';
             include_once 'php/lateral-nav.php';
+  
 
             $ret = mysqli_query($conn, "SELECT * FROM propostas WHERE propId='" . $idGERAL . "';");
             while ($row = mysqli_fetch_array($ret)) {
@@ -215,7 +216,6 @@ if (!empty($_GET)) {
                         }
                         ?>
                     </div>
-
                     <div class="container-fluid">
                         <div class="row d-flex justify-content-center">
                             <div class="col-sm">
@@ -252,18 +252,79 @@ if (!empty($_GET)) {
                                                                     <div class="rounded">
 
                                                                         <?php
+
                                                                         $idProjeto = $_GET['id'];
-                                                                        $retMsg = mysqli_query($conn, "SELECT * FROM comentariosproposta WHERE comentVisNumProp='$idProjeto' ORDER BY comentVisId ASC");
 
+                                                                        $sql = "SELECT 
+                                                                            c.comentVisText, 
+                                                                            c.comentVisHorario, 
+                                                                            c.comentVisTipoUser,
+                                                                            m.nome, 
+                                                                            m.path,
+                                                                            m.idProduto,
+                                                                            COALESCE(c.comentVisHorario, m.data_upload) AS data,
+                                                                            COALESCE(c.comentVisUser, m.mediaUser) AS usuario,
+                                                                            COALESCE(c.comentVisTipoUser, m.tipoUser) AS tipoUsuario
+                                                                            
+                                                                        FROM 
+                                                                            comentariosproposta AS c
+                                                                        LEFT JOIN 
+                                                                            midias_comentarios_plan AS m ON c.comentVisId = m.idComentario
+                                                                        WHERE 
+                                                                            c.comentVisNumProp = \"$idProjeto\"
+                                                                        UNION
 
+                                                                        SELECT 
+                                                                            c.comentVisText, 
+                                                                            c.comentVisHorario, 
+                                                                            c.comentVisTipoUser,
+                                                                            m.nome, 
+                                                                            m.path,
+                                                                            m.idProduto,
+                                                                            m.data_upload AS data,
+                                                                            m.mediaUser as usuario,
+                                                                            m.tipoUser as tipoUser
+                                                                        FROM 
+                                                                            midias_comentarios_plan AS m
+                                                                        LEFT JOIN 
+                                                                            comentariosproposta AS c ON c.comentVisId = m.idComentario
+                                                                        WHERE 
+                                                                            m.idProduto = \"$idProjeto\"
+                                                                        ORDER BY 
+                                                                            data ASC;"; 
+
+                                                                        $retMsg = mysqli_query($conn, $sql);
                                                                         while ($rowMsg = mysqli_fetch_array($retMsg)) {
                                                                             $msg = $rowMsg['comentVisText'];
-                                                                            $owner = $rowMsg['comentVisUser'];
-                                                                            $timer = $rowMsg['comentVisHorario'];
-                                                                            $tipoUsuario = $rowMsg['comentVisTipoUser'];
 
+                                                                            $owner = $rowMsg['usuario'];
+
+                                                                            if($rowMsg['comentVisHorario'] == null){
+
+                                                                                $timer = $rowMsg['data'];
+                                                                            }
+                                                                            else
+                                                                                $timer = $rowMsg['comentVisHorario'];
+
+
+                                                                            $tipoUsuario = $rowMsg['tipoUsuario'];
+
+                                                                            $nomeArq = $rowMsg['nome'];
+                                                                            
+                                                                            if($rowMsg['path'] != null){
+                                                                                $arqPath = $rowMsg['path'];
+                                                                            }
+                                                                            else{
+                                                                                $arqPath = null;
+                                                                            }
+                                                                            
+
+                                                                            $imageID = getGoogleDriveFileId($arqPath);
+                                                                            
                                                                             $timer = explode(" ", $timer);
+
                                                                             $data = $timer[0];
+
                                                                             // $dataAmericana = explode("-", $date);
                                                                             // $ano = str_split($dataAmericana[0]);
                                                                             // $ano = $ano[0] . $ano[1];
@@ -316,13 +377,22 @@ if (!empty($_GET)) {
                                                                             <?php
                                                                             if ($_SESSION['useruid'] == $owner) {
 
-
                                                                             ?>
                                                                                 <div class="row py-1">
                                                                                     <div class="col d-flex justify-content-end w-50">
                                                                                         <div class="bg-secondary bg-gradient text-white rounded rounded-3 px-2 py-1">
                                                                                             <h6><b><?php echo $owner; ?>:</b></h6>
-                                                                                            <p class="text-white text-wrap" style="font-size: 0.8rem; max-width: 200px;"><?php echo $msg; ?></p>
+                                                                                            <p class="text-white text-wrap" style="font-size: 0.8rem; max-width: 200px;">
+                                                                                                <?php
+                                                                                                    echo $msg . "<br>"; 
+                                                                                                ?>
+                                                                                                <?php if(isset($arqPath)){?>
+                                                                                                    <a href="<?=$arqPath?>" target="_blank">
+                                                                                                    <img style="margin: 5px;" height="50px" width="50px" src="https://drive.google.com/thumbnail?id=<?=$imageID?>&sz=w1000" alt="imagem">
+                                                                                                    </a>
+                                                                                                <?php } ?>
+                                                                                            </p>
+
                                                                                             <small style="color: #323236;"><?php echo $horario; ?></small>
                                                                                         </div>
                                                                                     </div>
@@ -334,11 +404,22 @@ if (!empty($_GET)) {
                                                                                     <div class="col d-flex justify-content-start w-50">
                                                                                         <div class="bg-<?php echo $ownerColor; ?>-conecta text-white rounded rounded-3 px-2 py-1">
                                                                                             <h6><b><?php echo $owner; ?>:</b></h6>
-                                                                                            <p class="text-white text-wrap" style="font-size: 0.8rem; max-width: 300px;"><?php echo $msg; ?></p>
+                                                                                            <p class="text-white text-wrap" style="font-size: 0.8rem; max-width: 300px;">
+                                                                                                <div><?php echo $msg; ?></div>
+
+                                                                                                <?php if(isset($arqPath)){?>
+                                                                                                    <a href="<?=$arqPath?>" target="_blank">
+                                                                                                    <img style="margin: 5px;" height="50px" width="50px" src="https://drive.google.com/thumbnail?id=<?=$imageID?>&sz=w1000" alt="imagem">
+                                                                                                    </a>
+                                                                                                <?php } ?>
+
+                                                                                            </p>
+                                                                                            
                                                                                             <small style="color: <?php echo $hourColor; ?>;"><?php echo $horario; ?></small>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
+                                                                                
                                                                         <?php
                                                                             }
                                                                         }
@@ -346,7 +427,7 @@ if (!empty($_GET)) {
                                                                     </div>
                                                                     <div class="row d-flex justify-content-center">
                                                                         <div class="col-sm px-2 py-3">
-                                                                            <form action="includes/comentpropostaPlan.inc.php" method="post">
+                                                                            <form action="includes/comentpropostaPlan.inc.php" method="post" enctype="multipart/form-data">
                                                                                 <div class="container" hidden>
                                                                                     <div class="row">
                                                                                         <div class="col">
@@ -367,7 +448,53 @@ if (!empty($_GET)) {
                                                                                                 <div class="row d-flex justify-content-start p-0 m-0">
                                                                                                     <small class="pl-2 text-muted" style="margin-top: -30px !important;"><small class="text-muted" id="cont">300</small> Caracteres restantes</small>
                                                                                                 </div>
+
+                                                                                                <div>
+                                                                                                    <p class="uploader-conecta-button">
+                                                                                                        <input type="text" name="permission" value="<?= $_SESSION['userperm']?>" hidden>
+                                                                                                        <input id="fotofile" name="fotofile" type="hidden" role="uploadcare-uploader" data-public-key="fe82618d53dc578231ce" data-tabs="file gdrive dropbox" data-multiple="false"
+                                                                                                        data-input-accept-types="image/png, image/jpeg, application/pdf" />
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                                <p style="font-size: 0.8rem; color: red;">
+                                                                                                    A imagem, após ser enviada, pode não carregar imediatamente. Por favor, aguarde 15 segundos e recarregue a página.
+                                                                                                </p>
                                                                                             </div>
+                                                                                            <script>
+                                                                                                var NUMBER_STORED_FILES = 0;
+                                                                                                const widget4 = uploadcare.Widget("#fotofile", {
+                                                                                                publicKey: 'fe82618d53dc578231ce'
+                                                                                                });
+
+                                                                                                widget4.onUploadComplete(info => {
+                                                                                                var isstored = info.isStored;
+                                                                                                var filename = info.name;
+                                                                                                var filesize = info.size;
+                                                                                                var fileuuid = info.uuid;
+                                                                                                var cdnurl = info.cdnUrl;
+
+                                                                                                console.log('Upload Complete Info:', info);
+
+                                                                                                if (isstored) {
+                                                                                                    console.log('File stored successfully.');
+                                                                                                    console.log('File URL:', cdnurl);
+                                                                                                } else {
+                                                                                                    console.log('File not stored.');
+                                                                                                }
+
+                                                                                                // Assign values to hidden input fields
+                                                                                                document.getElementById("isstored4").value = isstored;
+                                                                                                document.getElementById("filename4").value = filename;
+                                                                                                document.getElementById("filesize4").value = filesize;
+                                                                                                document.getElementById("fileuuid4").value = fileuuid;
+                                                                                                document.getElementById("cdnurl4").value = cdnurl;
+
+                                                                                                NUMBER_STORED_FILES++;
+                                                                                                document.getElementById("qtdfiles").value = NUMBER_STORED_FILES;
+
+                                                                                                document.getElementById("checkfile4").hidden = false;
+                                                                                                });
+                                                                                            </script>
                                                                                             <div class="p-1">
                                                                                                 <button type="submit" name="submit" class="btn btn-primary" style="font-size: small;"> <i class="fa fa-paper-plane" aria-hidden="true"></i> </button>
                                                                                             </div>

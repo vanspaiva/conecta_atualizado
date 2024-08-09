@@ -312,15 +312,64 @@ if (!empty($_GET) && isset($_SESSION["useruid"])) {
                                                                 <?php
                                                                 // $idProjeto = $_GET['id'];
                                                                 // echo $idProjeto;
+                                                                $sql = "SELECT 
+                                                                    c.comentVisText, 
+                                                                    c.comentVisHorario, 
+                                                                    c.comentVisTipoUser,
+                                                                    m.nome, 
+                                                                    m.path,
+                                                                    m.idPedido,
+                                                                    COALESCE(c.comentVisHorario, m.data_upload) AS data,
+                                                                    COALESCE(c.comentVisUser, m.mediaUser) AS usuario,
+                                                                    COALESCE(c.comentVisTipoUser, m.tipoUser) AS tipoUsuario
+                                                                    
+                                                                FROM 
+                                                                    comentariosvisualizador AS c
+                                                                LEFT JOIN 
+                                                                    midias_comentarios_visualizador AS m ON c.comentVisId = m.idComentario
+                                                                WHERE 
+                                                                    c.comentVisNumPed = \"$idProjeto\"
 
-                                                                $retMsg = mysqli_query($conn, "SELECT * FROM comentariosvisualizador WHERE comentVisNumPed='$idProjeto' ORDER BY comentVisId ASC");
+                                                                UNION
+
+                                                                SELECT 
+                                                                    c.comentVisText,
+                                                                    c.comentVisHorario, 
+                                                                    c.comentVisTipoUser,
+                                                                    m.nome, 
+                                                                    m.path,
+                                                                    m.idPedido,
+                                                                    m.data_upload AS data,
+                                                                    m.mediaUser AS usuario,
+                                                                    m.tipoUser AS tipoUsuario
+                                                                FROM 
+                                                                    midias_comentarios_visualizador AS m
+                                                                LEFT JOIN 
+                                                                    comentariosvisualizador AS c ON c.comentVisId = m.idComentario
+                                                                WHERE 
+                                                                    m.idPedido = \"$idProjeto\"
+                                                                ORDER BY 
+                                                                    `data` ASC;";
 
 
+                                                                $retMsg = mysqli_query($conn, $sql);
                                                                 while ($rowMsg = mysqli_fetch_array($retMsg)) {
+
                                                                     $msg = $rowMsg['comentVisText'];
-                                                                    $owner = $rowMsg['comentVisUser'];
+                                                                    $owner = $rowMsg['usuario'];
                                                                     $timer = $rowMsg['comentVisHorario'];
-                                                                    $tipoUsuario = $rowMsg['comentVisTipoUser'];
+                                                                    $tipoUsuario = $rowMsg['tipoUsuario'];
+                                                                    $timer = $rowMsg['data'];
+                                              
+
+                                                                    if($rowMsg['path'] != null){
+                                                                        $arqPath = $rowMsg['path'];
+                                                                        $imageID = getGoogleDriveFileId($arqPath);
+                                                                    } 
+                                                                    else{
+                                                                        $arqPath = null;
+                                                                    }
+
 
                                                                     $timer = explode(" ", $timer);
                                                                     $data = dateFormat3($timer[0]);
@@ -391,7 +440,16 @@ if (!empty($_GET) && isset($_SESSION["useruid"])) {
                                                                             <div class="col d-flex justify-content-end w-50">
                                                                                 <div class="bg-secondary bg-gradient text-white rounded rounded-3 px-2 py-1">
                                                                                     <h6><b><?php echo $owner; ?>:</b></h6>
-                                                                                    <p class="text-white text-wrap" style="font-size: 0.8rem; max-width: 200px;"><?php echo $msg; ?></p>
+                                                                                    <p class="text-white text-wrap" style="font-size: 0.8rem; max-width: 200px;">
+                                                                                        <?php echo $msg . "<br>"; ?>
+
+                                                                                        <?php if(isset($arqPath)){?>    
+                                                                                            <a href="<?=$arqPath?>" target="_blank">
+                                                                                            <img style="margin: 5px;" height="50px" width="50px" src="https://drive.google.com/thumbnail?id=<?=$imageID?>&sz=w1000" alt="imagem">
+                                                                                            </a>
+                                                                                        <?php } ?>
+                                                                                    </p>
+                                                      
                                                                                     <small style="color: #323236;"><?php echo $horario; ?></small>
                                                                                 </div>
                                                                             </div>
@@ -404,7 +462,16 @@ if (!empty($_GET) && isset($_SESSION["useruid"])) {
                                                                             <div class="col d-flex justify-content-start w-50">
                                                                                 <div class="bg-<?php echo $ownerColor; ?> text-white rounded rounded-3 px-2 py-1">
                                                                                     <h6><b><?php echo $owner; ?>:</b></h6>
-                                                                                    <p class="text-white text-wrap" style="font-size: 0.8rem; max-width: 200px;"><?php echo $msg; ?></p>
+                                                                                    <p class="text-white text-wrap" style="font-size: 0.8rem; max-width: 200px;">
+                                                                                        <?php echo $msg; ?>
+
+                                                                                        <?php if(isset($arqPath)){?>    
+                                                                                            <a href="<?=$arqPath?>" target="_blank">
+                                                                                            <img style="margin: 5px;" height="50px" width="50px" src="https://drive.google.com/thumbnail?id=<?=$imageID?>&sz=w1000" alt="imagem">
+                                                                                            </a>
+                                                                                        <?php } ?>
+
+                                                                                    </p>
                                                                                     <small style="color: <?php echo $hourColor; ?>;"><?php echo $horario; ?></small>
                                                                                 </div>
                                                                             </div>
@@ -442,7 +509,29 @@ if (!empty($_GET) && isset($_SESSION["useruid"])) {
                                                                                         <button type="submit" name="submit" class="btn btn-primary" style="font-size: small;"> <i class="fa fa-paper-plane" aria-hidden="true"></i> </button>
                                                                                     </div>
                                                                                 </div>
+                                                                                
                                                                             </div>
+                                                                                <div>
+                                                                                    <p class="uploader-conecta-button">
+                                                                                        <input type="text" name="permission" value="<?= $_SESSION['userperm']?>" hidden>
+                                                                                        <input
+                                                                                        id="fotofile" 
+                                                                                        name="fotofile" 
+                                                                                        type="hidden" 
+                                                                                        role="uploadcare-uploader" 
+                                                                                        data-public-key="fe82618d53dc578231ce" 
+                                                                                        data-tabs="file gdrive dropbox" data-multiple="false"
+                                                                                        data-input-accept-types="image/png, image/jpeg" 
+                                                                                        hidden/>
+                                                                                    </p>
+                                                                                </div>
+                                                                                <p style="font-size: 0.8rem; color: red;">
+                                                                                    A imagem, após ser enviada, pode não carregar imediatamente. Por favor, aguarde 15 segundos e recarregue a página.
+                                                                                </p>
+
+                                                                                <script>
+                                                           
+                                                                                </script>
                                                                         </div>
                                                                     </form>
                                                                 </div>
