@@ -255,41 +255,40 @@ if (!empty($_GET)) {
 
                                                                         $idProjeto = $_GET['id'];
 
-                                                                        $sql = "SELECT 
-                                                                            c.comentVisText, 
-                                                                            c.comentVisHorario, 
-                                                                            c.comentVisTipoUser,
-                                                                            m.nome, 
-                                                                            m.path,
-                                                                            COALESCE(c.comentVisHorario, m.data_upload) AS data,
-                                                                            COALESCE(c.comentVisUser, m.mediaUser) AS usuario,
-                                                                            COALESCE(c.comentVisTipoUser, m.tipoUser) AS tipoUsuario
-                                                                            
-                                                                        FROM 
-                                                                            comentariosproposta AS c
-                                                                        LEFT JOIN 
-                                                                            midias_comentarios_plan AS m ON c.comentVisId = m.idComentario
-                                                                        WHERE 
-                                                                            c.comentVisNumProp = \"$idProjeto\"
-                                                                        UNION
+$sql = "SELECT 
+    c.comentVisText, 
+    c.comentVisHorario, 
+    c.comentVisTipoUser,
+    m.nome, 
+    m.path,
+    COALESCE(c.comentVisHorario, m.data_upload) AS data,
+    COALESCE(c.comentVisUser, m.mediaUser) AS usuario,
+    COALESCE(c.comentVisTipoUser, m.tipoUser) AS tipoUsuario
+    
+FROM 
+    comentariosproposta AS c
+LEFT JOIN 
+    midias_comentarios_plan AS m ON c.comentVisId = m.idComentario
+WHERE 
+    c.comentVisNumProp = \"$idProjeto\"
+UNION
 
-                                                                        SELECT 
-                                                                            c.comentVisText, 
-                                                                            c.comentVisHorario, 
-                                                                            c.comentVisTipoUser,
-                                                                            m.nome, 
-                                                                            m.path,
-                                                                            m.data_upload AS data,
-                                                                            m.mediaUser as usuario,
-                                                                            m.tipoUser as tipoUser
-                                                                        FROM 
-                                                                            midias_comentarios_plan AS m
-                                                                        LEFT JOIN 
-                                                                            comentariosproposta AS c ON c.comentVisId = m.idComentario
-                                                                        WHERE 
-                                                                            c.comentVisNumProp = \"$idProjeto\"
-                                                                        ORDER BY 
-                                                                            data ASC;"; 
+SELECT 
+    c.comentVisText, 
+    c.comentVisHorario, 
+    c.comentVisTipoUser,
+    m.nome, 
+    m.path,
+    m.data_upload AS data,
+    m.mediaUser as usuario,
+    m.tipoUser as tipoUser
+FROM 
+    midias_comentarios_plan AS m
+LEFT JOIN 
+    comentariosproposta AS c ON c.comentVisId = m.idComentario and c.comentVisNumProp = \"$idProjeto\" and m.idProduto = \"$idProjeto\"
+
+ORDER BY 
+    data ASC;"; 
 
                                                                         $retMsg = mysqli_query($conn, $sql);
                                                                         while ($rowMsg = mysqli_fetch_array($retMsg)) {
