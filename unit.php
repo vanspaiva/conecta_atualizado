@@ -349,7 +349,7 @@ if (!empty($_GET) && isset($_SESSION["useruid"])) {
                                                                 WHERE 
                                                                     m.idPedido = \"$idProjeto\"
                                                                 ORDER BY 
-                                                                    `data` DESC;";
+                                                                    `data` ASC;";
 
 
                                                                 $retMsg = mysqli_query($conn, $sql);
