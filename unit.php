@@ -330,7 +330,7 @@ if (!empty($_GET) && isset($_SESSION["useruid"])) {
                                                                 WHERE 
                                                                     c.comentVisNumPed = \"$idProjeto\"
 
-                                                                UNION ALL
+                                                                UNION
 
                                                                 SELECT 
                                                                     c.comentVisText,
