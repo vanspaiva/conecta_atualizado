@@ -33,7 +33,7 @@ if (isset($_POST["submit"])) {
 
     }
     elseif($_POST['fotofile'] != "" && $_POST["coment"] == ""){
-        
+
         date_default_timezone_set('America/Sao_Paulo');
         $data = new DateTime();
         $dataAtual = $data->format('Y-m-d H:i:s');
@@ -49,7 +49,7 @@ if (isset($_POST["submit"])) {
         header("location: ../unit?id=" . $hashedPED . "&error=sentcoment");
         exit();
 
-    }
+}
     
     else{
         require_once 'dbh.inc.php';

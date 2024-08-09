@@ -511,13 +511,23 @@ if (!empty($_GET) && isset($_SESSION["useruid"])) {
                                                                                 </div>
                                                                                 
                                                                             </div>
-                                                                            <div>
+                                                                                <div>
                                                                                     <p class="uploader-conecta-button">
                                                                                         <input type="text" name="permission" value="<?= $_SESSION['userperm']?>" hidden>
-                                                                                        <input id="fotofile" name="fotofile" type="hidden" role="uploadcare-uploader" data-public-key="fe82618d53dc578231ce" data-tabs="file gdrive dropbox" data-multiple="false"
-                                                                                        data-input-accept-types="image/png, image/jpeg, application/pdf" />
+                                                                                        <input
+                                                                                        id="fotofile" 
+                                                                                        name="fotofile" 
+                                                                                        type="hidden" 
+                                                                                        role="uploadcare-uploader" 
+                                                                                        data-public-key="fe82618d53dc578231ce" 
+                                                                                        data-tabs="file gdrive dropbox" data-multiple="false"
+                                                                                        data-input-accept-types="image/png, image/jpeg, application/pdf, video/mp4" 
+                                                                                        hidden/>
                                                                                     </p>
                                                                                 </div>
+                                                                                <script>
+                                                           
+                                                                                </script>
                                                                         </div>
                                                                     </form>
                                                                 </div>
