@@ -525,6 +525,10 @@ if (!empty($_GET) && isset($_SESSION["useruid"])) {
                                                                                         hidden/>
                                                                                     </p>
                                                                                 </div>
+                                                                                <p style="font-size: 0.8rem; color: red;">
+                                                                                    A imagem, após ser enviada, pode não carregar imediatamente. Por favor, aguarde 15 segundos e recarregue a página.
+                                                                                </p>
+
                                                                                 <script>
                                                            
                                                                                 </script>

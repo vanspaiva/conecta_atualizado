@@ -456,6 +456,9 @@ if (!empty($_GET)) {
                                                                                                         data-input-accept-types="image/png, image/jpeg, application/pdf" />
                                                                                                     </p>
                                                                                                 </div>
+                                                                                                <p style="font-size: 0.8rem; color: red;">
+                                                                                                    A imagem, após ser enviada, pode não carregar imediatamente. Por favor, aguarde 15 segundos e recarregue a página.
+                                                                                                </p>
                                                                                             </div>
                                                                                             <script>
                                                                                                 var NUMBER_STORED_FILES = 0;
