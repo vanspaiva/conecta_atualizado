@@ -286,7 +286,8 @@ if (!empty($_GET)) {
                                                                             midias_comentarios_plan AS m
                                                                         LEFT JOIN 
                                                                             comentariosproposta AS c ON c.comentVisId = m.idComentario
-
+                                                                        WHERE 
+                                                                            c.comentVisNumProp = \"$idProjeto\"
                                                                         ORDER BY 
                                                                             data ASC;"; 
 
