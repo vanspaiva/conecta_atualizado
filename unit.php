@@ -521,7 +521,7 @@ if (!empty($_GET) && isset($_SESSION["useruid"])) {
                                                                                         role="uploadcare-uploader" 
                                                                                         data-public-key="fe82618d53dc578231ce" 
                                                                                         data-tabs="file gdrive dropbox" data-multiple="false"
-                                                                                        data-input-accept-types="image/png, image/jpeg, application/pdf, video/mp4" 
+                                                                                        data-input-accept-types="image/png, image/jpeg" 
                                                                                         hidden/>
                                                                                     </p>
                                                                                 </div>
