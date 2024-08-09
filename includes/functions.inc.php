@@ -894,12 +894,13 @@ function createProposta($conn, $idprop, $nomecriador, $emailcriacao, $dtcriacao,
     mysqli_stmt_close($stmt);
 
     //Armazenar arquivo
-    // createFileUpload($conn, $idprop, $pname, $tname);
+    //createFileUpload($conn, $idprop, $pname, $tname);
 
-    saveFileUpload($conn, $idprop, $fileuuid1, $filename1, $isstored1, $filesize1, $cdnurl1);
-    saveFileUpload($conn, $idprop, $fileuuid2, $filename2, $isstored2, $filesize2, $cdnurl2);
-    saveFileUpload($conn, $idprop, $fileuuid3, $filename3, $isstored3, $filesize3, $cdnurl3);
-    saveFileUpload($conn, $idprop, $fileuuid4, $filename4, $isstored4, $filesize4, $cdnurl4);
+    //saveFileUpload($conn, $idprop, $fileuuid1, $filename1, $isstored1, $filesize1, $cdnurl1);
+    //saveFileUpload($conn, $idprop, $fileuuid2, $filename2, $isstored2, $filesize2, $cdnurl2);
+    //saveFileUpload($conn, $idprop, $fileuuid3, $filename3, $isstored3, $filesize3, $cdnurl3);
+    //saveFileUpload($conn, $idprop, $fileuuid4, $filename4, $isstored4, $filesize4, $cdnurl4);
+  
     saveFileId($conn, $idprop);
     saveFileIdLaudo($conn, $idprop);
     // saveFileUploadLaudo($conn, $idprop, $fileuuid2, $filename2, $isstored2, $filesize2, $cdnurl2);
@@ -8017,6 +8018,16 @@ function valorOriginal($tipoProduto)
         return 200;
 
     }
+    elseif($tipoProduto == 'ATM'){
+
+        return 200;
+    }
+
+    elseif($tipoProduto == 'RECONSTRUÇÃO ÓSSEA'){
+
+        return 200;
+        
+    }
     else{
         return 150;
     }
@@ -8409,25 +8420,52 @@ function getHorasPlanejando($conn, $pedNum)
 
 function getMultiplicadorPedido($conn, $numPed)
 {
+
+    //$sql = "SELECT itemQtd FROM itensproposta WHERE itemPropRef= 2796 and itemCdg = 'PC-302-T1 ORB' ";
+
+
+    //pega todos os dados do pedido
     $pedData = getAllDataFromPed($conn, $numPed);
 
+    //captura os produtos
     $produtos = $pedData["pedProduto"];
 
+    //Divide os produtos em array
     $produtos = explode("/", $produtos);
-    
+
+    //Pega o Referente a Proposta para consuktar quantidade requerida do produto
+    $numeroRef = $pedData['pedPropRef'];
 
     $multiplicador = 0;
 
     if (strpos($pedData["pedProduto"], "PC-303-T3") !== false) {
-        $multiplicador++;
+
+        $sql = "SELECT itemQtd FROM itensproposta WHERE itemPropRef = $numeroRef AND itemCdg = 'PC-303-T3'";
+
+        $result = mysqli_query($conn, $sql);
+        $result = mysqli_fetch_assoc($result);
+    
+        $result = $result['itemQtd'];
+
+        $multiplicador += $result;
+
     }
     
-    
     foreach ($produtos as $key => $produto) {
+
         $categoria = getCategoriaProduto($conn, $produto);
 
         if (($categoria != "BIOMODELO") && ($categoria != "EXTRA")) {
-            $multiplicador++;
+            
+            $sql = "SELECT itemQtd FROM itensproposta WHERE itemPropRef = $numeroRef AND itemCdg = '$produto'";
+
+            $result = mysqli_query($conn, $sql);
+            $result = mysqli_fetch_assoc($result);
+        
+            $result = $result['itemQtd'];
+
+            $multiplicador += $result;
+
         }
     }
 
